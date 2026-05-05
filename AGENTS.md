@@ -1,4 +1,14 @@
+---
+owner: Clayton
+last_reviewed: 2026-05-05
+source_of_truth_for: novique.ai operating contract for agents — extends IDE constitution
+supersedes: null
+---
+
 # novique.ai — Contract (STRICT)
+
+
+> **Why this exists.** Entry point for any agent in the novique.ai marketing-site / corp-page repo. Inherits IDE constitution; site-specific rules below.
 
 ## Inheritance
 This file inherits the IDE constitution at `~/IDE/CLAUDE.md` (STRICT MODE).
