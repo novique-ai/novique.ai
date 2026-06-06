@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -40,18 +41,27 @@ export default function AppsIndexPage() {
                 <li key={app.slug}>
                   <Link
                     href={appPath(app.slug)}
-                    className="block rounded-xl border border-gray-200 p-6 transition-colors hover:border-primary-300 hover:bg-gray-50"
+                    className="flex gap-5 rounded-xl border border-gray-200 p-6 transition-colors hover:border-primary-300 hover:bg-gray-50"
                   >
-                    <div className="flex items-center justify-between gap-4">
-                      <h2 className="text-2xl font-bold text-primary-900">
-                        {app.appStoreName}
-                      </h2>
-                      <span className="shrink-0 rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700">
-                        {statusLabel(app.status)}
-                      </span>
+                    <Image
+                      src={app.icon.src}
+                      alt={app.icon.alt}
+                      width={72}
+                      height={72}
+                      className="h-[72px] w-[72px] shrink-0 rounded-[16px] ring-1 ring-black/5"
+                    />
+                    <div className="min-w-0">
+                      <div className="flex items-center justify-between gap-4">
+                        <h2 className="text-2xl font-bold text-primary-900">
+                          {app.appStoreName}
+                        </h2>
+                        <span className="shrink-0 rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700">
+                          {statusLabel(app.status)}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-gray-600">{app.subtitle}</p>
+                      <p className="mt-3 text-gray-700">{app.shortDescription}</p>
                     </div>
-                    <p className="mt-2 text-gray-600">{app.subtitle}</p>
-                    <p className="mt-3 text-gray-700">{app.shortDescription}</p>
                   </Link>
                 </li>
               ))}

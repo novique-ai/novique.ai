@@ -44,6 +44,78 @@ export interface AppPrivacy {
   claims: string[];
 }
 
+/**
+ * Per-app brand theme. Values are raw CSS color strings applied via inline
+ * styles (registry values are dynamic, so they can't be Tailwind class names).
+ */
+export interface AppBrand {
+  /** Page / hero background. */
+  bg: string;
+  /** Card and phone-screen surfaces. */
+  surface: string;
+  /** Headings. */
+  ink: string;
+  /** Eyebrow label. */
+  eyebrow: string;
+  /** Body text. */
+  body: string;
+  /** Secondary / muted text. */
+  muted: string;
+  /** Primary action (CTA, active chip). */
+  accent: string;
+  /** Text on top of `accent`. */
+  accentInk: string;
+  /** Success / completed accent. */
+  sage: string;
+  /** Card borders. */
+  cardBorder: string;
+  /** Soft callout background (privacy cue, safety strip). */
+  softCard: string;
+  /** Soft callout border. */
+  softBorder: string;
+  /** Phone-mockup shell. */
+  shell: string;
+}
+
+export interface AppIcon {
+  /** Display icon under /public (webp). */
+  src: string;
+  /** 1024px PNG for Open Graph / social. */
+  src1024: string;
+  alt: string;
+}
+
+/** A row in the in-app routine preview shown in the phone mockup. */
+export interface RoutineRow {
+  name: string;
+  detail: string;
+  checked: boolean;
+}
+
+/**
+ * Rich landing content. Optional — apps without it get the simple landing.
+ * Modeled on the Glow Routine "App Store / Onboarding" Figma frame.
+ */
+export interface AppLanding {
+  eyebrow: string;
+  headline: string;
+  subcopy: string;
+  hero: { src: string; alt: string };
+  /** Supporting "Setup in minutes" card. */
+  setupCard: { title: string; body: string };
+  /** In-app preview rendered inside the phone mockup. */
+  preview: {
+    title: string;
+    /** Toggle chips; the first is rendered active. */
+    chips: string[];
+    rows: RoutineRow[];
+    privacyNote: { title: string; body: string };
+    cta: string;
+  };
+  /** Bottom reassurance strip. */
+  safetyStrip: string;
+}
+
 export interface NoviqueApp {
   slug: string;
   appStoreName: string;
@@ -63,6 +135,10 @@ export interface NoviqueApp {
   landingCopy: string;
   /** Public App Store URL. Undefined until the listing is live. */
   appStoreUrl?: string;
+  brand: AppBrand;
+  icon: AppIcon;
+  /** Rich landing content; falls back to the simple landing when absent. */
+  landing?: AppLanding;
   privacy: AppPrivacy;
   support: {
     sections: SupportSection[];
@@ -88,6 +164,55 @@ const apps: Record<string, NoviqueApp> = {
     landingCopy:
       "Glow Routine is a private skincare routine and progress journal for tracking AM/PM care, notes, and local progress photos without an account. Your routines, product notes, checklist history, and photos stay on your device.",
     // appStoreUrl is intentionally omitted until the listing is public.
+    brand: {
+      bg: "#f8e5ef",
+      surface: "#fff8fa",
+      ink: "#3b2933",
+      eyebrow: "#9a6478",
+      body: "#6e4658",
+      muted: "#8d6576",
+      accent: "#e56c73",
+      accentInk: "#ffffff",
+      sage: "#8fb8a0",
+      cardBorder: "#f2cfda",
+      softCard: "#fff1f5",
+      softBorder: "#f0b9cb",
+      shell: "#3b2933",
+    },
+    icon: {
+      src: "/apps/glow-routine/icon.webp",
+      src1024: "/apps/glow-routine/icon-1024.png",
+      alt: "Glow Routine app icon",
+    },
+    landing: {
+      eyebrow: "Glow Routine",
+      headline: "Build your personal skincare routine",
+      subcopy:
+        "Set AM and PM steps around your schedule. Start with no account and no pressure.",
+      hero: {
+        src: "/apps/glow-routine/hero.webp",
+        alt: "A person checking their skin in a hand mirror",
+      },
+      setupCard: {
+        title: "Setup in minutes",
+        body: "Pick a template, add your products manually, and choose reminder times before permission prompts appear.",
+      },
+      preview: {
+        title: "A routine ready before day one.",
+        chips: ["AM", "PM"],
+        rows: [
+          { name: "Cleanser", detail: "Choose your product", checked: true },
+          { name: "Moisturizer", detail: "Reminder: 8:30 AM", checked: false },
+        ],
+        privacyNote: {
+          title: "Private by default",
+          body: "No login required. Camera permission waits until you add a photo.",
+        },
+        cta: "Create my routine",
+      },
+      safetyStrip:
+        "No login required. Personal routine tracking. Photos and products stay personal.",
+    },
     privacy: {
       effectiveDate: "June 6, 2026",
       collectsData: false,

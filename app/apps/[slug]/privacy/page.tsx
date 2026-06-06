@@ -3,13 +3,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Section from "@/components/Section";
-import {
-  getApp,
-  getAllApps,
-  appPath,
-  appUrl,
-} from "@/lib/apps/registry";
+import AppDocHeader from "@/components/apps/AppDocHeader";
+import { getApp, getAllApps, appPath, appUrl } from "@/lib/apps/registry";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -38,6 +33,7 @@ export async function generateMetadata({
       description,
       type: "website",
       url: appUrl(app.slug, "privacy"),
+      images: [{ url: app.icon.src1024, width: 1024, height: 1024 }],
     },
   };
 }
@@ -52,19 +48,20 @@ export default async function AppPrivacyPage({
   if (!app) notFound();
 
   const p = app.privacy;
+  const b = app.brand;
+  const h2 = "text-2xl font-bold";
 
   return (
     <>
       <Header />
-      <main>
-        <Section background="white" className="pt-32">
-          <div className="max-w-3xl mx-auto">
-            <p className="text-sm font-medium uppercase tracking-wide text-primary-600">
-              {app.appStoreName}
-            </p>
-            <h1 className="mt-2 text-4xl font-bold text-primary-900">
-              Privacy Policy
-            </h1>
+      <main style={{ backgroundColor: b.bg }}>
+        <div className="mx-auto max-w-3xl px-4 pb-20 pt-28 sm:px-6 lg:px-8">
+          <div
+            className="rounded-[2rem] border bg-white p-8 sm:p-12"
+            style={{ borderColor: b.cardBorder }}
+          >
+            <AppDocHeader app={app} title="Privacy Policy" />
+
             <p className="mt-4 text-gray-600">
               Effective date: {p.effectiveDate} · {app.appStoreName} is owned and
               operated by {app.copyrightOwner}.
@@ -72,7 +69,7 @@ export default async function AppPrivacyPage({
 
             <div className="mt-10 space-y-8">
               <section>
-                <h2 className="text-2xl font-bold text-primary-900">
+                <h2 className={h2} style={{ color: b.ink }}>
                   The short version
                 </h2>
                 <p className="mt-3 text-gray-700">
@@ -89,7 +86,7 @@ export default async function AppPrivacyPage({
               </section>
 
               <section>
-                <h2 className="text-2xl font-bold text-primary-900">
+                <h2 className={h2} style={{ color: b.ink }}>
                   Information stored on your device
                 </h2>
                 <p className="mt-3 text-gray-700">
@@ -101,7 +98,7 @@ export default async function AppPrivacyPage({
               </section>
 
               <section>
-                <h2 className="text-2xl font-bold text-primary-900">
+                <h2 className={h2} style={{ color: b.ink }}>
                   Information we do not collect
                 </h2>
                 <p className="mt-3 text-gray-700">
@@ -115,7 +112,7 @@ export default async function AppPrivacyPage({
 
               {(p.usesCamera || p.usesPhotoLibrary) && (
                 <section>
-                  <h2 className="text-2xl font-bold text-primary-900">
+                  <h2 className={h2} style={{ color: b.ink }}>
                     Camera and photos
                   </h2>
                   <p className="mt-3 text-gray-700">
@@ -131,7 +128,7 @@ export default async function AppPrivacyPage({
 
               {p.usesStoreKit && (
                 <section>
-                  <h2 className="text-2xl font-bold text-primary-900">
+                  <h2 className={h2} style={{ color: b.ink }}>
                     Purchases
                   </h2>
                   <p className="mt-3 text-gray-700">
@@ -144,7 +141,7 @@ export default async function AppPrivacyPage({
               )}
 
               <section>
-                <h2 className="text-2xl font-bold text-primary-900">
+                <h2 className={h2} style={{ color: b.ink }}>
                   No tracking
                 </h2>
                 <p className="mt-3 text-gray-700">
@@ -156,7 +153,9 @@ export default async function AppPrivacyPage({
               </section>
 
               <section>
-                <h2 className="text-2xl font-bold text-primary-900">Children</h2>
+                <h2 className={h2} style={{ color: b.ink }}>
+                  Children
+                </h2>
                 <p className="mt-3 text-gray-700">
                   {app.displayName} is not directed to children, and because the
                   app collects no personal information from anyone, it collects no
@@ -165,7 +164,7 @@ export default async function AppPrivacyPage({
               </section>
 
               <section>
-                <h2 className="text-2xl font-bold text-primary-900">
+                <h2 className={h2} style={{ color: b.ink }}>
                   Changes to this policy
                 </h2>
                 <p className="mt-3 text-gray-700">
@@ -176,12 +175,15 @@ export default async function AppPrivacyPage({
               </section>
 
               <section>
-                <h2 className="text-2xl font-bold text-primary-900">Contact</h2>
+                <h2 className={h2} style={{ color: b.ink }}>
+                  Contact
+                </h2>
                 <p className="mt-3 text-gray-700">
                   Questions about your privacy? Email{" "}
                   <a
                     href={`mailto:${app.privacyContactEmail}`}
-                    className="text-primary-600 hover:underline"
+                    className="font-medium hover:underline"
+                    style={{ color: b.accent }}
                   >
                     {app.privacyContactEmail}
                   </a>
@@ -196,12 +198,15 @@ export default async function AppPrivacyPage({
                 {app.appStoreName}
               </Link>{" "}
               ·{" "}
-              <Link href={appPath(app.slug, "support")} className="hover:underline">
+              <Link
+                href={appPath(app.slug, "support")}
+                className="hover:underline"
+              >
                 Support
               </Link>
             </div>
           </div>
-        </Section>
+        </div>
       </main>
       <Footer />
     </>
