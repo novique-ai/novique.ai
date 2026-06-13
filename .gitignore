@@ -50,7 +50,7 @@ scripts/generate-business-card.js
 socialmedia/
 public/_archive/
 research/
-marketing/
+/marketing/
 
 # Company documents (sensitive)
 docs/
