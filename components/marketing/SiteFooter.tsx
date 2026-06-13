@@ -86,7 +86,7 @@ export default function SiteFooter() {
 
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-stroke-1 pt-6 text-sm text-ink-3 md:flex-row md:items-center">
           <p>© {year} Novique AI. All rights reserved.</p>
-          <p className="font-mono text-[0.7rem] uppercase tracking-wider">One product live · more in the open</p>
+          <p className="font-mono text-[0.7rem] uppercase tracking-wider">Build in public. Ship for real.</p>
         </div>
       </div>
     </footer>
