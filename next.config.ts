@@ -19,6 +19,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // /solutions is superseded by the new /services surface (redesign).
+      { source: '/solutions', destination: '/services', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

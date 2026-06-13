@@ -10,7 +10,7 @@ import WorkflowsStep from './steps/WorkflowsStep';
 import AdvancedOptionsStep from './steps/AdvancedOptionsStep';
 import ROIResultsPanel from './results/ROIResultsPanel';
 import SegmentSelector from './SegmentSelector';
-import Button from '@/components/Button';
+import DarkButton from '@/components/marketing/DarkButton';
 import { ROISegment } from '@/lib/roi/segments';
 
 export default function ROICalculatorForm() {
@@ -82,7 +82,7 @@ export default function ROICalculatorForm() {
   if (calculator.currentStep === 0) {
     return (
       <div id="roi-assessment" ref={wizardRef} className="max-w-6xl mx-auto scroll-mt-24">
-        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <div className="nv-card p-6 md:p-8">
           <IntroStep onStart={calculator.nextStep} />
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function ROICalculatorForm() {
             onStepClick={calculator.goToStep}
           />
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+          <div className="nv-card p-6 md:p-8">
             {calculator.currentStep === 1 && (
               <>
                 <SegmentSelector
@@ -136,19 +136,19 @@ export default function ROICalculatorForm() {
             )}
 
             {/* Navigation */}
-            <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
-              <Button variant="outline" onClick={calculator.prevStep}>
+            <div className="flex justify-between mt-8 pt-6 border-t border-stroke-1">
+              <DarkButton variant="outline" onClick={calculator.prevStep}>
                 Back
-              </Button>
+              </DarkButton>
 
               {calculator.currentStep < 3 ? (
-                <Button onClick={calculator.nextStep}>
+                <DarkButton onClick={calculator.nextStep}>
                   Continue
-                </Button>
+                </DarkButton>
               ) : (
-                <Button variant="secondary" onClick={calculator.resetCalculator}>
+                <DarkButton variant="ghost" onClick={calculator.resetCalculator}>
                   Reset calculator
-                </Button>
+                </DarkButton>
               )}
             </div>
           </div>

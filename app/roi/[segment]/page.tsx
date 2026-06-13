@@ -2,8 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import ThemeShell from '@/components/marketing/ThemeShell';
 import ROICalculatorForm from '@/components/roi-calculator/ROICalculatorForm';
 import SegmentParamSync from './segment-param-sync';
 
@@ -348,37 +347,37 @@ export default async function SegmentROILandingPage({ params }: PageProps) {
   const s = SEGMENTS[segment];
 
   return (
-    <>
-      <Header />
-      <main className="mx-auto w-full max-w-5xl px-6 py-12 pt-24">
+    <ThemeShell>
+      <div className="mx-auto w-full max-w-5xl px-6 py-12 pt-24 md:pt-32">
         {/* Client-side URL param sync for existing calculator behavior */}
         <Suspense fallback={null}>
           <SegmentParamSync segment={segment} />
         </Suspense>
 
         <header className="text-center">
-          <h1 className="text-4xl font-semibold tracking-tight text-primary-900 md:text-5xl">
+          <p className="nv-eyebrow mb-4">{s.label}</p>
+          <h1 className="font-display text-display tracking-tight text-ink-0 text-balance md:text-display-xl">
             {s.h1}
           </h1>
-          <p className="mx-auto mt-6 max-w-3xl text-base leading-7 text-gray-600">
+          <p className="mx-auto mt-6 max-w-3xl text-body-lg leading-relaxed text-ink-2">
             {s.intro1}
           </p>
-          <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-gray-600">
+          <p className="mx-auto mt-4 max-w-3xl text-body-lg leading-relaxed text-ink-2">
             {s.intro2}
           </p>
-          <p className="mx-auto mt-4 max-w-3xl text-sm italic text-gray-500">
+          <p className="mx-auto mt-4 max-w-3xl text-sm italic text-ink-3">
             {s.microProof}
           </p>
-          <p className="mx-auto mt-6 max-w-3xl text-sm font-medium text-primary-700">
+          <p className="mx-auto mt-6 max-w-3xl text-sm font-medium text-aqua">
             {s.ctaHint}
           </p>
         </header>
 
         <section className="mt-16">
-          <h2 className="text-2xl font-semibold tracking-tight text-primary-900">
+          <h2 className="font-display text-dh2 tracking-tight text-ink-0">
             The Hidden Cost of Manual Work in {s.label}
           </h2>
-          <p className="mt-4 text-sm leading-6 text-gray-600">
+          <p className="mt-4 text-sm leading-6 text-ink-2">
             {s.label} teams don&apos;t usually think they&apos;re inefficient — but the numbers
             tell a different story. Common pain points we see across teams:
           </p>
@@ -386,84 +385,81 @@ export default async function SegmentROILandingPage({ params }: PageProps) {
           <ul className="mt-6 space-y-2 text-sm leading-6">
             {s.hiddenCostBullets.map((b) => (
               <li key={b} className="flex gap-3">
-                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary-600" />
-                <span className="text-gray-700">{b}</span>
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-aqua" aria-hidden="true" />
+                <span className="text-ink-1">{b}</span>
               </li>
             ))}
           </ul>
 
-          <p className="mt-6 text-sm leading-6 text-gray-600">
+          <p className="mt-6 text-sm leading-6 text-ink-2">
             These aren&apos;t just operational annoyances — they translate directly into:
           </p>
 
           <ul className="mt-4 space-y-2 text-sm leading-6">
             {s.hiddenCostOutcomes.map((o) => (
               <li key={o} className="flex gap-3">
-                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-amber-500" />
-                <span className="text-gray-700">{o}</span>
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-signal-warning" aria-hidden="true" />
+                <span className="text-ink-1">{o}</span>
               </li>
             ))}
           </ul>
         </section>
 
         <section className="mt-16">
-          <h2 className="text-2xl font-semibold tracking-tight text-primary-900">
+          <h2 className="font-display text-dh2 tracking-tight text-ink-0">
             What AI Workflow Automation Looks Like in {s.label}
           </h2>
-          <p className="mt-4 text-sm leading-6 text-gray-600">
+          <p className="mt-4 text-sm leading-6 text-ink-2">
             This isn&apos;t about replacing people — it&apos;s about removing low-value work.
             Examples of automation Novique deploys for {s.label.toLowerCase()} teams:
           </p>
 
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {s.automationCards.map((c) => (
-              <div
-                key={c.title}
-                className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
-              >
-                <h3 className="text-sm font-semibold text-primary-900">{c.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-gray-600">{c.body}</p>
+              <div key={c.title} className="nv-card p-5">
+                <h3 className="font-display text-dh3 text-ink-0">{c.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-ink-2">{c.body}</p>
               </div>
             ))}
           </div>
 
-          <p className="mt-6 text-sm font-medium text-primary-700">
+          <p className="mt-6 text-sm font-medium text-aqua">
             The result is fewer handoffs, fewer errors, and significantly more billable or
             advisory time.
           </p>
         </section>
 
         <section className="mt-16">
-          <h2 className="text-2xl font-semibold tracking-tight text-primary-900">
+          <h2 className="font-display text-dh2 tracking-tight text-ink-0">
             Real ROI Examples for {s.label} Teams
           </h2>
-          <p className="mt-4 text-sm leading-6 text-gray-600">
+          <p className="mt-4 text-sm leading-6 text-ink-2">
             Based on real-world deployments, {s.label.toLowerCase()} firms typically see:
           </p>
 
-          <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="mt-6 nv-card p-6">
             <ul className="space-y-3 text-sm leading-6">
               {s.roiBullets.map((b) => (
                 <li key={b} className="flex gap-3">
-                  <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-primary-300 text-primary-600">
+                  <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-stroke-accent text-aqua">
                     ✓
                   </span>
-                  <span className="text-gray-700">{b}</span>
+                  <span className="text-ink-1">{b}</span>
                 </li>
               ))}
             </ul>
 
-            <p className="mt-6 text-center text-sm font-semibold text-primary-700">
+            <p className="mt-6 text-center text-sm font-semibold text-aqua">
               {s.payoffLine}
             </p>
           </div>
         </section>
 
         <section className="mt-16">
-          <h2 className="text-2xl font-semibold tracking-tight text-primary-900">
+          <h2 className="font-display text-dh2 tracking-tight text-ink-0">
             Common {s.label} Workflows We Automate
           </h2>
-          <p className="mt-4 text-sm leading-6 text-gray-600">
+          <p className="mt-4 text-sm leading-6 text-ink-2">
             These workflows are typically high-volume, repetitive, and time-sensitive — making
             them ideal candidates for ROI-positive automation.
             {s.workflowsIntro && <> {s.workflowsIntro}</>}
@@ -472,18 +468,18 @@ export default async function SegmentROILandingPage({ params }: PageProps) {
           <ul className="mt-6 grid gap-2 text-sm leading-6 md:grid-cols-2">
             {s.workflows.map((w) => (
               <li key={w} className="flex gap-3">
-                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary-600" />
-                <span className="text-gray-700">{w}</span>
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-aqua" aria-hidden="true" />
+                <span className="text-ink-1">{w}</span>
               </li>
             ))}
           </ul>
         </section>
 
         <section className="mt-16">
-          <h2 className="text-2xl font-semibold tracking-tight text-primary-900">
+          <h2 className="font-display text-dh2 tracking-tight text-ink-0">
             Explore Automation ROI in Other Industries
           </h2>
-          <p className="mt-4 text-sm leading-6 text-gray-600">
+          <p className="mt-4 text-sm leading-6 text-ink-2">
             If you&apos;re evaluating automation across multiple parts of your business, it can
             help to compare ROI across industries:
           </p>
@@ -493,16 +489,17 @@ export default async function SegmentROILandingPage({ params }: PageProps) {
               <Link
                 key={l.href}
                 href={l.href}
-                className="group flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm transition-all hover:border-primary-300 hover:shadow-md"
+                className="group flex items-center justify-between rounded-xl border border-stroke-1 bg-surface-2 px-5 py-4 transition-all hover:border-stroke-accent hover:bg-surface-3"
               >
-                <span className="text-sm font-medium text-primary-900 group-hover:text-primary-700">
+                <span className="text-sm font-medium text-ink-1 group-hover:text-ink-0">
                   {l.label}
                 </span>
                 <svg
-                  className="h-5 w-5 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-primary-600"
+                  className="h-5 w-5 text-ink-3 transition-transform group-hover:translate-x-1 group-hover:text-aqua"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -517,34 +514,37 @@ export default async function SegmentROILandingPage({ params }: PageProps) {
         </section>
 
         <section className="mt-16">
-          <h2 className="text-2xl font-semibold tracking-tight text-primary-900">
+          <h2 className="font-display text-dh2 tracking-tight text-ink-0">
             Calculate Your ROI
           </h2>
-          <p className="mt-4 text-sm leading-6 text-gray-600">
+          <p className="mt-4 text-sm leading-6 text-ink-2">
             Now let&apos;s make this specific to your firm. Use the calculator below to estimate
             time saved, annual labor cost reduction, and net ROI based on your team size and
             workload.
           </p>
 
-          <div className="mt-8 rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
-            <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-gray-200" />}>
+          <div className="mt-8 rounded-2xl border border-stroke-1 bg-surface-1 p-6">
+            <Suspense
+              fallback={
+                <div className="h-96 animate-pulse rounded-xl border border-stroke-1 bg-surface-2" />
+              }
+            >
               <ROICalculatorForm />
             </Suspense>
           </div>
         </section>
 
         <section className="mt-16 text-center">
-          <h2 className="text-2xl font-semibold tracking-tight text-primary-900">
+          <h2 className="font-display text-dh2 tracking-tight text-ink-0">
             Ready to See the Numbers?
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-gray-600">
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-ink-2">
             If you&apos;re wondering whether automation makes sense for your team, don&apos;t
             guess. Run the ROI calculator above and see what AI-driven workflow automation could
             return to your business this year.
           </p>
         </section>
-      </main>
-      <Footer />
-    </>
+      </div>
+    </ThemeShell>
   );
 }

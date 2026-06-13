@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
 import { getAllLabs } from '@/lib/labs'
 import LabCard from '@/components/labs/LabCard'
-import Link from 'next/link'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import ThemeShell from '@/components/marketing/ThemeShell'
+import PageHero from '@/components/marketing/PageHero'
+import SectionHeading from '@/components/marketing/SectionHeading'
+import DarkButton from '@/components/marketing/DarkButton'
 
 export const metadata: Metadata = {
   title: 'Labs | Novique.AI',
@@ -12,78 +13,72 @@ export const metadata: Metadata = {
 
 export const revalidate = 60 // Revalidate every minute
 
+const STACK = ['Terraform', 'AWS', 'Docker', 'Infrastructure as Code']
+
 export default async function LabsPage() {
   const labs = await getAllLabs()
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen">
-        {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/50 to-transparent" />
+    <ThemeShell>
+      <PageHero
+        eyebrow="Infrastructure Labs"
+        headline={
+          <>
+            Learn by
+            <br />
+            <span className="text-ink-2">building.</span>
+          </>
+        }
+        subhead="Explore hands-on infrastructure labs with animated workflow diagrams. Each lab walks you through real-world cloud deployments using Terraform, AWS, Docker, and more."
+        ctas={[{ label: 'Book a consultation', href: '/contact', variant: 'primary' }]}
+      />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-block px-4 py-1.5 bg-purple-500/20 text-purple-200 rounded-full text-sm font-medium mb-6">
-            Infrastructure Labs
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent">
-            Learn by Building
-          </h1>
-          <p className="text-xl text-purple-100 max-w-3xl mx-auto mb-8">
-            Explore hands-on infrastructure labs with animated workflow diagrams.
-            Each lab walks you through real-world cloud deployments using Terraform, AWS, Docker, and more.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-3">
-            <span className="px-4 py-2 bg-white/10 backdrop-blur rounded-full text-sm">
-              Terraform
+      {/* Stack pills */}
+      <section className="mx-auto max-w-container px-6">
+        <div className="flex flex-wrap justify-center gap-3">
+          {STACK.map((s) => (
+            <span
+              key={s}
+              className="rounded-full border border-stroke-1 bg-surface-2 px-4 py-1.5 font-mono text-xs text-ink-2"
+            >
+              {s}
             </span>
-            <span className="px-4 py-2 bg-white/10 backdrop-blur rounded-full text-sm">
-              AWS
-            </span>
-            <span className="px-4 py-2 bg-white/10 backdrop-blur rounded-full text-sm">
-              Docker
-            </span>
-            <span className="px-4 py-2 bg-white/10 backdrop-blur rounded-full text-sm">
-              Infrastructure as Code
-            </span>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* Labs Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <p className="text-lg text-gray-600 mb-10">
+      <section className="mx-auto max-w-container px-6 py-16 md:py-24">
+        <p className="max-w-reading text-body-lg text-ink-2">
           Here are some exploration/testing labs we built in GitHub while designing solutions for our customers.
           You can learn about these labs below, and there are links to GitHub if you want to try building them yourself.
         </p>
 
         {labs.length > 0 ? (
-          <>
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">
+          <div className="mt-12">
+            <div className="mb-8 flex items-center justify-between">
+              <h2 className="font-display text-dh2 text-ink-0">
                 Available Labs
-                <span className="ml-2 text-base font-normal text-gray-500">
+                <span className="ml-2 font-mono text-base font-normal text-ink-3">
                   ({labs.length} {labs.length === 1 ? 'lab' : 'labs'})
                 </span>
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {labs.map((lab) => (
                 <LabCard key={lab.slug} lab={lab} />
               ))}
             </div>
-          </>
+          </div>
         ) : (
-          <div className="text-center py-16">
+          <div className="py-16 text-center">
             <svg
-              className="mx-auto h-24 w-24 text-gray-300"
+              className="mx-auto h-24 w-24 text-ink-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -92,8 +87,8 @@ export default async function LabsPage() {
                 d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
               />
             </svg>
-            <h3 className="mt-4 text-xl font-semibold text-gray-900">No Labs Yet</h3>
-            <p className="mt-2 text-gray-600 max-w-md mx-auto">
+            <h3 className="mt-4 font-display text-dh3 text-ink-0">No Labs Yet</h3>
+            <p className="mx-auto mt-2 max-w-md text-ink-2">
               Infrastructure labs are coming soon. Check back later for hands-on tutorials
               with animated workflow diagrams.
             </p>
@@ -102,25 +97,20 @@ export default async function LabsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-            Need Help with Your Infrastructure?
+      <section className="relative overflow-hidden border-t border-stroke-1 bg-surface-1">
+        <div className="relative mx-auto max-w-container px-6 py-20 text-center md:py-24">
+          <h2 className="mx-auto max-w-2xl font-display text-dh1 text-ink-0">
+            Need help with your infrastructure?
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="mx-auto mt-4 max-w-2xl text-body-lg text-ink-2">
             Our team can help you implement these patterns in your organization,
             customize solutions for your needs, or train your team on infrastructure as code.
           </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center px-8 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            Book a Consultation
-          </Link>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <DarkButton href="/contact" size="lg">Book a Consultation</DarkButton>
+          </div>
         </div>
       </section>
-      </main>
-      <Footer />
-    </>
+    </ThemeShell>
   )
 }

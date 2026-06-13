@@ -24,16 +24,16 @@ export default function StepIndicator({ currentStep, onStepClick }: StepIndicato
             className={`
               flex items-center justify-center w-10 h-10 rounded-full font-semibold text-sm transition-all
               ${currentStep === step.num
-                ? 'bg-primary-600 text-white shadow-lg'
+                ? 'bg-aqua text-[#04110d] shadow-glow'
                 : currentStep > step.num
-                  ? 'bg-secondary-500 text-white'
-                  : 'bg-gray-200 text-gray-500'
+                  ? 'bg-surface-3 text-aqua border border-stroke-accent'
+                  : 'bg-surface-3 text-ink-3 border border-stroke-1'
               }
               ${onStepClick ? 'cursor-pointer hover:opacity-80' : 'cursor-default'}
             `}
           >
             {currentStep > step.num ? (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             ) : (
@@ -42,14 +42,14 @@ export default function StepIndicator({ currentStep, onStepClick }: StepIndicato
           </button>
           <span className={`
             ml-2 text-sm font-medium hidden sm:block
-            ${currentStep === step.num ? 'text-primary-900' : 'text-gray-500'}
+            ${currentStep === step.num ? 'text-ink-0' : 'text-ink-3'}
           `}>
             {step.label}
           </span>
           {index < steps.length - 1 && (
             <div className={`
               w-12 sm:w-20 h-1 mx-2 sm:mx-4 rounded
-              ${currentStep > step.num ? 'bg-secondary-500' : 'bg-gray-200'}
+              ${currentStep > step.num ? 'bg-aqua' : 'bg-stroke-1'}
             `} />
           )}
         </div>

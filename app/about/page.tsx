@@ -1,266 +1,248 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Section from "@/components/Section";
-import Button from "@/components/Button";
-import Image from "next/image";
+import ThemeShell from "@/components/marketing/ThemeShell";
+import PageHero from "@/components/marketing/PageHero";
+import SectionHeading from "@/components/marketing/SectionHeading";
+import StatusTag from "@/components/marketing/StatusTag";
+import DarkButton from "@/components/marketing/DarkButton";
+import IsoFigure from "@/components/graphics/IsoFigure";
+import { PRODUCTS, SYSTEMS, statusMeta } from "@/lib/work/products";
 import { Metadata } from "next";
 
-export const dynamic = 'force-dynamic'
-
 export const metadata: Metadata = {
-  title: "About Novique.ai | AI Experts for Small Business",
-  description: "Learn about Novique.ai's mission to make AI accessible and profitable for small businesses. No jargon, just practical solutions.",
+  title: "About Novique — builds and operates its own AI products",
+  description:
+    "Novique is a small AI studio that builds and runs its own software products, and builds the same kind of software for small and mid-sized businesses. No jargon, no enterprise budget required.",
 };
 
+// What separates us from a typical AI consultancy — honest, side-by-side.
+const DIFFERENCE = [
+  {
+    them: "Decks, jargon, and a roadmap you maintain alone.",
+    us: "Working software, plain English, and an operating plan.",
+  },
+  {
+    them: "Enterprise-only pricing and six-month projects.",
+    us: "A small first step, fixed price, fixed timeline.",
+  },
+  {
+    them: "Hand it over and walk away.",
+    us: "We can keep it running and watching for you.",
+  },
+];
+
 export default function AboutPage() {
-  const values = [
-    {
-      title: "Simplicity First",
-      description: "We translate complex AI into simple, actionable solutions. You don't need a tech degree to work with us.",
-      icon: "🎯",
-    },
-    {
-      title: "Results-Driven",
-      description: "We measure success by your ROI, not by buzzwords. Every solution is designed to deliver tangible business value.",
-      icon: "📈",
-    },
-    {
-      title: "Turn-Key Service",
-      description: "From consultation to deployment to maintenance, we handle everything. You focus on running your business.",
-      icon: "🔑",
-    },
-    {
-      title: "Small Business Focus",
-      description: "We specialize in small businesses because we believe you deserve the same advantages as enterprise companies.",
-      icon: "💼",
-    },
-  ];
-
-  const team = [
-    {
-      name: "Mark Howell",
-      role: "Founder & CTO",
-      bio: "Former IBM tech leader bringing enterprise AI solutions to small businesses.",
-      image: "/images/Team/CTO.png",
-    },
-    {
-      name: "Michael Chen",
-      role: "Lead AI Engineer",
-      bio: "15+ years building machine learning systems that actually work in the real world.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
-    },
-    {
-      name: "Elena Rodriguez",
-      role: "Customer Success Lead",
-      bio: "Dedicated to ensuring every client sees measurable results and ROI.",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80",
-    },
-  ];
-
   return (
-    <>
-      <Header />
-      <main>
-        {/* Hero Section */}
-        <Section background="gradient" className="pt-32">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-900 mb-6">
-              AI for Small Business Success
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-700 mb-8">
-              We&apos;re passionate AI experts dedicated to making cutting-edge tech
-              simple and profitable for small businesses.
-            </p>
-          </div>
-        </Section>
+    <ThemeShell>
+      <PageHero
+        eyebrow="About Novique"
+        headline={
+          <>
+            We build AI products —
+            <br />
+            <span className="text-ink-2">and build them for you.</span>
+          </>
+        }
+        subhead="Novique is a small studio that designs, ships, and operates its own AI software. We do the same work for small and mid-sized businesses, with a team that has already felt every production edge."
+        intensity="hero"
+        ctas={[
+          { label: "Book a free call", href: "/consultation", variant: "primary" },
+          { label: "See our work", href: "/work", variant: "ghost" },
+        ]}
+      />
 
-        {/* Founder Note Section */}
-        <Section background="white" className="pt-8">
-          <div className="max-w-4xl mx-auto">
-            {/* CTO Image */}
-            <div className="flex justify-center mb-8">
-              <div className="relative w-48 h-48 rounded-full overflow-hidden shadow-xl">
-                <Image
-                  src="/images/Team/CTO.png"
-                  alt="Mark Howell - Founder and CTO"
-                  fill
-                  className="object-cover object-top"
-                />
-              </div>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-primary-900 mb-8 text-center">
-              A note from our founder Mark Howell
-            </h2>
-            <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
-              <p>
-                Welcome to Novique.AI, where cutting-edge AI meets the everyday hustle of small and medium-sized businesses! I&apos;m Mark Howell, your Chief Technology Officer and the guy who&apos;s basically traded in my corporate suit for a superhero cape (okay, it&apos;s more like a comfy hoodie, but you get the idea).
-              </p>
-              <p>
-                After spending the last 10 years at IBM, diving deep into complex tech challenges for Fortune 500 giants, I hit what I like to call my &quot;inflection point&quot;—you know, that moment when you realize your work is solving big problems for big companies, but maybe not making the dent in the world you dreamed of. Picture this: me, pacing my office, pondering life&apos;s mysteries over a lukewarm coffee. That&apos;s when I started chatting with some trusted friends and industry leaders who nodded vigorously and said, &quot;Mark, why not flip the script?&quot;
-              </p>
-              <p>
-                And flip it I did! I envisioned a world where powerhouse AI solutions aren&apos;t just for the NASDAQ elite with seven-figure IT budgets. Nope—modern AI can be engineered to be both ridiculously cost-effective and downright game-changing for the rest of us: the mom-and-pop shops, the local innovators, and the ambitious startups ready to level up. That&apos;s the spark that ignited Novique.AI. We&apos;re here to democratize AI, turning &quot;what if&quot; ideas into &quot;wow, that works!&quot; realities for businesses like yours.
-              </p>
-              <p>
-                Whether you&apos;re looking to streamline operations, supercharge customer insights, or just outsmart your competition without breaking the bank, we&apos;ve got your back. Let&apos;s chat about how we can tailor AI magic to your unique needs—because every business deserves a shot at the big leagues!
-              </p>
-            </div>
-          </div>
-        </Section>
-
-        {/* Mission Section */}
-        <Section background="gray">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-primary-900 mb-6">
-                Our Mission
-              </h2>
-              <p className="text-lg text-gray-700 mb-4 leading-relaxed">
-                Big companies have been using AI to gain unfair advantages for years.
-                Meanwhile, small businesses – the backbone of our economy – have been
-                locked out by complexity, cost, and corporate jargon.
-              </p>
-              <p className="text-lg text-gray-700 mb-4 leading-relaxed">
-                We started Novique to level the playing field. Every small business
-                owner deserves access to the same powerful tools that Fortune 500
-                companies use, without needing a tech team or enterprise budget.
-              </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                <span className="font-semibold text-primary-600">No corporate jargon.</span>{" "}
-                <span className="font-semibold text-primary-600">No hidden costs.</span>{" "}
-                Just practical, turn-key AI solutions that deliver real results.
-              </p>
-            </div>
-
-            <div className="relative h-96 rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80"
-                alt="Team collaboration"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-        </Section>
-
-        {/* Values Section */}
-        <Section background="gray">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary-900 mb-4">
-              Our Values
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              These principles guide everything we do at Novique.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <div
-                key={index}
-                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow text-center"
-              >
-                <div className="text-5xl mb-4">{value.icon}</div>
-                <h3 className="text-xl font-bold text-primary-900 mb-3">
-                  {value.title}
-                </h3>
-                <p className="text-gray-700">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        {/* Team Section */}
-        <Section background="white">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary-900 mb-4">
-              Meet the Team
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              AI experts who speak human, not tech-speak.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <div
-                key={index}
-                className="bg-gradient-to-b from-primary-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
-              >
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover object-top"
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-primary-900 text-center mb-2">
-                  {member.name}
-                </h3>
-                <p className="text-primary-600 text-center font-semibold mb-3">
-                  {member.role}
+      {/* Parent-brand framing — two lines of business under one roof */}
+      <section className="mx-auto max-w-container px-6 py-16 md:py-24">
+        <div className="grid gap-10 md:grid-cols-[1fr_360px] md:items-center">
+          <div>
+            <SectionHeading
+              eyebrow="What Novique is"
+              title="One studio, two lines of business."
+              subhead="We split our time roughly 50/50: building and operating our own AI products, and building the same kind of software for clients. Each side sharpens the other — the products keep us honest about production, and client work keeps us close to real problems."
+            />
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              <div className="nv-card p-6">
+                <h3 className="font-display text-dh3 text-ink-0">Our own products</h3>
+                <p className="mt-2 text-sm text-ink-2">
+                  Software we build, ship, and run ourselves — with real customers, real billing, and real uptime to defend.
                 </p>
-                <p className="text-gray-700 text-center">{member.bio}</p>
               </div>
-            ))}
-          </div>
-        </Section>
-
-        {/* How We're Different */}
-        <Section background="gradient">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary-900 mb-8 text-center">
-              How We&apos;re Different
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <h3 className="text-lg font-bold text-red-600 mb-2">❌ Traditional AI Consultants</h3>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• Confusing technical jargon</li>
-                  <li>• Enterprise-only pricing</li>
-                  <li>• Long implementation timelines</li>
-                  <li>• Leave you to maintain it yourself</li>
-                </ul>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl shadow-md border-2 border-primary-500">
-                <h3 className="text-lg font-bold text-green-600 mb-2">✓ Novique Approach</h3>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• Plain English explanations</li>
-                  <li>• Small business-friendly pricing</li>
-                  <li>• Fast, turn-key deployment</li>
-                  <li>• Ongoing support and maintenance</li>
-                </ul>
+              <div className="nv-card p-6">
+                <h3 className="font-display text-dh3 text-ink-0">Built for clients</h3>
+                <p className="mt-2 text-sm text-ink-2">
+                  Custom AI and automation for small and mid-sized businesses — scoped small, shipped to production, kept running.
+                </p>
               </div>
             </div>
           </div>
-        </Section>
+          <div className="group relative h-72">
+            <IsoFigure variant="lattice" />
+            <span className="absolute left-0 top-0 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-ink-3">
+              FIG 01
+            </span>
+          </div>
+        </div>
+      </section>
 
-        {/* CTA Section */}
-        <Section background="white">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary-900 mb-6">
-              Ready to Transform Your Business?
-            </h2>
-            <p className="text-xl text-gray-700 mb-8">
-              Let&apos;s talk about how AI can solve your specific challenges.
-              First consultation is always free, no strings attached.
+      {/* Mission — the why, in builder voice */}
+      <section className="mx-auto max-w-container px-6 pb-4">
+        <div className="nv-card rounded-2xl p-8 md:p-12">
+          <SectionHeading
+            eyebrow="Why we exist"
+            title="Level the playing field."
+            size="dh2"
+          />
+          <div className="mt-6 max-w-reading space-y-5 text-body-lg text-ink-1">
+            <p>
+              Large companies have used AI to gain an advantage for years. Small and mid-sized businesses — the
+              backbone of the economy — have mostly been locked out by complexity, cost, and corporate jargon.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/consultation" size="lg">
-                Book Your Free Consultation
-              </Button>
-              <Button href="/solutions" variant="outline" size="lg">
-                Explore Solutions
-              </Button>
+            <p>
+              We started Novique to close that gap. The same powerful tools the Fortune 500 uses can be engineered to
+              be cost-effective and genuinely useful for the rest of us — without a dedicated tech team or an
+              enterprise budget.
+            </p>
+            <p className="text-ink-2">
+              No corporate jargon. No hidden costs. Practical, working software that delivers real results.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Operating model (replaces fictional team) */}
+      <section className="mx-auto max-w-container px-6 py-16 md:py-24">
+        <SectionHeading
+          eyebrow="How we operate"
+          title="A small team, built to ship and run."
+          subhead="Novique was founded by Mark Howell after roughly a decade at IBM solving large-scale technical problems for enterprises. The bet: that same capability, re-engineered for the businesses that never had access to it."
+        />
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              k: "Founder-led, hands-on",
+              v: "The person who scopes your work is the person who builds it. No layers, no handoff to a junior team you never met.",
+            },
+            {
+              k: "We run what we build",
+              v: "Operating our own products means we account for the boring, critical parts — billing, alerts, uptime — not just the demo.",
+            },
+            {
+              k: "A product factory, not a one-off",
+              v: "An internal toolchain takes an idea to a deployed, operated product. It's how a small team ships like a larger one.",
+            },
+          ].map((c) => (
+            <div key={c.k} className="nv-card p-6">
+              <h3 className="font-display text-dh3 text-ink-0">{c.k}</h3>
+              <p className="mt-2 text-sm text-ink-2">{c.v}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Proof — our live products */}
+      <section className="mx-auto max-w-container px-6 pb-4">
+        <SectionHeading
+          eyebrow="Proof, not promises"
+          title="We ship the real thing."
+          subhead="These are our own products — the same kind of software we build for clients. The honest status of each is below."
+        />
+        <div className="mt-8 space-y-3">
+          {PRODUCTS.map((p) => {
+            const meta = statusMeta(p.status);
+            return (
+              <div
+                key={p.slug}
+                className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-stroke-1 bg-surface-2 px-5 py-4"
+              >
+                <span className="font-display text-dh3 text-ink-0">{p.name}</span>
+                <StatusTag label={meta.label} tone={meta.tone} />
+                <span className="font-mono text-xs uppercase tracking-[0.14em] text-ink-3">{p.line}</span>
+                <span className="w-full text-sm text-ink-2 sm:w-auto sm:flex-1">{p.blurb}</span>
+                {p.url && (
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-link hover:text-link-hover"
+                  >
+                    {p.url.replace(/^https?:\/\//, "")} ↗
+                  </a>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* What we can run for you */}
+      <section className="mx-auto max-w-container px-6 py-16 md:py-24">
+        <SectionHeading
+          eyebrow="What we can run for you"
+          title="The same systems, pointed at your business."
+          subhead="These are operational competencies we use every day on our own products — and can stand up for you."
+        />
+        <div className="mt-10 grid gap-x-10 gap-y-8 md:grid-cols-2">
+          {SYSTEMS.map((s, i) => (
+            <div key={s.title} className="flex gap-4 border-t border-stroke-1 pt-6">
+              <span className="font-mono text-xs text-aqua">0{i + 1}</span>
+              <div>
+                <h3 className="font-display text-dh3 text-ink-0">{s.title}</h3>
+                <p className="mt-1.5 text-sm text-ink-2">{s.detail}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* How we're different */}
+      <section className="mx-auto max-w-container px-6 pb-4">
+        <SectionHeading
+          eyebrow="How we're different"
+          title="A typical AI consultant vs. Novique."
+          align="center"
+          className="mx-auto text-center"
+        />
+        <div className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-2xl border border-stroke-1">
+          <div className="grid grid-cols-2 border-b border-stroke-1 bg-surface-1">
+            <div className="px-5 py-4 font-mono text-xs uppercase tracking-[0.16em] text-ink-3">
+              Typical consultant
+            </div>
+            <div className="border-l border-stroke-1 px-5 py-4 font-mono text-xs uppercase tracking-[0.16em] text-aqua">
+              Novique
             </div>
           </div>
-        </Section>
-      </main>
-      <Footer />
-    </>
+          {DIFFERENCE.map((row) => (
+            <div key={row.us} className="grid grid-cols-2 border-b border-stroke-1 last:border-b-0">
+              <div className="px-5 py-4 text-sm text-ink-2">{row.them}</div>
+              <div className="flex gap-2 border-l border-stroke-1 bg-surface-2 px-5 py-4 text-sm text-ink-1">
+                <span className="text-aqua" aria-hidden="true">
+                  ✓
+                </span>
+                {row.us}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="relative mt-16 overflow-hidden border-y border-stroke-1 bg-surface-1 md:mt-24">
+        <div className="relative mx-auto max-w-container px-6 py-20 text-center md:py-24">
+          <h2 className="mx-auto max-w-2xl font-display text-dh1 text-ink-0">
+            Tell us the task you wish would just handle itself.
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-body-lg text-ink-2">
+            The first call is free. We&apos;ll tell you straight whether AI is the right tool — and if it is, what the
+            smallest version that proves value looks like.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <DarkButton href="/consultation" size="lg">
+              Book a free call
+            </DarkButton>
+            <DarkButton href="/services" variant="ghost" size="lg">
+              See what we can do
+            </DarkButton>
+          </div>
+        </div>
+      </section>
+    </ThemeShell>
   );
 }

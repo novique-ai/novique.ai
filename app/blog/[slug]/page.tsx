@@ -1,9 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Button from "@/components/Button";
+import ThemeShell from "@/components/marketing/ThemeShell";
+import DarkButton from "@/components/marketing/DarkButton";
 import { getPostBySlug } from "@/lib/blog";
 import { Metadata } from "next";
 
@@ -40,34 +39,33 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   }
 
   return (
-    <>
-      <Header />
-      <main>
-        {/* Header with background image */}
-        <section className="relative bg-gradient-to-br from-primary-900 to-primary-700 py-20">
+    <ThemeShell>
+      <article>
+        {/* Post header */}
+        <header className="relative isolate overflow-hidden border-b border-stroke-1">
           {post.headerImage && (
-            <div className="absolute inset-0">
+            <div className="absolute inset-0" aria-hidden="true">
               <Image
                 src={post.headerImage}
-                alt={post.title}
+                alt=""
                 fill
-                className="object-contain object-center opacity-30"
+                className="object-contain object-center opacity-20"
                 priority
               />
+              <div className="absolute inset-0 bg-gradient-to-b from-surface-0/40 via-surface-0/70 to-surface-0" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-cyan-100 opacity-20" />
-
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative mx-auto max-w-reading px-6 pb-12 pt-24 md:pt-28">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-6 transition-colors"
+              className="mb-8 inline-flex items-center gap-2 text-sm text-link transition-colors hover:text-link-hover"
             >
               <svg
-                className="w-4 h-4"
+                className="h-4 w-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -79,17 +77,18 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               Back to Blog
             </Link>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+            <h1 className="font-display text-display text-ink-0 text-balance">
               {post.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-white/90">
+            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-sm text-ink-2">
               <div className="flex items-center gap-2">
                 <svg
-                  className="w-5 h-5"
+                  className="h-4 w-4 text-ink-3"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -107,14 +106,15 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 </time>
               </div>
 
-              <span className="text-white/50">•</span>
+              <span className="text-ink-3" aria-hidden="true">•</span>
 
               <div className="flex items-center gap-2">
                 <svg
-                  className="w-5 h-5"
+                  className="h-4 w-4 text-ink-3"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -127,68 +127,70 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 mt-6">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-sm bg-white/20 text-white px-3 py-1 rounded-full backdrop-blur-sm"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {post.tags.length > 0 && (
+              <div className="mt-6 flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded border border-stroke-1 bg-surface-3 px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-ink-2"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
-        </section>
+        </header>
 
-        {/* Article Content */}
-        <article className="py-12 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div
-              className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:mb-6 prose-a:text-primary-600 prose-strong:text-gray-900 prose-ul:text-gray-700"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
+        {/* Article body */}
+        <div className="mx-auto max-w-reading px-6 py-12 md:py-16">
+          <div
+            className="prose prose-invert max-w-none prose-a:text-link prose-headings:font-display"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
 
-            {/* CTA at bottom of article */}
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <div className="bg-gradient-to-br from-primary-50 to-cyan-50 rounded-lg p-8 text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Ready to Transform Your Business with AI?
-                </h3>
-                <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-                  Book a free consultation to discuss how Novique can help automate and optimize your business processes.
-                </p>
-                <Button href="/consultation" size="lg">
+          {/* CTA at bottom of article */}
+          <div className="mt-12 border-t border-stroke-1 pt-10">
+            <div className="nv-card rounded-2xl p-8 text-center">
+              <h2 className="font-display text-dh2 text-ink-0">
+                Ready to put AI to work in your business?
+              </h2>
+              <p className="mx-auto mt-3 max-w-2xl text-body-lg text-ink-2">
+                Book a free consultation to discuss how Novique can help automate and optimize your business processes.
+              </p>
+              <div className="mt-7">
+                <DarkButton href="/consultation" size="lg">
                   Book Free Consultation
-                </Button>
+                </DarkButton>
               </div>
             </div>
-
-            {/* Back to blog */}
-            <div className="mt-8 text-center">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                View All Articles
-              </Link>
-            </div>
           </div>
-        </article>
-      </main>
-      <Footer />
-    </>
+
+          {/* Back to blog */}
+          <div className="mt-10 text-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-sm text-link transition-colors hover:text-link-hover"
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              View All Articles
+            </Link>
+          </div>
+        </div>
+      </article>
+    </ThemeShell>
   );
 }

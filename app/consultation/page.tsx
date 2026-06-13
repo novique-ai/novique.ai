@@ -1,218 +1,176 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Section from "@/components/Section";
+import ThemeShell from "@/components/marketing/ThemeShell";
+import PageHero from "@/components/marketing/PageHero";
+import SectionHeading from "@/components/marketing/SectionHeading";
+import GraphicFrame from "@/components/graphics/GraphicFrame";
+import IsoFigure from "@/components/graphics/IsoFigure";
+import ProcessFlowLine from "@/components/graphics/ProcessFlowLine";
 import ConsultationForm from "@/components/ConsultationForm";
 import { Metadata } from "next";
 
-export const dynamic = 'force-dynamic'
-
 export const metadata: Metadata = {
   title: "Book Free Consultation | Novique.ai",
-  description: "Schedule your free AI consultation with Novique.ai. We'll discuss your business challenges and propose tailored solutions. No cost, no pressure.",
+  description:
+    "Schedule your free AI consultation with Novique.ai. We'll discuss your business challenges and propose tailored solutions. No cost, no pressure.",
 };
+
+const EXPECT = [
+  {
+    variant: "radar" as const,
+    title: "We listen",
+    body: "Tell us about your business, your goals, and your current challenges.",
+  },
+  {
+    variant: "orbit" as const,
+    title: "We analyze",
+    body: "We find the friction points where AI can make the biggest difference.",
+  },
+  {
+    variant: "conduit" as const,
+    title: "We propose",
+    body: "You get tailored AI solutions designed specifically for your needs.",
+  },
+];
+
+const PROCESS = [
+  {
+    step: "Book your slot",
+    detail:
+      "Fill out the form below with your preferred date and time. We meet virtually or in person, whichever you prefer.",
+  },
+  {
+    step: "60-minute discovery session",
+    detail:
+      "We dig into how your business actually runs, understand your challenges, and find the spots where AI can help.",
+  },
+  {
+    step: "Custom proposal",
+    detail:
+      "Within 48 hours you get a detailed proposal: recommended solutions, timeline, and pricing. No obligation to proceed.",
+  },
+  {
+    step: "You decide",
+    detail:
+      "Take your time to review. If you're ready, we start building. If not, no hard feelings — we're here when you are.",
+  },
+];
+
+const FAQ = [
+  {
+    q: "Is the consultation really free?",
+    a: "Yes. No cost and no obligation. We'd rather show you the value before asking for any commitment.",
+  },
+  {
+    q: "How long is the consultation?",
+    a: "Typically 60 minutes — enough time to genuinely understand your business and give you recommendations worth acting on.",
+  },
+  {
+    q: "Do I need to prepare anything?",
+    a: "Just come ready to talk about your business. It helps to think about your biggest pain points and what you wish could be automated or improved.",
+  },
+  {
+    q: "What if I'm not ready to commit after the call?",
+    a: "That's completely fine. There's zero pressure — plenty of clients take weeks or months to decide. We're here when you're ready.",
+  },
+];
 
 export default function ConsultationPage() {
   return (
-    <>
-      <Header />
-      <main>
-        {/* Hero Section */}
-        <Section background="gradient" className="pt-32">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-900 mb-6">
-              Book Your Free Consultation
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-700">
-              Zero cost. Zero pressure. Just honest conversation about how AI can help your business thrive.
-            </p>
-          </div>
-        </Section>
+    <ThemeShell>
+      {/* Hero */}
+      <PageHero
+        eyebrow="Free consultation"
+        headline={
+          <>
+            Book your free call.
+            <br />
+            <span className="text-ink-2">No cost. No pressure.</span>
+          </>
+        }
+        subhead="An honest conversation about how AI can help your business — and a straight answer on whether it's even the right tool for the job."
+        ctas={[{ label: "Jump to the form", href: "#book", variant: "primary" }]}
+      />
 
-        {/* What to Expect Section */}
-        <Section background="white">
-          <div className="max-w-4xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold text-primary-900 mb-8 text-center">
-              What to Expect in Your Consultation
-            </h2>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">👂</span>
-                </div>
-                <h3 className="text-xl font-semibold text-primary-900 mb-2">
-                  We Listen
-                </h3>
-                <p className="text-gray-700">
-                  Tell us about your business, your goals, and your current challenges.
-                </p>
+      {/* What to expect */}
+      <section className="mx-auto max-w-container px-6 py-16 md:py-24">
+        <SectionHeading
+          eyebrow="What to expect"
+          title="What happens on the call"
+          subhead="One conversation, three things. No slide decks, no sales script."
+          align="center"
+          className="mx-auto text-center"
+        />
+        <div className="mt-14 grid gap-x-10 gap-y-14 md:grid-cols-3 md:divide-x md:divide-stroke-1">
+          {EXPECT.map((e, i) => (
+            <div key={e.title} className="group flex flex-col md:px-9 md:first:pl-0 md:last:pr-0">
+              <div className="relative mb-7 h-44">
+                <IsoFigure variant={e.variant} />
+                <span className="absolute left-0 top-0 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-ink-3">
+                  FIG 0{i + 1}
+                </span>
               </div>
-
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">🔍</span>
-                </div>
-                <h3 className="text-xl font-semibold text-primary-900 mb-2">
-                  We Analyze
-                </h3>
-                <p className="text-gray-700">
-                  Identify friction points where AI can make the biggest impact.
-                </p>
-              </div>
-
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">💡</span>
-                </div>
-                <h3 className="text-xl font-semibold text-primary-900 mb-2">
-                  We Propose
-                </h3>
-                <p className="text-gray-700">
-                  Present tailored AI solutions designed specifically for your needs.
-                </p>
-              </div>
+              <h3 className="font-display text-dh3 text-ink-0">{e.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-2">{e.body}</p>
             </div>
-          </div>
+          ))}
+        </div>
+      </section>
 
-          {/* Process Details */}
-          <div className="bg-gradient-to-br from-primary-50 to-white p-8 rounded-2xl max-w-3xl mx-auto">
-            <h3 className="text-2xl font-bold text-primary-900 mb-6">
-              The Process
-            </h3>
-            <div className="space-y-4">
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold">
-                  1
-                </div>
-                <div>
-                  <h4 className="font-semibold text-primary-900 mb-1">
-                    Book Your Slot
-                  </h4>
-                  <p className="text-gray-700">
-                    Fill out the form below with your preferred date and time.
-                    We&apos;ll meet virtually or in-person based on your preference.
-                  </p>
-                </div>
+      {/* The process */}
+      <section className="mx-auto max-w-container px-6 py-12 md:py-16">
+        <SectionHeading
+          eyebrow="The process"
+          title="From first call to working software"
+          subhead="A clear path, with a decision point that's always yours."
+        />
+        <GraphicFrame height={64} className="mt-8 max-w-3xl">
+          <ProcessFlowLine />
+        </GraphicFrame>
+        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {PROCESS.map((p, i) => (
+            <div key={p.step} className="nv-card p-6">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-xs text-aqua">0{i + 1}</span>
+                <h3 className="font-display text-dh3 text-ink-0">{p.step}</h3>
               </div>
-
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold">
-                  2
-                </div>
-                <div>
-                  <h4 className="font-semibold text-primary-900 mb-1">
-                    60-Minute Discovery Session
-                  </h4>
-                  <p className="text-gray-700">
-                    We&apos;ll dive deep into your business operations, understand your
-                    challenges, and explore opportunities where AI can help.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold">
-                  3
-                </div>
-                <div>
-                  <h4 className="font-semibold text-primary-900 mb-1">
-                    Custom Proposal
-                  </h4>
-                  <p className="text-gray-700">
-                    Within 48 hours, receive a detailed proposal outlining recommended
-                    AI solutions, timeline, and pricing. No obligation to proceed.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold">
-                  4
-                </div>
-                <div>
-                  <h4 className="font-semibold text-primary-900 mb-1">
-                    You Decide
-                  </h4>
-                  <p className="text-gray-700">
-                    Take your time to review. If you&apos;re ready to move forward,
-                    we&apos;ll begin implementation. If not, no hard feelings!
-                  </p>
-                </div>
-              </div>
+              <p className="mt-2 text-sm text-ink-2">{p.detail}</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Booking form */}
+      <section id="book" className="mx-auto max-w-container px-6 py-16 md:py-24">
+        <div className="mx-auto max-w-2xl">
+          <SectionHeading
+            eyebrow="Book a call"
+            title="Schedule your free consultation"
+            subhead="Fill out the form and we'll be in touch within 24 hours to confirm your time."
+            align="center"
+            className="mx-auto text-center"
+          />
+          <div className="nv-card mt-10 rounded-2xl p-6 md:p-8">
+            <ConsultationForm />
           </div>
-        </Section>
+        </div>
+      </section>
 
-        {/* Booking Form Section */}
-        <Section background="gray">
-          <div className="max-w-2xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-primary-900 mb-4">
-                Schedule Your Free Consultation
-              </h2>
-              <p className="text-lg text-gray-700">
-                Fill out the form below and we&apos;ll be in touch within 24 hours to
-                confirm your appointment.
-              </p>
+      {/* FAQ */}
+      <section className="mx-auto max-w-container px-6 pb-20 md:pb-28">
+        <SectionHeading
+          eyebrow="FAQ"
+          title="Questions, answered"
+          align="center"
+          className="mx-auto text-center"
+        />
+        <div className="mx-auto mt-10 max-w-3xl space-y-4">
+          {FAQ.map((item) => (
+            <div key={item.q} className="nv-card p-6">
+              <h3 className="font-display text-dh3 text-ink-0">{item.q}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-2">{item.a}</p>
             </div>
-
-            <div className="bg-white p-8 rounded-2xl shadow-lg">
-              <ConsultationForm />
-            </div>
-          </div>
-        </Section>
-
-        {/* FAQ Section */}
-        <Section background="white">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-primary-900 mb-8 text-center">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-4">
-              <div className="bg-primary-50 p-6 rounded-xl">
-                <h3 className="font-semibold text-primary-900 mb-2">
-                  Is the consultation really free?
-                </h3>
-                <p className="text-gray-700">
-                  Yes! Absolutely no cost and no obligation. We believe in demonstrating
-                  value before asking for commitment.
-                </p>
-              </div>
-
-              <div className="bg-primary-50 p-6 rounded-xl">
-                <h3 className="font-semibold text-primary-900 mb-2">
-                  How long is the consultation?
-                </h3>
-                <p className="text-gray-700">
-                  Typically 60 minutes. We want enough time to really understand your
-                  business and provide meaningful recommendations.
-                </p>
-              </div>
-
-              <div className="bg-primary-50 p-6 rounded-xl">
-                <h3 className="font-semibold text-primary-900 mb-2">
-                  Do I need to prepare anything?
-                </h3>
-                <p className="text-gray-700">
-                  Just come ready to talk about your business! It helps to think about
-                  your biggest pain points and what you wish could be automated or improved.
-                </p>
-              </div>
-
-              <div className="bg-primary-50 p-6 rounded-xl">
-                <h3 className="font-semibold text-primary-900 mb-2">
-                  What if I&apos;m not ready to commit after the consultation?
-                </h3>
-                <p className="text-gray-700">
-                  That&apos;s totally fine! There&apos;s zero pressure. Many clients
-                  take weeks or months to decide. We&apos;re here when you&apos;re ready.
-                </p>
-              </div>
-            </div>
-          </div>
-        </Section>
-      </main>
-      <Footer />
-    </>
+          ))}
+        </div>
+      </section>
+    </ThemeShell>
   );
 }

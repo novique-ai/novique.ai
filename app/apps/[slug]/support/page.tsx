@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SiteHeader from "@/components/marketing/SiteHeader";
+import SiteFooter from "@/components/marketing/SiteFooter";
 import AppDocHeader from "@/components/apps/AppDocHeader";
 import { getApp, getAllApps, appPath, appUrl } from "@/lib/apps/registry";
 
@@ -64,7 +64,7 @@ export default async function AppSupportPage({
 
   return (
     <>
-      <Header />
+      <SiteHeader solid />
       <main style={{ backgroundColor: b.bg }}>
         <div className="mx-auto max-w-3xl px-4 pb-20 pt-28 sm:px-6 lg:px-8">
           <div
@@ -139,7 +139,7 @@ export default async function AppSupportPage({
           </div>
         </div>
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

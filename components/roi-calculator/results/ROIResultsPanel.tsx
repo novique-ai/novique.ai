@@ -42,9 +42,9 @@ function PlaceholderMetricCard({ label, size = 'md' }: { label: string; size?: '
   };
 
   return (
-    <div className={`bg-gray-50 rounded-xl border border-gray-200 ${sizeClasses[size]}`}>
-      <p className="text-xs text-gray-500 mb-1">{label}</p>
-      <p className={`font-bold text-gray-300 ${valueClasses[size]}`}>—</p>
+    <div className={`bg-surface-2 rounded-xl border border-stroke-1 ${sizeClasses[size]}`}>
+      <p className="text-xs text-ink-3 mb-1">{label}</p>
+      <p className={`font-mono font-bold text-ink-3 ${valueClasses[size]}`}>—</p>
     </div>
   );
 }
@@ -52,12 +52,12 @@ function PlaceholderMetricCard({ label, size = 'md' }: { label: string; size?: '
 // Placeholder for the recommended plan card
 function PlaceholderPlanCard({ message }: { message: string }) {
   return (
-    <div className="rounded-xl border-2 border-gray-200 bg-gray-50 p-4">
+    <div className="rounded-xl border border-stroke-1 bg-surface-2 p-4">
       <div className="flex items-center gap-2 mb-2">
-        <span className="w-3 h-3 rounded-full bg-gray-300" />
-        <span className="text-sm font-bold text-gray-400">Recommended Plan</span>
+        <span className="w-3 h-3 rounded-full bg-ink-3" aria-hidden="true" />
+        <span className="text-sm font-bold text-ink-3">Recommended Plan</span>
       </div>
-      <p className="text-sm text-gray-500">{message}</p>
+      <p className="text-sm text-ink-2">{message}</p>
     </div>
   );
 }
@@ -78,20 +78,21 @@ function WhyThisPlan({ tierName, tagline }: { tierName: string; tagline: string 
       open={isOpen}
       onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}
     >
-      <summary className="text-sm font-medium text-primary-600 hover:text-primary-700 cursor-pointer list-none flex items-center gap-1">
+      <summary className="text-sm font-medium text-link hover:text-link-hover cursor-pointer list-none flex items-center gap-1">
         <svg
           className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-90' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
         Why this plan?
       </summary>
-      <div className="mt-2 text-xs text-gray-600 leading-relaxed">
+      <div className="mt-2 text-xs text-ink-2 leading-relaxed">
         <p className="mb-2">
-          <strong>{tierName}</strong>: &quot;{tagline}&quot;
+          <strong className="text-ink-1">{tierName}</strong>: &quot;{tagline}&quot;
         </p>
         <p>{explanations[tierName] || 'This plan is recommended based on your projected monthly business value.'}</p>
       </div>
@@ -197,19 +198,19 @@ export default function ROIResultsPanel({
     const plan = getPlanById(derivedPricing.finalTier);
 
     const planColorClasses = {
-      green: 'bg-green-50 border-green-200',
-      blue: 'bg-blue-50 border-blue-200',
-      purple: 'bg-purple-50 border-purple-200',
+      green: 'bg-surface-3 border-stroke-2',
+      blue: 'bg-surface-3 border-stroke-2',
+      purple: 'bg-surface-3 border-stroke-accent shadow-glow',
     };
     const planDotClasses = {
-      green: 'bg-green-500',
-      blue: 'bg-blue-500',
-      purple: 'bg-purple-500',
+      green: 'bg-signal-success',
+      blue: 'bg-link',
+      purple: 'bg-aqua',
     };
     const planTextClasses = {
-      green: 'text-green-700',
-      blue: 'text-blue-700',
-      purple: 'text-purple-700',
+      green: 'text-ink-0',
+      blue: 'text-ink-0',
+      purple: 'text-ink-0',
     };
 
     // Calculate ROI metrics
@@ -225,19 +226,19 @@ export default function ROIResultsPanel({
     return (
       <>
         {/* Plan Card */}
-        <div className={`rounded-xl border-2 p-4 ${planColorClasses[plan.color as keyof typeof planColorClasses]}`}>
+        <div className={`rounded-xl border p-4 ${planColorClasses[plan.color as keyof typeof planColorClasses]}`}>
           <div className="flex items-center gap-2 mb-2">
-            <span className={`w-3 h-3 rounded-full ${planDotClasses[plan.color as keyof typeof planDotClasses]}`} />
+            <span className={`w-3 h-3 rounded-full ${planDotClasses[plan.color as keyof typeof planDotClasses]}`} aria-hidden="true" />
             <span className={`text-sm font-bold ${planTextClasses[plan.color as keyof typeof planTextClasses]}`}>
               Selected Plan: {plan.name}
             </span>
           </div>
-          <p className="text-xs text-gray-500 italic mb-3">— {plan.tagline}</p>
+          <p className="text-xs text-ink-3 italic mb-3">— {plan.tagline}</p>
 
           {/* Below recommended tier notice */}
           {derivedPricing.isBelowRecommended && derivedPricing.customerSelectedTier && (
-            <div className="mb-3 p-2 bg-amber-100 border border-amber-200 rounded-lg">
-              <p className="text-xs text-amber-800">
+            <div className="mb-3 p-2 bg-surface-2 border border-stroke-accent rounded-lg">
+              <p className="text-xs text-ink-1">
                 You selected {getPlanById(derivedPricing.customerSelectedTier).name}, but based on your projected impact,
                 pricing shown reflects {plan.name}.
               </p>
@@ -246,19 +247,19 @@ export default function ROIResultsPanel({
 
           {/* Estimated Monthly Program Cost */}
           <div className="mb-3">
-            <p className="text-xs text-gray-500 mb-1">Estimated Monthly Program Cost</p>
+            <p className="text-xs text-ink-3 mb-1">Estimated Monthly Program Cost</p>
             <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-bold text-gray-900">
+              <span className="font-mono text-2xl font-bold text-ink-0">
                 ${derivedPricing.monthlyFee.toLocaleString()}
               </span>
-              <span className="text-sm text-gray-500">/month</span>
+              <span className="text-sm text-ink-3">/month</span>
             </div>
           </div>
 
           {/* Estimated One-Time Implementation Cost */}
           <div className="mb-3">
-            <p className="text-xs text-gray-500 mb-1">Estimated One-Time Implementation Cost</p>
-            <p className="text-lg font-semibold text-gray-800">
+            <p className="text-xs text-ink-3 mb-1">Estimated One-Time Implementation Cost</p>
+            <p className="font-mono text-lg font-semibold text-ink-1">
               ${derivedPricing.setupFee.toLocaleString()}
             </p>
           </div>
@@ -266,7 +267,7 @@ export default function ROIResultsPanel({
           <div className="flex items-center justify-between">
             <Link
               href="/roi/compare-plans"
-              className="text-sm font-medium text-primary-600 hover:text-primary-700 underline underline-offset-2"
+              className="text-sm font-medium text-link hover:text-link-hover underline underline-offset-2"
             >
               Compare Plans →
             </Link>
@@ -277,8 +278,8 @@ export default function ROIResultsPanel({
 
         {/* Warning if value doesn't exceed cost */}
         {!isValueExceedsCost && (
-          <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
-            <p className="text-sm text-amber-800">
+          <div className="p-3 bg-surface-3 border border-stroke-2 rounded-lg">
+            <p className="text-sm text-signal-warning">
               Based on these inputs, the estimated value may not yet exceed program cost.
               Try enabling more workflows or adjusting your estimates.
             </p>
@@ -297,9 +298,9 @@ export default function ROIResultsPanel({
               tooltip="ROI = (Monthly Value - Monthly Cost) ÷ Monthly Cost × 100"
             />
           ) : (
-            <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 text-center">
-              <p className="text-xs text-gray-500 mb-1">ROI</p>
-              <p className="text-xl font-bold text-gray-400">N/A</p>
+            <div className="p-4 bg-surface-2 rounded-xl border border-stroke-1 text-center">
+              <p className="text-xs text-ink-3 mb-1">ROI</p>
+              <p className="text-xl font-bold text-ink-3">N/A</p>
             </div>
           )}
           {derivedPaybackMonths !== null ? (
@@ -311,9 +312,9 @@ export default function ROIResultsPanel({
               size="md"
             />
           ) : (
-            <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 text-center">
-              <p className="text-xs text-gray-500 mb-1">Payback</p>
-              <p className="text-xl font-bold text-gray-400">N/A</p>
+            <div className="p-4 bg-surface-2 rounded-xl border border-stroke-1 text-center">
+              <p className="text-xs text-ink-3 mb-1">Payback</p>
+              <p className="text-xl font-bold text-ink-3">N/A</p>
             </div>
           )}
         </div>
@@ -323,11 +324,11 @@ export default function ROIResultsPanel({
 
   return (
     <div className="lg:sticky lg:top-24 space-y-6">
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <h3 className="text-lg font-bold text-primary-900 mb-4">Your ROI Projection</h3>
+      <div className="nv-card p-6">
+        <h3 className="font-display text-dh3 text-ink-0 mb-4">Your ROI Projection</h3>
 
         {/* Scenario Toggle */}
-        <div className="flex rounded-lg bg-gray-100 p-1 mb-6">
+        <div className="flex rounded-lg bg-surface-3 p-1 mb-6">
           {scenarios.map((s) => (
             <button
               key={s.value}
@@ -335,8 +336,8 @@ export default function ROIResultsPanel({
               className={`
                 flex-1 py-2 px-3 text-sm font-medium rounded-md transition-all
                 ${scenario === s.value
-                  ? 'bg-white text-primary-900 shadow'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-surface-1 text-ink-0 shadow'
+                  : 'text-ink-2 hover:text-ink-0'
                 }
               `}
             >
@@ -362,11 +363,11 @@ export default function ROIResultsPanel({
 
           {/* Segment Narrative - only show when segment is selected and ROI can be shown */}
           {segment && readiness.canShowRoi && (
-            <div className="p-4 bg-gradient-to-br from-primary-50 to-secondary-50 rounded-xl border border-primary-100">
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
+            <div className="p-4 bg-surface-3 rounded-xl border border-stroke-accent">
+              <p className="text-sm text-ink-1 leading-relaxed mb-3">
                 {SEGMENT_META[segment].narrative}
               </p>
-              <p className="text-sm font-medium text-primary-700 italic">
+              <p className="text-sm font-medium text-aqua italic">
                 {SEGMENT_META[segment].reframing}
               </p>
             </div>
@@ -391,14 +392,14 @@ export default function ROIResultsPanel({
 
         {/* Helper text when not in workflows state */}
         {helperText && (
-          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm text-blue-800">{helperText}</p>
+          <div className="mt-4 p-3 bg-surface-3 border border-stroke-1 rounded-lg">
+            <p className="text-sm text-ink-2">{helperText}</p>
           </div>
         )}
 
         {/* Breakdown - only show when workflows state */}
         {readiness.resultsState === 'workflows' && (
-          <div className="mt-6 pt-6 border-t border-gray-100">
+          <div className="mt-6 pt-6 border-t border-stroke-1">
             <SavingsBreakdownBars
               laborSavings={results.laborSavingsPerMonth}
               errorSavings={results.errorSavingsPerMonth}
@@ -410,25 +411,25 @@ export default function ROIResultsPanel({
         )}
 
         {/* Disclaimer */}
-        <p className="mt-4 text-xs text-gray-500 leading-relaxed">
-          <strong>Estimates only.</strong> Novique pricing and results shown are projections based on the information you provide and common automation benchmarks. Actual costs/savings and results will vary based on the custom solution you select, and your processes, data quality, adoption, and execution.
+        <p className="mt-4 text-xs text-ink-3 leading-relaxed">
+          <strong className="text-ink-2">Estimates only.</strong> Novique pricing and results shown are projections based on the information you provide and common automation benchmarks. Actual costs/savings and results will vary based on the custom solution you select, and your processes, data quality, adoption, and execution.
         </p>
       </div>
 
       {/* CTA - only show when workflows state */}
       {readiness.resultsState === 'workflows' && (
-        <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl p-6 text-white">
-          <h3 className="text-lg font-bold mb-2">Ready to see these savings?</h3>
-          <p className="text-primary-100 text-sm mb-4">
+        <div className="relative overflow-hidden rounded-2xl border border-stroke-accent bg-surface-2 p-6 shadow-glow">
+          <h3 className="font-display text-dh3 text-ink-0 mb-2">Ready to see these savings?</h3>
+          <p className="text-ink-2 text-sm mb-4">
             These estimates are based on common automation patterns. Your assessment will validate workflows, scope, and exact pricing.
           </p>
 
           {submitted ? (
-            <div className="bg-white/10 rounded-lg p-4 text-center">
-              <svg className="w-8 h-8 mx-auto mb-2 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-surface-3 border border-stroke-1 rounded-lg p-4 text-center">
+              <svg className="w-8 h-8 mx-auto mb-2 text-signal-success" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <p className="font-medium">Thanks! We&apos;ll be in touch soon.</p>
+              <p className="font-medium text-ink-0">Thanks! We&apos;ll be in touch soon.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -438,12 +439,12 @@ export default function ROIResultsPanel({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50"
+                className="w-full px-4 py-3 rounded-lg bg-surface-3 border border-stroke-1 text-ink-0 placeholder:text-ink-3 focus:border-aqua focus:outline-none"
               />
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3 px-4 bg-white text-primary-700 font-semibold rounded-lg hover:bg-primary-50 transition-colors disabled:opacity-50"
+                className="w-full py-3 px-4 bg-aqua text-[#04110d] font-semibold rounded-full hover:bg-aqua-bright shadow-glow hover:shadow-glow-strong transition-all disabled:opacity-50"
               >
                 {isSubmitting ? 'Sending...' : 'Get Free Assessment'}
               </button>

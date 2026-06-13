@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import Button from "./Button";
+import DarkButton from "@/components/marketing/DarkButton";
 
 type ContactFormData = {
   name: string;
@@ -12,6 +12,9 @@ type ContactFormData = {
   message: string;
   smsConsent?: boolean;
 };
+
+const inputClass =
+  "w-full rounded-lg border border-stroke-1 bg-surface-3 px-4 py-3 text-ink-0 placeholder:text-ink-3 transition-colors focus:border-aqua focus:outline-none";
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,24 +51,24 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Name */}
       <div>
-        <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="name" className="mb-2 block text-sm font-medium text-ink-1">
           Name *
         </label>
         <input
           id="name"
           type="text"
           {...register("name", { required: "Name is required" })}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={inputClass}
           placeholder="Your full name"
         />
         {errors.name && (
-          <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+          <p className="mt-1 text-sm text-signal-danger">{errors.name.message}</p>
         )}
       </div>
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="email" className="mb-2 block text-sm font-medium text-ink-1">
           Email *
         </label>
         <input
@@ -78,56 +81,56 @@ export default function ContactForm() {
               message: "Invalid email address",
             },
           })}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={inputClass}
           placeholder="your@email.com"
         />
         {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+          <p className="mt-1 text-sm text-signal-danger">{errors.email.message}</p>
         )}
       </div>
 
       {/* Phone (Optional) */}
       <div>
-        <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="phone" className="mb-2 block text-sm font-medium text-ink-1">
           Phone (Optional)
         </label>
         <input
           id="phone"
           type="tel"
           {...register("phone")}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={inputClass}
           placeholder="(555) 123-4567"
         />
       </div>
 
       {/* Company (Optional) */}
       <div>
-        <label htmlFor="company" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="company" className="mb-2 block text-sm font-medium text-ink-1">
           Company (Optional)
         </label>
         <input
           id="company"
           type="text"
           {...register("company")}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={inputClass}
           placeholder="Your business name"
         />
       </div>
 
       {/* Message */}
       <div>
-        <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="message" className="mb-2 block text-sm font-medium text-ink-1">
           Message *
         </label>
         <textarea
           id="message"
           {...register("message", { required: "Message is required" })}
           rows={5}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+          className={`${inputClass} resize-none`}
           placeholder="Tell us about your business and what you need help with..."
         />
         {errors.message && (
-          <p className="mt-1 text-sm text-red-600">{errors.message.message}</p>
+          <p className="mt-1 text-sm text-signal-danger">{errors.message.message}</p>
         )}
       </div>
 
@@ -137,37 +140,32 @@ export default function ContactForm() {
           id="smsConsent"
           type="checkbox"
           {...register("smsConsent")}
-          className="mt-1 h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+          className="mt-1 h-4 w-4 rounded border-stroke-1 bg-surface-3 text-aqua accent-aqua focus:ring-aqua"
         />
-        <label htmlFor="smsConsent" className="text-sm text-gray-600">
+        <label htmlFor="smsConsent" className="text-sm text-ink-2">
           I consent to receive SMS replies from Novique.AI when I text with questions or scheduling requests. Reply STOP to opt out. Standard message rates may apply.
         </label>
       </div>
 
       {/* Submit Button */}
       <div>
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          onClick={undefined}
-        >
+        <DarkButton type="submit" size="lg" className="w-full">
           {isSubmitting ? "Sending..." : "Send Message"}
-        </Button>
+        </DarkButton>
       </div>
 
       {/* Status Messages */}
       {submitStatus === "success" && (
-        <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-          <p className="text-green-800 font-semibold">
+        <div className="rounded-lg border border-stroke-1 bg-surface-2 p-4">
+          <p className="font-medium text-signal-success">
             ✓ Message sent successfully! We&apos;ll get back to you within 24 hours.
           </p>
         </div>
       )}
 
       {submitStatus === "error" && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-800 font-semibold">
+        <div className="rounded-lg border border-stroke-1 bg-surface-2 p-4">
+          <p className="font-medium text-signal-danger">
             ✗ Something went wrong. Please try again or email us directly.
           </p>
         </div>

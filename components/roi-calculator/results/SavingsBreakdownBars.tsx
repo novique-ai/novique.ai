@@ -24,35 +24,35 @@ export default function SavingsBreakdownBars({
     {
       label: 'Labor Savings',
       value: laborSavings,
-      color: 'bg-primary-500',
+      color: 'bg-aqua',
       show: true,
     },
     {
       label: 'Error Savings',
       value: errorSavings,
-      color: 'bg-secondary-500',
+      color: 'bg-signal-success',
       show: qualityEnabled && errorSavings > 0,
     },
     {
       label: 'Revenue Uplift',
       value: revenueUplift,
-      color: 'bg-amber-500',
+      color: 'bg-signal-warning',
       show: revenueEnabled && revenueUplift > 0,
     },
   ].filter(bar => bar.show);
 
   return (
     <div className="space-y-3">
-      <h4 className="text-sm font-semibold text-gray-700">Monthly Benefit Breakdown</h4>
+      <h4 className="text-sm font-semibold text-ink-1">Monthly Benefit Breakdown</h4>
       {bars.map((bar) => {
         const percentage = (bar.value / total) * 100;
         return (
           <div key={bar.label}>
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-600">{bar.label}</span>
-              <span className="font-medium text-gray-900">{formatCurrency(bar.value)}</span>
+              <span className="text-ink-2">{bar.label}</span>
+              <span className="font-mono font-medium text-ink-0">{formatCurrency(bar.value)}</span>
             </div>
-            <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+            <div className="h-3 bg-surface-3 rounded-full overflow-hidden">
               <div
                 className={`h-full ${bar.color} rounded-full transition-all duration-500`}
                 style={{ width: `${percentage}%` }}

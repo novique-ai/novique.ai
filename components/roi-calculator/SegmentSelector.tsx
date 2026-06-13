@@ -78,10 +78,10 @@ export default function SegmentSelector({
   return (
     <div className="mb-8">
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-primary-900 mb-1">
+        <h3 className="font-display text-dh3 text-ink-0 mb-1">
           What best describes your business?
         </h3>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-ink-2">
           Select an industry to pre-fill with typical values, or skip to enter your own.
         </p>
       </div>
@@ -98,47 +98,47 @@ export default function SegmentSelector({
               type="button"
               onClick={() => onSelect(segmentId)}
               className={`
-                relative p-4 rounded-xl border-2 text-left transition-all
+                relative p-4 rounded-xl border text-left transition-all
                 ${
                   isSelected
-                    ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200 shadow-md'
-                    : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm'
+                    ? 'border-stroke-accent bg-surface-3 shadow-glow'
+                    : 'border-stroke-1 bg-surface-2 hover:border-stroke-2 hover:bg-surface-3'
                 }
               `}
             >
               {/* Selected checkmark badge */}
               {isSelected ? (
-                <span className="absolute -top-2 -right-2 flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-primary-500 text-white">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <span className="absolute -top-2 -right-2 flex items-center gap-1 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider rounded-full bg-aqua text-[#04110d]">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   Selected
                 </span>
               ) : (
-                <span className="absolute -top-2 -right-2 px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-600">
+                <span className="absolute -top-2 -right-2 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider rounded-full border border-stroke-1 bg-surface-3 text-ink-3">
                   Example
                 </span>
               )}
 
               <Icon
                 className={`w-6 h-6 mb-2 ${
-                  isSelected ? 'text-primary-600' : 'text-gray-400'
+                  isSelected ? 'text-aqua' : 'text-ink-3'
                 }`}
               />
 
               <h4
                 className={`font-medium text-sm leading-tight mb-1 ${
-                  isSelected ? 'text-primary-900' : 'text-gray-800'
+                  isSelected ? 'text-ink-0' : 'text-ink-1'
                 }`}
               >
                 {meta.label}
               </h4>
 
-              <p className="text-xs text-gray-500 leading-tight">{meta.subtitle}</p>
+              <p className="text-xs text-ink-2 leading-tight">{meta.subtitle}</p>
 
               {/* Using example values micro-label when selected and not dirty */}
               {isSelected && !isDirty && (
-                <p className="mt-2 text-xs text-primary-600 font-medium">
+                <p className="mt-2 text-xs text-aqua font-medium">
                   Using example values
                 </p>
               )}
@@ -148,20 +148,20 @@ export default function SegmentSelector({
       </div>
 
       {/* Reassurance text */}
-      <p className="mt-3 text-xs text-gray-500 text-center">
+      <p className="mt-3 text-xs text-ink-3 text-center">
         You can edit all values — these are just starting points.
       </p>
 
       {/* Apply defaults button - show when segment selected and form is dirty */}
       {selectedSegment && isDirty && (
-        <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-center justify-between">
-          <p className="text-sm text-amber-800">
+        <div className="mt-4 p-3 bg-surface-3 border border-stroke-accent rounded-lg flex items-center justify-between">
+          <p className="text-sm text-ink-1">
             You&apos;ve made changes. Want to use the {SEGMENT_META[selectedSegment].label.toLowerCase()} example values?
           </p>
           <button
             type="button"
             onClick={onApplyDefaults}
-            className="ml-4 px-3 py-1.5 text-sm font-medium text-amber-800 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors whitespace-nowrap"
+            className="ml-4 px-3 py-1.5 text-sm font-medium text-aqua border border-stroke-accent hover:bg-white/[0.04] rounded-lg transition-colors whitespace-nowrap"
           >
             Apply example values
           </button>

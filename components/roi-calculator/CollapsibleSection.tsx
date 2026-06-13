@@ -30,7 +30,7 @@ export default function CollapsibleSection({
   return (
     <div className={`
       border rounded-lg transition-all
-      ${enabled ? 'border-primary-300 bg-primary-50' : 'border-gray-200 bg-white'}
+      ${enabled ? 'border-stroke-accent bg-surface-3' : 'border-stroke-1 bg-surface-2'}
     `}>
       <div className="p-4">
         <div className="flex items-start gap-4">
@@ -39,19 +39,19 @@ export default function CollapsibleSection({
               type="checkbox"
               checked={enabled}
               onChange={handleToggle}
-              className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+              className="w-5 h-5 rounded border-stroke-1 bg-surface-3 text-aqua focus:ring-aqua"
             />
           </label>
           <div className="flex-1">
             <div className="flex items-center justify-between">
-              <h3 className={`font-semibold ${enabled ? 'text-primary-900' : 'text-gray-700'}`}>
+              <h3 className={`font-semibold ${enabled ? 'text-ink-0' : 'text-ink-1'}`}>
                 {title}
               </h3>
               {enabled && (
                 <button
                   type="button"
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="text-sm text-primary-600 hover:text-primary-800 flex items-center gap-1"
+                  className="text-sm text-link hover:text-link-hover flex items-center gap-1"
                 >
                   {isExpanded ? 'Collapse' : 'Expand'}
                   <svg
@@ -59,19 +59,20 @@ export default function CollapsibleSection({
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
               )}
             </div>
-            <p className="text-sm text-gray-600 mt-1">{description}</p>
+            <p className="text-sm text-ink-2 mt-1">{description}</p>
           </div>
         </div>
       </div>
 
       {enabled && isExpanded && (
-        <div className="px-4 pb-4 pt-2 border-t border-primary-200 bg-white rounded-b-lg">
+        <div className="px-4 pb-4 pt-2 border-t border-stroke-1 bg-surface-2 rounded-b-lg">
           {children}
         </div>
       )}

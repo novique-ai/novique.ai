@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import Button from "./Button";
+import DarkButton from "./marketing/DarkButton";
 
 type ConsultationFormData = {
   name: string;
@@ -16,6 +16,11 @@ type ConsultationFormData = {
   challenges: string;
   smsConsent?: boolean;
 };
+
+const fieldClass =
+  "w-full rounded-lg border border-stroke-1 bg-surface-3 px-4 py-3 text-ink-0 placeholder:text-ink-3 transition-colors focus:border-aqua focus:outline-none";
+const labelClass = "mb-2 block text-sm font-semibold text-ink-1";
+const errorClass = "mt-1 text-sm text-signal-danger";
 
 export default function ConsultationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,24 +64,22 @@ export default function ConsultationForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Name */}
       <div>
-        <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="name" className={labelClass}>
           Full Name *
         </label>
         <input
           id="name"
           type="text"
           {...register("name", { required: "Name is required" })}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={fieldClass}
           placeholder="John Smith"
         />
-        {errors.name && (
-          <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-        )}
+        {errors.name && <p className={errorClass}>{errors.name.message}</p>}
       </div>
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="email" className={labelClass}>
           Email *
         </label>
         <input
@@ -89,40 +92,36 @@ export default function ConsultationForm() {
               message: "Invalid email address",
             },
           })}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={fieldClass}
           placeholder="john@business.com"
         />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-        )}
+        {errors.email && <p className={errorClass}>{errors.email.message}</p>}
       </div>
 
       {/* Phone */}
       <div>
-        <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="phone" className={labelClass}>
           Phone Number *
         </label>
         <input
           id="phone"
           type="tel"
           {...register("phone", { required: "Phone number is required" })}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={fieldClass}
           placeholder="(555) 123-4567"
         />
-        {errors.phone && (
-          <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
-        )}
+        {errors.phone && <p className={errorClass}>{errors.phone.message}</p>}
       </div>
 
       {/* Business Type */}
       <div>
-        <label htmlFor="businessType" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="businessType" className={labelClass}>
           Business Type *
         </label>
         <select
           id="businessType"
           {...register("businessType", { required: "Please select your business type" })}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={fieldClass}
         >
           <option value="">Select your industry...</option>
           <option value="retail">Retail</option>
@@ -133,20 +132,18 @@ export default function ConsultationForm() {
           <option value="manufacturing">Manufacturing</option>
           <option value="other">Other</option>
         </select>
-        {errors.businessType && (
-          <p className="mt-1 text-sm text-red-600">{errors.businessType.message}</p>
-        )}
+        {errors.businessType && <p className={errorClass}>{errors.businessType.message}</p>}
       </div>
 
       {/* Business Size */}
       <div>
-        <label htmlFor="businessSize" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="businessSize" className={labelClass}>
           Business Size *
         </label>
         <select
           id="businessSize"
           {...register("businessSize", { required: "Please select your business size" })}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={fieldClass}
         >
           <option value="">Select size...</option>
           <option value="1-5">1-5 employees</option>
@@ -154,68 +151,60 @@ export default function ConsultationForm() {
           <option value="21-50">21-50 employees</option>
           <option value="51+">51+ employees</option>
         </select>
-        {errors.businessSize && (
-          <p className="mt-1 text-sm text-red-600">{errors.businessSize.message}</p>
-        )}
+        {errors.businessSize && <p className={errorClass}>{errors.businessSize.message}</p>}
       </div>
 
       {/* Meeting Type */}
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Meeting Preference *
-        </label>
+        <label className={labelClass}>Meeting Preference *</label>
         <div className="space-y-2">
           <label className="flex items-center">
             <input
               type="radio"
               value="virtual"
               {...register("meetingType", { required: "Please select a meeting type" })}
-              className="mr-3 text-primary-600 focus:ring-primary-500"
+              className="mr-3 accent-aqua focus:ring-aqua"
             />
-            <span className="text-gray-700">Virtual (Video Call)</span>
+            <span className="text-ink-1">Virtual (Video Call)</span>
           </label>
           <label className="flex items-center">
             <input
               type="radio"
               value="in-person"
               {...register("meetingType", { required: "Please select a meeting type" })}
-              className="mr-3 text-primary-600 focus:ring-primary-500"
+              className="mr-3 accent-aqua focus:ring-aqua"
             />
-            <span className="text-gray-700">In-Person</span>
+            <span className="text-ink-1">In-Person</span>
           </label>
         </div>
-        {errors.meetingType && (
-          <p className="mt-1 text-sm text-red-600">{errors.meetingType.message}</p>
-        )}
+        {errors.meetingType && <p className={errorClass}>{errors.meetingType.message}</p>}
       </div>
 
       {/* Preferred Date */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label htmlFor="preferredDate" className="block text-sm font-semibold text-gray-700 mb-2">
+          <label htmlFor="preferredDate" className={labelClass}>
             Preferred Date *
           </label>
           <input
             id="preferredDate"
             type="date"
             {...register("preferredDate", { required: "Please select a date" })}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            min={new Date().toISOString().split('T')[0]}
+            className={`${fieldClass} [color-scheme:dark]`}
+            min={new Date().toISOString().split("T")[0]}
           />
-          {errors.preferredDate && (
-            <p className="mt-1 text-sm text-red-600">{errors.preferredDate.message}</p>
-          )}
+          {errors.preferredDate && <p className={errorClass}>{errors.preferredDate.message}</p>}
         </div>
 
         {/* Preferred Time */}
         <div>
-          <label htmlFor="preferredTime" className="block text-sm font-semibold text-gray-700 mb-2">
+          <label htmlFor="preferredTime" className={labelClass}>
             Preferred Time *
           </label>
           <select
             id="preferredTime"
             {...register("preferredTime", { required: "Please select a time" })}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className={fieldClass}
           >
             <option value="">Select time...</option>
             <option value="9:00 AM">9:00 AM</option>
@@ -226,27 +215,23 @@ export default function ConsultationForm() {
             <option value="3:00 PM">3:00 PM</option>
             <option value="4:00 PM">4:00 PM</option>
           </select>
-          {errors.preferredTime && (
-            <p className="mt-1 text-sm text-red-600">{errors.preferredTime.message}</p>
-          )}
+          {errors.preferredTime && <p className={errorClass}>{errors.preferredTime.message}</p>}
         </div>
       </div>
 
       {/* Challenges */}
       <div>
-        <label htmlFor="challenges" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="challenges" className={labelClass}>
           What challenges are you facing? *
         </label>
         <textarea
           id="challenges"
           {...register("challenges", { required: "Please describe your challenges" })}
           rows={4}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+          className={`${fieldClass} resize-none`}
           placeholder="Tell us about the friction points in your business that you'd like AI to help solve..."
         />
-        {errors.challenges && (
-          <p className="mt-1 text-sm text-red-600">{errors.challenges.message}</p>
-        )}
+        {errors.challenges && <p className={errorClass}>{errors.challenges.message}</p>}
       </div>
 
       {/* SMS Consent */}
@@ -255,32 +240,27 @@ export default function ConsultationForm() {
           id="smsConsent"
           type="checkbox"
           {...register("smsConsent")}
-          className="mt-1 h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+          className="mt-1 h-4 w-4 rounded border-stroke-1 bg-surface-3 accent-aqua focus:ring-aqua"
         />
-        <label htmlFor="smsConsent" className="text-sm text-gray-600">
+        <label htmlFor="smsConsent" className="text-sm text-ink-2">
           I consent to receive SMS replies from Novique.AI when I text with questions or scheduling requests. Reply STOP to opt out. Standard message rates may apply.
         </label>
       </div>
 
       {/* Submit Button */}
       <div>
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          onClick={undefined}
-        >
+        <DarkButton type="submit" size="lg" className="w-full">
           {isSubmitting ? "Booking..." : "Book My Free Consultation"}
-        </Button>
+        </DarkButton>
       </div>
 
       {/* Status Messages */}
       {submitStatus === "success" && (
-        <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-          <p className="text-green-800 font-semibold mb-2">
+        <div className="rounded-lg border border-signal-success/40 bg-signal-success/10 p-4">
+          <p className="mb-2 font-semibold text-signal-success">
             ✓ Consultation Booked Successfully!
           </p>
-          <p className="text-green-700">
+          <p className="text-ink-1">
             We&apos;ll send you a confirmation email shortly and reach out within 24 hours
             to confirm your preferred time slot.
           </p>
@@ -288,18 +268,20 @@ export default function ConsultationForm() {
       )}
 
       {submitStatus === "error" && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-800 font-semibold">
+        <div className="rounded-lg border border-signal-danger/40 bg-signal-danger/10 p-4">
+          <p className="font-semibold text-signal-danger">
             ✗ Something went wrong. Please try again or call us at (555) 123-4567.
           </p>
         </div>
       )}
 
       {/* Privacy Note */}
-      <p className="text-sm text-gray-600 text-center">
+      <p className="text-center text-sm text-ink-2">
         By submitting this form, you agree to our{" "}
-        <a href="/privacy" className="text-primary-600 hover:underline">Privacy Policy</a>.
-        We&apos;ll never share your information.
+        <a href="/privacy" className="text-link hover:text-link-hover">
+          Privacy Policy
+        </a>
+        . We&apos;ll never share your information.
       </p>
     </form>
   );

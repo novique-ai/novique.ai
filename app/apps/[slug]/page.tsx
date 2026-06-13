@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SiteHeader from "@/components/marketing/SiteHeader";
+import SiteFooter from "@/components/marketing/SiteFooter";
 import Section from "@/components/Section";
 import PhoneMockup from "@/components/apps/PhoneMockup";
 import {
@@ -73,7 +73,7 @@ function ThemedLanding({ app }: { app: NoviqueApp }) {
 
   return (
     <>
-      <Header />
+      <SiteHeader solid />
       <main
         className="relative overflow-hidden"
         style={{ backgroundColor: b.bg }}
@@ -224,7 +224,7 @@ function ThemedLanding({ app }: { app: NoviqueApp }) {
           </div>
         </div>
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }
@@ -234,7 +234,7 @@ function ThemedLanding({ app }: { app: NoviqueApp }) {
 function SimpleLanding({ app }: { app: NoviqueApp }) {
   return (
     <>
-      <Header />
+      <SiteHeader solid />
       <main>
         <Section background="white" className="pt-32">
           <div className="mx-auto max-w-3xl">
@@ -302,7 +302,7 @@ function SimpleLanding({ app }: { app: NoviqueApp }) {
           </div>
         </Section>
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

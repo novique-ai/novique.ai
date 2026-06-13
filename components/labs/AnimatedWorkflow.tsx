@@ -79,10 +79,10 @@ export default function AnimatedWorkflow({
   if (!svg) {
     return (
       <div
-        className={`flex items-center justify-center bg-gray-50 rounded-lg ${className}`}
+        className={`flex items-center justify-center bg-surface-2 rounded-lg ${className}`}
         style={{ height }}
       >
-        <p className="text-gray-400">No workflow diagram available</p>
+        <p className="text-ink-3">No workflow diagram available</p>
       </div>
     )
   }
@@ -92,7 +92,7 @@ export default function AnimatedWorkflow({
     return (
       <div className={`relative ${className}`}>
         <div
-          className="w-full flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden"
+          className="w-full flex items-center justify-center bg-surface-2 rounded-lg overflow-hidden"
           style={{ height, minHeight: '200px' }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -112,7 +112,7 @@ export default function AnimatedWorkflow({
       <div
         key={key}
         ref={containerRef}
-        className="w-full flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden"
+        className="w-full flex items-center justify-center bg-surface-2 rounded-lg overflow-hidden"
         style={{ height, minHeight: '200px' }}
         dangerouslySetInnerHTML={{ __html: sanitizedSvg }}
       />
@@ -121,7 +121,7 @@ export default function AnimatedWorkflow({
         <div className="absolute bottom-4 right-4 flex gap-2">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="px-3 py-1.5 text-sm bg-white/90 hover:bg-white rounded-md shadow-sm border border-gray-200 transition-colors"
+            className="px-3 py-1.5 text-sm bg-surface-3/90 text-ink-1 hover:bg-surface-3 hover:text-ink-0 rounded-md shadow-sm border border-stroke-1 transition-colors"
             aria-label={isPlaying ? 'Pause animation' : 'Play animation'}
           >
             {isPlaying ? (
@@ -136,7 +136,7 @@ export default function AnimatedWorkflow({
           </button>
           <button
             onClick={handleRestart}
-            className="px-3 py-1.5 text-sm bg-white/90 hover:bg-white rounded-md shadow-sm border border-gray-200 transition-colors"
+            className="px-3 py-1.5 text-sm bg-surface-3/90 text-ink-1 hover:bg-surface-3 hover:text-ink-0 rounded-md shadow-sm border border-stroke-1 transition-colors"
             aria-label="Restart animation"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

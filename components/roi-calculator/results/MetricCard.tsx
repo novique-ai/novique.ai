@@ -22,24 +22,24 @@ const formatters: Record<FormatType, (value: number) => string> = {
 };
 
 const variantStyles = {
-  default: 'bg-white border-gray-200',
-  primary: 'bg-primary-50 border-primary-200',
-  success: 'bg-green-50 border-green-200',
-  highlight: 'bg-gradient-to-br from-primary-500 to-primary-700 border-primary-600 text-white',
+  default: 'bg-surface-2 border-stroke-1',
+  primary: 'bg-surface-3 border-stroke-1',
+  success: 'bg-surface-3 border-stroke-2',
+  highlight: 'bg-surface-3 border-stroke-accent shadow-glow',
 };
 
 const valueStyles = {
-  default: 'text-gray-900',
-  primary: 'text-primary-900',
-  success: 'text-green-700',
-  highlight: 'text-white',
+  default: 'text-ink-0',
+  primary: 'text-ink-0',
+  success: 'text-signal-success',
+  highlight: 'text-aqua-bright',
 };
 
 const labelStyles = {
-  default: 'text-gray-600',
-  primary: 'text-primary-700',
-  success: 'text-green-600',
-  highlight: 'text-primary-100',
+  default: 'text-ink-2',
+  primary: 'text-ink-2',
+  success: 'text-ink-2',
+  highlight: 'text-ink-1',
 };
 
 const sizeStyles = {
@@ -61,7 +61,7 @@ export default function MetricCard({
 
   return (
     <div className={`rounded-lg border p-4 ${variantStyles[variant]}`}>
-      <p className={`font-bold ${sizeStyles[size].value} ${valueStyles[variant]}`}>
+      <p className={`font-mono font-bold ${sizeStyles[size].value} ${valueStyles[variant]}`}>
         {formattedValue}
       </p>
       <div className={`${sizeStyles[size].label} ${labelStyles[variant]} mt-1 flex items-center gap-1`}>
@@ -79,9 +79,9 @@ export default function MetricCard({
               ⓘ
             </button>
             {showTooltip && (
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg z-10">
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-surface-0 border border-stroke-2 text-ink-1 text-xs rounded-lg shadow-glow z-10">
                 {tooltip}
-                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
+                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-stroke-2" />
               </div>
             )}
           </div>
