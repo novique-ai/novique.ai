@@ -92,7 +92,7 @@ export default function AnimatedWorkflow({
     return (
       <div className={`relative ${className}`}>
         <div
-          className="w-full flex items-center justify-center bg-surface-2 rounded-lg overflow-hidden"
+          className="nv-diagram w-full flex items-center justify-center bg-surface-2 rounded-lg overflow-hidden"
           style={{ height, minHeight: '200px' }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -112,7 +112,7 @@ export default function AnimatedWorkflow({
       <div
         key={key}
         ref={containerRef}
-        className="w-full flex items-center justify-center bg-surface-2 rounded-lg overflow-hidden"
+        className="nv-diagram w-full flex items-center justify-center bg-surface-2 rounded-lg overflow-hidden"
         style={{ height, minHeight: '200px' }}
         dangerouslySetInnerHTML={{ __html: sanitizedSvg }}
       />

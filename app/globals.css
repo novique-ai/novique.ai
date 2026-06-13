@@ -249,6 +249,14 @@ html {
 }
 .theme-dark .nv-iso-bob { animation: nv-iso-bob 4.5s ease-in-out infinite; }
 
+/* Dark-adapt author-supplied (light-authored) lab workflow diagrams: flip the
+   light SVG/image to dark while roughly preserving hues. Applied only to the
+   injected child, so the dark container is untouched. */
+.theme-dark .nv-diagram > svg,
+.theme-dark .nv-diagram > img {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 /* Blanket reduced-motion safety for the dark theme (covers nested SVG anims). */
 @media (prefers-reduced-motion: reduce) {
   .theme-dark *,
