@@ -257,6 +257,21 @@ html {
   filter: invert(1) hue-rotate(180deg);
 }
 
+/* Rich-text article images (blog/labs body): render full-width as a block and let
+   readers click to open the full-resolution original (the article column is a
+   narrow ~68ch reading measure, which leaves embedded diagrams cramped). */
+.nv-img-zoom {
+  display: block;
+  margin: 1.75rem 0;
+}
+.nv-content-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  cursor: zoom-in;
+}
+
 /* Blanket reduced-motion safety for the dark theme (covers nested SVG anims). */
 @media (prefers-reduced-motion: reduce) {
   .theme-dark *,

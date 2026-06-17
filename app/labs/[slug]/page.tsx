@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getLabBySlug, getAllLabs } from '@/lib/labs'
+import { enhanceContentImages } from '@/lib/editor/enhanceImages'
 import AnimatedWorkflow from '@/components/labs/AnimatedWorkflow'
 import ThemeShell from '@/components/marketing/ThemeShell'
 import DarkButton from '@/components/marketing/DarkButton'
@@ -147,7 +148,7 @@ export default async function LabPage({ params }: LabPageProps) {
             </h2>
             <div
               className={PROSE_CLASS}
-              dangerouslySetInnerHTML={{ __html: section.html as string }}
+              dangerouslySetInnerHTML={{ __html: enhanceContentImages(section.html as string) }}
             />
           </section>
         ))}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import ThemeShell from "@/components/marketing/ThemeShell";
 import DarkButton from "@/components/marketing/DarkButton";
 import { getPostBySlug } from "@/lib/blog";
+import { enhanceContentImages } from "@/lib/editor/enhanceImages";
 import { Metadata } from "next";
 
 export const dynamic = 'force-dynamic'
@@ -146,7 +147,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <div className="mx-auto max-w-reading px-6 py-12 md:py-16">
           <div
             className="prose prose-invert max-w-none prose-a:text-link prose-headings:font-display"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: enhanceContentImages(post.content) }}
           />
 
           {/* CTA at bottom of article */}
