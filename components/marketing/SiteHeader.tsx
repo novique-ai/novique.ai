@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import DarkButton from "./DarkButton";
+import SiteHeaderUser from "./SiteHeaderUser";
 
 const NAV = [
   { href: "/work", label: "Work" },
@@ -67,12 +67,7 @@ export default function SiteHeader({ solid = false }: { solid?: boolean }) {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Link href="/login" className="text-sm text-ink-2 transition-colors hover:text-ink-0">
-            Sign in
-          </Link>
-          <DarkButton href="/consultation" size="sm">
-            Book a call
-          </DarkButton>
+          <SiteHeaderUser variant="desktop" />
         </div>
 
         <button
@@ -100,14 +95,7 @@ export default function SiteHeader({ solid = false }: { solid?: boolean }) {
                 {l.label}
               </Link>
             ))}
-            <div className="mt-3 flex items-center gap-3">
-              <DarkButton href="/consultation" size="sm" className="flex-1">
-                Book a call
-              </DarkButton>
-              <Link href="/login" className="px-3 text-sm text-ink-2" onClick={() => setOpen(false)}>
-                Sign in
-              </Link>
-            </div>
+            <SiteHeaderUser variant="mobile" onNavigate={() => setOpen(false)} />
           </div>
         </div>
       )}
