@@ -25,7 +25,7 @@ export async function generateWithClaude({
   systemPrompt = 'You are a helpful AI assistant that writes professional blog content about technology and business.',
   maxTokens = 4096,
   temperature = 0.7,
-  model = 'claude-3-haiku-20240307',
+  model = 'claude-haiku-4-5',
 }: ClaudeGenerationOptions): Promise<string> {
   try {
     const anthropic = getAnthropicClient()

@@ -301,7 +301,7 @@ async function generateForPlatform(
     systemPrompt,
     maxTokens: 1024,
     temperature: 0.7,
-    model: 'claude-3-haiku-20240307', // Fast and cost-effective for social posts
+    model: 'claude-haiku-4-5', // Fast and cost-effective for social posts
   });
 
   // Clean up the generated content
@@ -339,7 +339,7 @@ async function generateForPlatform(
     characterCount,
     withinLimit,
     generationMetadata: {
-      model: 'claude-3-haiku-20240307',
+      model: 'claude-haiku-4-5',
       prompt: userPrompt.substring(0, 500), // Store truncated prompt
       tokens_used: undefined, // Could be populated from API response
       source_content_length: source.content?.length || source.summary.length,
