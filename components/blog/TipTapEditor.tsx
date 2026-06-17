@@ -56,18 +56,13 @@ export default function TipTapEditor({
       if (!file) return
 
       try {
-        // Show loading state
-        editor?.commands.insertContent('<p>Uploading image...</p>')
-
-        // Upload image
+        // Upload first, then insert the image at the cursor. (Previously this
+        // inserted an "Uploading image..." placeholder and deleted a fixed
+        // 23-char range afterwards — which threw a ProseMirror out-of-range
+        // error when the cursor was near the start of the document, so the
+        // upload succeeded but the UI reported failure.)
         const imageUrl = await onImageUpload(file)
-
-        // Remove loading text and insert image
-        editor?.commands.deleteRange({
-          from: editor.state.selection.from - 23, // Length of "Uploading image..."
-          to: editor.state.selection.from,
-        })
-        editor?.commands.setImage({ src: imageUrl })
+        editor?.chain().focus().setImage({ src: imageUrl }).run()
       } catch (error) {
         console.error('Image upload failed:', error)
         alert('Failed to upload image. Please try again.')
