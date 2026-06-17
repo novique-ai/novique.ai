@@ -113,6 +113,29 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
     }
   }
 
+  // Upload an inline image for the rich-text content sections (TipTap toolbar).
+  // Mirrors the blog editor: posts to the labs image route and returns the URL the
+  // editor inserts as an <img>. Without this prop the toolbar upload icon no-ops.
+  const handleContentImageUpload = async (file: File): Promise<string> => {
+    const uploadData = new FormData()
+    uploadData.append('file', file)
+    if (formData.slug) {
+      uploadData.append('labSlug', formData.slug)
+    }
+
+    const response = await fetch('/api/labs/upload-image', {
+      method: 'POST',
+      body: uploadData,
+    })
+
+    const result = await response.json()
+    if (!response.ok) {
+      throw new Error(result.error || 'Upload failed')
+    }
+
+    return result.url
+  }
+
   // Check if current workflow is an uploaded image (URL) vs generated SVG
   const isWorkflowImageUrl = formData.workflowSvg?.startsWith('http')
 
@@ -332,6 +355,7 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
                   <TipTapEditor
                     content={formData[section.key]}
                     onChange={(html) => updateSection(section.key, html)}
+                    onImageUpload={handleContentImageUpload}
                   />
                   {errors[section.key] && (
                     <p className="mt-1 text-sm text-red-600">{errors[section.key]}</p>
