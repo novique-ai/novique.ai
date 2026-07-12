@@ -514,6 +514,13 @@ export interface OAuthTokenResponse {
   scope?: string;
 }
 
+export interface PublishContext {
+  accountId: string;
+  platformUserId?: string | null;
+  accountName?: string | null;
+  scopes?: string[] | null;
+}
+
 // =====================================================
 // CLIENT INTERFACE
 // =====================================================
@@ -551,7 +558,8 @@ export interface SocialClient {
   createPost(
     accessToken: string,
     content: string,
-    mediaUrls?: string[]
+    mediaUrls?: string[],
+    context?: PublishContext
   ): Promise<{ id: string; url: string }>;
   deletePost(accessToken: string, postId: string): Promise<void>;
 

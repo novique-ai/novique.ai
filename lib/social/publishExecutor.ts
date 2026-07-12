@@ -36,6 +36,9 @@ interface PublishAccount {
   access_token: string;
   refresh_token: string | null;
   token_expires_at: string | null;
+  account_id: string;
+  account_name: string;
+  token_scope: string | null;
 }
 
 export type ExecutePublishResult =
@@ -162,7 +165,9 @@ async function loadAccountById(
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from('social_accounts')
-    .select('id, platform, access_token, refresh_token, token_expires_at')
+    .select(
+      'id, platform, access_token, refresh_token, token_expires_at, account_id, account_name, token_scope'
+    )
     .eq('id', accountId)
     .eq('platform', platform)
     .eq('status', 'active')
@@ -198,7 +203,9 @@ async function resolveAccount(
 
   const { data: accounts, error } = await supabase
     .from('social_accounts')
-    .select('id, platform, access_token, refresh_token, token_expires_at')
+    .select(
+      'id, platform, access_token, refresh_token, token_expires_at, account_id, account_name, token_scope'
+    )
     .eq('platform', post.platform)
     .eq('status', 'active')
     .order('created_at', { ascending: true })
@@ -782,7 +789,13 @@ export async function executePublish(
     platformResult = await client.createPost(
       accessToken,
       post.content,
-      post.media_urls || undefined
+      post.media_urls || undefined,
+      {
+        accountId: account.id,
+        platformUserId: account.account_id,
+        accountName: account.account_name,
+        scopes: account.token_scope?.split(/[\s,]+/).filter(Boolean) ?? null,
+      }
     );
   } catch (error) {
     const classified = classifyPublishError(error);

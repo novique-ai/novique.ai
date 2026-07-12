@@ -142,11 +142,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Get authorization URL
-    const authorizationUrl = client.getAuthorizationUrl(
+    let authorizationUrl = client.getAuthorizationUrl(
       state,
       redirectUri,
       codeVerifier
     );
+
+    if (platform === 'linkedin') {
+      const linkedinUrl = new URL(authorizationUrl);
+      const scopes = ['openid', 'profile', 'w_member_social'];
+      if (process.env.LINKEDIN_ORG_URN) {
+        scopes.push('w_organization_social');
+      }
+      linkedinUrl.searchParams.set('scope', scopes.join(' '));
+      authorizationUrl = linkedinUrl.toString();
+    }
 
     return NextResponse.json({
       success: true,

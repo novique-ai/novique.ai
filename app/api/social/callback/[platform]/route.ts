@@ -202,12 +202,39 @@ export async function GET(
     );
     console.log(`[${platform} OAuth] Token exchange succeeded`);
 
-    // Attempt to fetch account info (optional — may fail on free API tiers)
+    // Resolve the platform identity associated with the new token.
     let accountInfo: { id: string; name: string; handle?: string; profile_image_url?: string };
     if (platform === 'linkedin') {
+      const userInfoResponse = await fetch(
+        'https://api.linkedin.com/v2/userinfo',
+        { headers: { Authorization: `Bearer ${tokens.access_token}` } }
+      );
+      if (!userInfoResponse.ok) {
+        throw new AuthenticationError(
+          'linkedin',
+          'LinkedIn identity lookup failed. Please reconnect the account.'
+        );
+      }
+      const userInfo = (await userInfoResponse.json()) as {
+        sub?: string;
+        name?: string;
+        given_name?: string;
+        family_name?: string;
+        picture?: string;
+      };
+      if (!userInfo.sub) {
+        throw new AuthenticationError(
+          'linkedin',
+          'LinkedIn identity response did not include a member ID.'
+        );
+      }
       accountInfo = {
-        id: `linkedin-${user.id}`,
-        name: 'LinkedIn Account',
+        id: `urn:li:person:${userInfo.sub}`,
+        name:
+          userInfo.name ||
+          [userInfo.given_name, userInfo.family_name].filter(Boolean).join(' ') ||
+          'LinkedIn Member',
+        profile_image_url: userInfo.picture,
       };
     } else {
       try {
@@ -235,12 +262,22 @@ export async function GET(
 
     // Store in database using admin client (bypasses RLS)
     // Check if account already exists
-    const { data: existingAccount } = await supabase
+    let { data: existingAccount } = await supabase
       .from('social_accounts')
       .select('id')
       .eq('platform', platform)
       .eq('account_id', accountInfo.id)
       .single();
+
+    if (!existingAccount && platform === 'linkedin') {
+      const { data: syntheticAccount } = await supabase
+        .from('social_accounts')
+        .select('id')
+        .eq('platform', platform)
+        .eq('account_id', `linkedin-${user.id}`)
+        .maybeSingle();
+      existingAccount = syntheticAccount;
+    }
 
     if (existingAccount) {
       // Update existing account
@@ -249,6 +286,7 @@ export async function GET(
         .update({
           account_name: accountInfo.name,
           account_handle: accountInfo.handle || null,
+          account_id: accountInfo.id,
           profile_image_url: accountInfo.profile_image_url || null,
           access_token: encryptedAccessToken,
           refresh_token: encryptedRefreshToken,

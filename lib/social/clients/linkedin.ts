@@ -13,6 +13,7 @@
 import type {
   SocialClient,
   OAuthTokenResponse,
+  PublishContext,
   SocialPostMetrics,
 } from '../types';
 import {
@@ -31,15 +32,10 @@ import {
 // =====================================================
 
 const LINKEDIN_API_BASE = 'https://api.linkedin.com/v2';
+const LINKEDIN_REST_BASE = 'https://api.linkedin.com/rest';
 const LINKEDIN_AUTH_URL = 'https://www.linkedin.com/oauth/v2/authorization';
 const LINKEDIN_TOKEN_URL = 'https://www.linkedin.com/oauth/v2/accessToken';
-
-// Only requesting w_member_social for now.
-// LinkedIn requires special approval for w_organization_social.
-// When approved, update scope to include it.
-const LINKEDIN_SCOPES = [
-  'w_member_social',
-].join(' ');
+const LINKEDIN_VERSION = '202606';
 
 // Character limit for LinkedIn posts
 const LINKEDIN_MAX_LENGTH = 3000;
@@ -48,19 +44,12 @@ const LINKEDIN_MAX_LENGTH = 3000;
 // TYPES
 // =====================================================
 
-interface LinkedInProfile {
-  id: string;
-  localizedFirstName: string;
-  localizedLastName: string;
-  profilePicture?: {
-    'displayImage~'?: {
-      elements?: Array<{
-        identifiers?: Array<{
-          identifier: string;
-        }>;
-      }>;
-    };
-  };
+interface LinkedInUserInfo {
+  sub: string;
+  name?: string;
+  given_name?: string;
+  family_name?: string;
+  picture?: string;
 }
 
 interface LinkedInOrganization {
@@ -72,31 +61,25 @@ interface LinkedInOrganization {
   };
 }
 
-interface LinkedInShareResponse {
-  id: string;
-  activity: string;
-}
-
-interface LinkedInUGCPost {
+interface LinkedInPost {
   author: string;
-  lifecycleState: 'PUBLISHED';
-  specificContent: {
-    'com.linkedin.ugc.ShareContent': {
-      shareCommentary: {
-        text: string;
-      };
-      shareMediaCategory: 'NONE' | 'ARTICLE' | 'IMAGE';
-      media?: Array<{
-        status: 'READY';
-        description?: { text: string };
-        media?: string;
-        originalUrl?: string;
-        title?: { text: string };
-      }>;
-    };
+  commentary: string;
+  visibility: 'PUBLIC';
+  distribution: {
+    feedDistribution: 'MAIN_FEED';
+    targetEntities: never[];
+    thirdPartyDistributionChannels: never[];
   };
-  visibility: {
-    'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' | 'CONNECTIONS';
+  lifecycleState: 'PUBLISHED';
+  isReshareDisabledByAuthor: false;
+  content?: {
+    media?: { id: string; title?: string };
+    article?: {
+      source: string;
+      title: string;
+      description: string;
+      thumbnail?: string;
+    };
   };
 }
 
@@ -117,6 +100,147 @@ function getLinkedInCredentials() {
   }
 
   return { clientId, clientSecret };
+}
+
+function getLinkedInScopes(): string {
+  const scopes = ['openid', 'profile', 'w_member_social'];
+  if (process.env.LINKEDIN_ORG_URN) scopes.push('w_organization_social');
+  return scopes.join(' ');
+}
+
+function linkedInHeaders(accessToken: string): Record<string, string> {
+  return {
+    Authorization: `Bearer ${accessToken}`,
+    'Linkedin-Version': LINKEDIN_VERSION,
+    'X-Restli-Protocol-Version': '2.0.0',
+  };
+}
+
+async function uploadImage(
+  accessToken: string,
+  owner: string,
+  imageUrl: string
+): Promise<string> {
+  const imageResponse = await fetchWithTimeout(imageUrl);
+  if (!imageResponse.ok) {
+    throw new SocialAPIError(
+      `Could not download LinkedIn image (${imageResponse.status})`,
+      'linkedin',
+      'MEDIA_DOWNLOAD_FAILED',
+      imageResponse.status
+    );
+  }
+
+  const contentType = imageResponse.headers.get('content-type') || '';
+  if (!contentType.startsWith('image/')) {
+    throw new SocialAPIError(
+      'LinkedIn media URL did not return an image',
+      'linkedin',
+      'INVALID_MEDIA_TYPE'
+    );
+  }
+  const imageBytes = await imageResponse.arrayBuffer();
+
+  const initializeResponse = await fetchWithTimeout(
+    `${LINKEDIN_REST_BASE}/images?action=initializeUpload`,
+    {
+      method: 'POST',
+      headers: {
+        ...linkedInHeaders(accessToken),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ initializeUploadRequest: { owner } }),
+    }
+  );
+  const initialized = await handleAPIResponse<{
+    value: { uploadUrl: string; image: string };
+  }>(initializeResponse, 'linkedin');
+
+  const uploadResponse = await fetchWithTimeout(initialized.value.uploadUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': contentType },
+    body: imageBytes,
+  });
+  if (!uploadResponse.ok) {
+    throw new SocialAPIError(
+      `LinkedIn image upload failed (${uploadResponse.status})`,
+      'linkedin',
+      'MEDIA_UPLOAD_FAILED',
+      uploadResponse.status
+    );
+  }
+
+  return initialized.value.image;
+}
+
+function extractMeta(html: string, key: string): string | undefined {
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const patterns = [
+    new RegExp(
+      `<meta[^>]+(?:property|name)=["']${escapedKey}["'][^>]+content=["']([^"']+)["'][^>]*>`,
+      'i'
+    ),
+    new RegExp(
+      `<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']${escapedKey}["'][^>]*>`,
+      'i'
+    ),
+  ];
+  return patterns.map((pattern) => html.match(pattern)?.[1]).find(Boolean);
+}
+
+function cleanMetadata(value: string): string {
+  return value
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+async function buildArticle(
+  accessToken: string,
+  owner: string,
+  source: string,
+  commentary: string
+): Promise<NonNullable<NonNullable<LinkedInPost['content']>['article']>> {
+  let html = '';
+  try {
+    const response = await fetchWithTimeout(source);
+    if (response.ok && response.headers.get('content-type')?.includes('text/html')) {
+      html = await response.text();
+    }
+  } catch {
+    // Metadata enrichment is best-effort; the source URL remains publishable.
+  }
+
+  const titleTag = html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1];
+  const title = cleanMetadata(
+    extractMeta(html, 'og:title') ||
+      titleTag ||
+      new URL(source).hostname.replace(/^www\./, '')
+  );
+  const description = cleanMetadata(
+    extractMeta(html, 'og:description') ||
+      extractMeta(html, 'description') ||
+      commentary.replace(source, '') ||
+      title
+  );
+  const article: NonNullable<
+    NonNullable<LinkedInPost['content']>['article']
+  > = {
+    source,
+    title: truncateText(title, 200),
+    description: truncateText(description, 256),
+  };
+
+  const thumbnailUrl = extractMeta(html, 'og:image');
+  if (thumbnailUrl) {
+    const resolvedThumbnail = new URL(thumbnailUrl, source).toString();
+    article.thumbnail = await uploadImage(accessToken, owner, resolvedThumbnail);
+  }
+  return article;
 }
 
 // =====================================================
@@ -142,7 +266,7 @@ export const linkedinClient: SocialClient = {
       client_id: clientId,
       redirect_uri: redirectUri,
       state,
-      scope: LINKEDIN_SCOPES,
+      scope: getLinkedInScopes(),
     });
 
     const authUrl = `${LINKEDIN_AUTH_URL}?${params.toString()}`;
@@ -236,51 +360,29 @@ export const linkedinClient: SocialClient = {
    * Get authenticated user's account info
    */
   async getAccountInfo(accessToken: string) {
-    // Get basic profile
     const profileResponse = await withRetry(
       () =>
-        fetchWithTimeout(`${LINKEDIN_API_BASE}/me`, {
+        fetchWithTimeout(`${LINKEDIN_API_BASE}/userinfo`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            'X-Restli-Protocol-Version': '2.0.0',
           },
         }),
       'linkedin'
     );
 
-    const profile = await handleAPIResponse<LinkedInProfile>(
+    const profile = await handleAPIResponse<LinkedInUserInfo>(
       profileResponse,
       'linkedin'
     );
 
-    // Try to get profile picture
-    let profileImageUrl: string | undefined;
-    try {
-      const pictureResponse = await fetchWithTimeout(
-        `${LINKEDIN_API_BASE}/me?projection=(id,profilePicture(displayImage~:playableStreams))`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'X-Restli-Protocol-Version': '2.0.0',
-          },
-        }
-      );
-
-      if (pictureResponse.ok) {
-        const pictureData = await pictureResponse.json();
-        profileImageUrl =
-          pictureData.profilePicture?.['displayImage~']?.elements?.[0]
-            ?.identifiers?.[0]?.identifier;
-      }
-    } catch {
-      // Ignore profile picture errors
-    }
-
     return {
-      id: profile.id,
-      name: `${profile.localizedFirstName} ${profile.localizedLastName}`,
-      handle: profile.id, // LinkedIn doesn't have public handles
-      profile_image_url: profileImageUrl,
+      id: `urn:li:person:${profile.sub}`,
+      name:
+        profile.name ||
+        [profile.given_name, profile.family_name].filter(Boolean).join(' ') ||
+        'LinkedIn Member',
+      handle: profile.sub,
+      profile_image_url: profile.picture,
     };
   },
 
@@ -308,73 +410,89 @@ export const linkedinClient: SocialClient = {
   async createPost(
     accessToken: string,
     content: string,
-    mediaUrls?: string[]
+    mediaUrls?: string[],
+    context?: PublishContext
   ): Promise<{ id: string; url: string }> {
-    // Get the user's URN first
-    const userInfo = await this.getAccountInfo(accessToken);
-    const authorUrn = `urn:li:person:${userInfo.id}`;
+    const memberUrn = context?.platformUserId;
+    if (!memberUrn?.startsWith('urn:li:person:')) {
+      throw new AuthenticationError(
+        'linkedin',
+        'LinkedIn member identity is missing. Reconnect the LinkedIn account before publishing.'
+      );
+    }
+    const organizationUrn = process.env.LINKEDIN_ORG_URN;
+    const authorUrn =
+      organizationUrn && context?.scopes?.includes('w_organization_social')
+        ? organizationUrn
+        : memberUrn;
 
     // Validate content length
     if (content.length > LINKEDIN_MAX_LENGTH) {
       content = truncateText(content, LINKEDIN_MAX_LENGTH - 3);
     }
 
-    // Build the post payload
-    const postBody: LinkedInUGCPost = {
+    const postBody: LinkedInPost = {
       author: authorUrn,
+      commentary: content,
+      visibility: 'PUBLIC',
+      distribution: {
+        feedDistribution: 'MAIN_FEED',
+        targetEntities: [],
+        thirdPartyDistributionChannels: [],
+      },
       lifecycleState: 'PUBLISHED',
-      specificContent: {
-        'com.linkedin.ugc.ShareContent': {
-          shareCommentary: {
-            text: content,
-          },
-          shareMediaCategory: 'NONE',
-        },
-      },
-      visibility: {
-        'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
-      },
+      isReshareDisabledByAuthor: false,
     };
 
-    // Add article/link if URLs are provided
-    if (mediaUrls && mediaUrls.length > 0) {
-      const urlMatch = content.match(/https?:\/\/[^\s]+/);
-      if (urlMatch) {
-        postBody.specificContent['com.linkedin.ugc.ShareContent'].shareMediaCategory = 'ARTICLE';
-        postBody.specificContent['com.linkedin.ugc.ShareContent'].media = [
-          {
-            status: 'READY',
-            originalUrl: urlMatch[0],
-          },
-        ];
+    if (mediaUrls?.[0]) {
+      const imageUrn = await uploadImage(
+        accessToken,
+        authorUrn,
+        mediaUrls[0]
+      );
+      postBody.content = { media: { id: imageUrn } };
+    } else {
+      const urlMatch = content.match(/https?:\/\/[^\s<>()]+/);
+      const articleUrl = urlMatch?.[0].replace(/[.,!?;:]+$/, '');
+      if (articleUrl) {
+        postBody.content = {
+          article: await buildArticle(
+            accessToken,
+            authorUrn,
+            articleUrl,
+            content
+          ),
+        };
       }
     }
 
     const response = await withRetry(
       () =>
-        fetchWithTimeout(`${LINKEDIN_API_BASE}/ugcPosts`, {
+        fetchWithTimeout(`${LINKEDIN_REST_BASE}/posts`, {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            ...linkedInHeaders(accessToken),
             'Content-Type': 'application/json',
-            'X-Restli-Protocol-Version': '2.0.0',
           },
           body: JSON.stringify(postBody),
         }),
       'linkedin'
     );
 
-    const data = await handleAPIResponse<LinkedInShareResponse>(
-      response,
-      'linkedin'
-    );
-
-    // Extract post ID from URN
-    const postId = data.id.split(':').pop() || data.id;
+    if (!response.ok) await handleAPIResponse(response, 'linkedin');
+    const postId = response.headers.get('x-restli-id');
+    if (!postId) {
+      throw new SocialAPIError(
+        'LinkedIn created the post without returning its identifier',
+        'linkedin',
+        'MISSING_POST_ID',
+        response.status
+      );
+    }
 
     return {
-      id: data.id,
-      url: `https://www.linkedin.com/feed/update/${data.id}`,
+      id: postId,
+      url: `https://www.linkedin.com/feed/update/${postId}`,
     };
   },
 
@@ -382,14 +500,13 @@ export const linkedinClient: SocialClient = {
    * Delete a LinkedIn post
    */
   async deletePost(accessToken: string, postId: string): Promise<void> {
-    // LinkedIn UGC posts are deleted via the ugcPosts endpoint
     const response = await withRetry(
       () =>
-        fetchWithTimeout(`${LINKEDIN_API_BASE}/ugcPosts/${encodeURIComponent(postId)}`, {
+        fetchWithTimeout(`${LINKEDIN_REST_BASE}/posts/${encodeURIComponent(postId)}`, {
           method: 'DELETE',
           headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'X-Restli-Protocol-Version': '2.0.0',
+            ...linkedInHeaders(accessToken),
+            'X-RestLi-Method': 'DELETE',
           },
         }),
       'linkedin'
@@ -501,27 +618,29 @@ export const linkedinClient: SocialClient = {
     postId: string
   ): Promise<SocialPostMetrics> {
     // Get social actions (likes, comments, shares)
-    const url = `${LINKEDIN_API_BASE}/socialActions/${encodeURIComponent(postId)}`;
+    const url = `${LINKEDIN_REST_BASE}/socialActions/${encodeURIComponent(postId)}`;
 
     const response = await withRetry(
       () =>
         fetchWithTimeout(url, {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'X-Restli-Protocol-Version': '2.0.0',
+            ...linkedInHeaders(accessToken),
           },
         }),
       'linkedin'
     );
 
     const data = await handleAPIResponse<{
-      likesSummary?: { totalLikes: number };
+      likesSummary?: { totalLikes: number; aggregatedTotalLikes?: number };
       commentsSummary?: { totalFirstLevelComments: number };
       shareStatistics?: { shareCount: number };
     }>(response, 'linkedin');
 
     return {
-      likes: data.likesSummary?.totalLikes || 0,
+      likes:
+        data.likesSummary?.aggregatedTotalLikes ||
+        data.likesSummary?.totalLikes ||
+        0,
       comments: data.commentsSummary?.totalFirstLevelComments || 0,
       shares: data.shareStatistics?.shareCount || 0,
       // LinkedIn doesn't provide impressions via this API
@@ -583,52 +702,51 @@ export async function postToOrganization(
     content = truncateText(content, LINKEDIN_MAX_LENGTH - 3);
   }
 
-  const postBody: LinkedInUGCPost = {
+  const postBody: LinkedInPost = {
     author: orgUrn,
+    commentary: content,
+    visibility: 'PUBLIC',
+    distribution: {
+      feedDistribution: 'MAIN_FEED',
+      targetEntities: [],
+      thirdPartyDistributionChannels: [],
+    },
     lifecycleState: 'PUBLISHED',
-    specificContent: {
-      'com.linkedin.ugc.ShareContent': {
-        shareCommentary: {
-          text: content,
-        },
-        shareMediaCategory: linkUrl ? 'ARTICLE' : 'NONE',
-        ...(linkUrl && {
-          media: [
-            {
-              status: 'READY',
-              originalUrl: linkUrl,
-            },
-          ],
-        }),
-      },
-    },
-    visibility: {
-      'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
-    },
+    isReshareDisabledByAuthor: false,
   };
+  if (linkUrl) {
+    postBody.content = {
+      article: await buildArticle(accessToken, orgUrn, linkUrl, content),
+    };
+  }
 
   const response = await withRetry(
     () =>
-      fetchWithTimeout(`${LINKEDIN_API_BASE}/ugcPosts`, {
+      fetchWithTimeout(`${LINKEDIN_REST_BASE}/posts`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          ...linkedInHeaders(accessToken),
           'Content-Type': 'application/json',
-          'X-Restli-Protocol-Version': '2.0.0',
         },
         body: JSON.stringify(postBody),
       }),
     'linkedin'
   );
 
-  const data = await handleAPIResponse<LinkedInShareResponse>(
-    response,
-    'linkedin'
-  );
+  if (!response.ok) await handleAPIResponse(response, 'linkedin');
+  const postId = response.headers.get('x-restli-id');
+  if (!postId) {
+    throw new SocialAPIError(
+      'LinkedIn created the organization post without returning its identifier',
+      'linkedin',
+      'MISSING_POST_ID',
+      response.status
+    );
+  }
 
   return {
-    id: data.id,
-    url: `https://www.linkedin.com/feed/update/${data.id}`,
+    id: postId,
+    url: `https://www.linkedin.com/feed/update/${postId}`,
   };
 }
 
