@@ -32,6 +32,13 @@ interface RoiAssessmentWebhookData {
   paybackMonths?: number;
 }
 
+interface SocialPublishAlertData {
+  kind: 'dead_letter' | 'needs_review' | 'stale_publishing';
+  postId: string;
+  message: string;
+  attempts?: number;
+}
+
 interface DiscordEmbed {
   title?: string;
   description?: string;
@@ -287,6 +294,38 @@ class DiscordWebhookNotificationService {
   }
 
   /**
+   * Send an operational alert for the social publishing queue.
+   */
+  async socialPublishAlert(data: SocialPublishAlertData): Promise<WebhookResponse> {
+    const titles: Record<SocialPublishAlertData['kind'], string> = {
+      dead_letter: 'Social post exhausted its publish retries',
+      needs_review: 'Social post requires manual review',
+      stale_publishing: 'Stale social publish recovered',
+    };
+    const fields: NonNullable<DiscordEmbed['fields']> = [
+      { name: 'Post ID', value: data.postId, inline: false },
+    ];
+
+    if (data.attempts !== undefined) {
+      fields.push({ name: 'Attempts', value: String(data.attempts), inline: true });
+    }
+
+    return this.sendDiscordWebhook({
+      content: `Social publishing alert: **${titles[data.kind]}**`,
+      embeds: [
+        {
+          title: titles[data.kind],
+          description: data.message.slice(0, 4000),
+          color: data.kind === 'stale_publishing' ? 0xf59e0b : 0xef4444,
+          fields,
+          footer: { text: 'novique.ai social publish queue' },
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    });
+  }
+
+  /**
    * Send webhook to Discord
    */
   private async sendDiscordWebhook(payload: DiscordWebhookPayload): Promise<WebhookResponse> {
@@ -426,5 +465,6 @@ export { DiscordWebhookNotificationService };
 export type { 
   ConsultationWebhookData, 
   RoiAssessmentWebhookData, 
+  SocialPublishAlertData,
   WebhookResponse 
 };

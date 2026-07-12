@@ -5,6 +5,7 @@ import {
   createSocialPostSchema,
   getScheduledFor,
 } from '@/lib/social/apiValidation'
+import { enqueuePost } from '@/lib/social/publishQueue'
 import type { SocialPost, SocialPlatform, SocialPostStatus, SocialSourceType } from '@/lib/social/types'
 
 interface PostStats {
@@ -199,6 +200,12 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       throw error
+    }
+
+    if (body.status === 'queued') {
+      await enqueuePost(data.id, new Date())
+    } else if (body.status === 'scheduled') {
+      await enqueuePost(data.id, getScheduledFor(body)!)
     }
 
     return NextResponse.json({

@@ -6,6 +6,7 @@ import {
   isAllowedSocialPostStatusTransition,
   updateSocialPostSchema,
 } from '@/lib/social/apiValidation'
+import { dequeuePost, enqueuePost } from '@/lib/social/publishQueue'
 import type { SocialPost, SocialPostStatus } from '@/lib/social/types'
 
 interface RouteParams {
@@ -316,6 +317,17 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     if (error) {
       throw error
+    }
+
+    if (body.status === 'draft') {
+      await dequeuePost(id)
+    } else if (body.status === 'queued') {
+      await enqueuePost(id, new Date())
+    } else if (
+      resultingStatus === 'scheduled' &&
+      (body.status === 'scheduled' || scheduledFor !== undefined)
+    ) {
+      await enqueuePost(id, resultingScheduledFor!)
     }
 
     return NextResponse.json({
