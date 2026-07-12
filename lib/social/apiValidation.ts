@@ -160,6 +160,12 @@ export const updateSocialPostSchema = z
     addSchedulingIssues(data, context)
   })
 
+export const decideContentApprovalSchema = z.object({
+  id: z.string().uuid(),
+  decision: z.enum(['approved', 'rejected']),
+  notes: z.string().trim().max(4000).optional(),
+})
+
 const allowedStatusTransitions: Partial<
   Record<SocialPostStatus, readonly SocialPostStatus[]>
 > = {

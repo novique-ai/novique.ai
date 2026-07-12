@@ -10,6 +10,7 @@ import {
   TokenExpiredError,
 } from '@/lib/social/clients';
 import { decryptToken, encryptToken } from '@/lib/social/tokenCrypto';
+import { recordCleanPublish } from '@/lib/social/probation';
 import type {
   SocialPlatform,
   SocialPost,
@@ -359,6 +360,7 @@ async function adoptSucceededAttempt(
   }
 
   if (data) {
+    await recordCleanPublish(data as SocialPost);
     return {
       ok: true,
       data: data as SocialPost,

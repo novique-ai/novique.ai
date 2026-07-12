@@ -25,6 +25,17 @@ export type SocialPostStatus =
 
 export type SocialSourceType = 'blog' | 'lab' | 'manual';
 
+export type ContentApprovalSubjectType =
+  | 'weekly_plan'
+  | 'article'
+  | 'template_probation'
+  | 'image_style'
+  | 'post_review';
+
+export type ContentApprovalStatus = 'pending' | 'approved' | 'rejected';
+
+export type TemplateProbationStatus = 'probation' | 'trusted' | 'suspended';
+
 export type ModerationStatus =
   | 'pending'
   | 'approved'
@@ -113,6 +124,8 @@ export interface SocialPost {
   // New fields from migration 006
   post_type: SocialPostType;
   template_id: string | null;
+  // Content supply chain context from migration 009
+  campaign_id: string | null;
   // Audit
   created_by: string | null;
   approved_by: string | null;
@@ -179,6 +192,29 @@ export interface SocialPostQueue {
   max_attempts: number;
   last_error: string | null;
   created_at: string;
+}
+
+export interface ContentApproval {
+  id: string;
+  subject_type: ContentApprovalSubjectType;
+  subject_id: string;
+  status: ContentApprovalStatus;
+  summary: string;
+  payload: Record<string, unknown>;
+  requested_at: string;
+  decided_at: string | null;
+  decided_by: string | null;
+  notes: string | null;
+}
+
+export interface TemplateProbation {
+  id: string;
+  platform: SocialPlatform;
+  template_key: string;
+  clean_publishes: number;
+  required: number;
+  status: TemplateProbationStatus;
+  updated_at: string;
 }
 
 /**
