@@ -125,11 +125,16 @@ function getLinkedInCredentials() {
 
 export const linkedinClient: SocialClient = {
   platform: 'linkedin',
+  requiresPKCE: false,
 
   /**
    * Get the authorization URL for OAuth 2.0
    */
-  getAuthorizationUrl(state: string, redirectUri: string): string {
+  getAuthorizationUrl(
+    state: string,
+    redirectUri: string,
+    _codeVerifier?: string
+  ): string {
     const { clientId } = getLinkedInCredentials();
 
     const params = new URLSearchParams({
@@ -150,7 +155,8 @@ export const linkedinClient: SocialClient = {
    */
   async exchangeCodeForToken(
     code: string,
-    redirectUri: string
+    redirectUri: string,
+    _codeVerifier?: string
   ): Promise<OAuthTokenResponse> {
     const { clientId, clientSecret } = getLinkedInCredentials();
 

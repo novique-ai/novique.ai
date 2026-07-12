@@ -25,7 +25,6 @@ import {
   handleAPIResponse,
   withRetry,
   buildURL,
-  generatePKCE,
   calculateTokenExpiration,
   truncateText,
 } from './base';
@@ -43,6 +42,7 @@ const TWITTER_SCOPES = [
   'tweet.read',
   'tweet.write',
   'users.read',
+  'offline.access',
 ].join(' ');
 
 // Character limit for tweets
@@ -121,29 +121,35 @@ function getTwitterCredentials() {
   return { clientId, clientSecret };
 }
 
-// Store PKCE verifiers temporarily (in production, use Redis or database)
-const pkceStore = new Map<string, string>();
-
 // =====================================================
 // TWITTER CLIENT IMPLEMENTATION
 // =====================================================
 
 export const twitterClient: SocialClient = {
   platform: 'twitter',
+  requiresPKCE: true,
 
   /**
    * Get the authorization URL for OAuth 2.0 with PKCE
    */
-  getAuthorizationUrl(state: string, redirectUri: string): string {
+  getAuthorizationUrl(
+    state: string,
+    redirectUri: string,
+    codeVerifier?: string
+  ): string {
     const { clientId } = getTwitterCredentials();
 
-    const codeVerifier = crypto.randomBytes(32).toString('base64url');
+    if (!codeVerifier) {
+      throw new AuthenticationError(
+        'twitter',
+        'PKCE code verifier is required for Twitter OAuth'
+      );
+    }
+
     const codeChallenge = crypto
       .createHash('sha256')
       .update(codeVerifier)
       .digest('base64url');
-
-    pkceStore.set(state, codeVerifier);
 
     return buildURL(`${TWITTER_AUTH_BASE}/authorize`, {
       response_type: 'code',
@@ -162,14 +168,15 @@ export const twitterClient: SocialClient = {
   async exchangeCodeForToken(
     code: string,
     redirectUri: string,
-    state?: string
+    codeVerifier?: string
   ): Promise<OAuthTokenResponse> {
     const { clientId, clientSecret } = getTwitterCredentials();
 
-    // Get the code verifier from state
-    const codeVerifier = state ? pkceStore.get(state) : undefined;
-    if (state) {
-      pkceStore.delete(state);
+    if (!codeVerifier) {
+      throw new AuthenticationError(
+        'twitter',
+        'PKCE code verifier is required for Twitter token exchange'
+      );
     }
 
     const params = new URLSearchParams({
@@ -177,7 +184,7 @@ export const twitterClient: SocialClient = {
       code,
       redirect_uri: redirectUri,
       client_id: clientId,
-      ...(codeVerifier && { code_verifier: codeVerifier }),
+      code_verifier: codeVerifier,
     });
 
     const response = await fetchWithTimeout(TWITTER_TOKEN_URL, {

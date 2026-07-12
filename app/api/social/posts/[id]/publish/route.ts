@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/session'
 import { getClient, isTokenExpired, TokenExpiredError } from '@/lib/social/clients'
+import { decryptToken, encryptToken } from '@/lib/social/tokenCrypto'
 import type { SocialPost, SocialAccount, SocialPlatform } from '@/lib/social/types'
 
 interface RouteParams {
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // Get connected account for this platform
     const { data: accounts, error: accountError } = await supabase
       .from('social_accounts')
-      .select('*')
+      .select('id, access_token, refresh_token, token_expires_at')
       .eq('platform', post.platform)
       .eq('status', 'active')
       .limit(1)
@@ -74,6 +75,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     }
 
     const account = accounts[0] as SocialAccount
+    account.access_token = decryptToken(account.access_token)
+    account.refresh_token = account.refresh_token
+      ? decryptToken(account.refresh_token)
+      : null
 
     // Check if token is expired
     if (isTokenExpired(account.token_expires_at)) {
@@ -87,8 +92,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           await supabase
             .from('social_accounts')
             .update({
-              access_token: newTokens.access_token,
-              refresh_token: newTokens.refresh_token || account.refresh_token,
+              access_token: encryptToken(newTokens.access_token),
+              refresh_token: encryptToken(
+                newTokens.refresh_token || account.refresh_token
+              ),
               token_expires_at: new Date(
                 Date.now() + (newTokens.expires_in || 3600) * 1000
               ).toISOString(),
@@ -195,7 +202,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           .eq('id', account.id)
       }
 
-      console.error(`Failed to publish to ${post.platform}:`, publishError)
+      console.error(
+        `Failed to publish to ${post.platform}:`,
+        publishError instanceof Error ? publishError.name : 'UnknownError'
+      )
 
       return NextResponse.json(
         {
@@ -206,7 +216,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       )
     }
   } catch (error) {
-    console.error('Social post publish error:', error)
+    console.error(
+      'Social post publish error:',
+      error instanceof Error ? error.name : 'UnknownError'
+    )
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Failed to publish post' },
       { status: 500 }

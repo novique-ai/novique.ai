@@ -107,11 +107,16 @@ function getMetaCredentials() {
 
 export const instagramClient: SocialClient = {
   platform: 'instagram',
+  requiresPKCE: false,
 
   /**
    * Get the authorization URL for Facebook OAuth (required for Instagram)
    */
-  getAuthorizationUrl(state: string, redirectUri: string): string {
+  getAuthorizationUrl(
+    state: string,
+    redirectUri: string,
+    _codeVerifier?: string
+  ): string {
     const { appId } = getMetaCredentials();
 
     return buildURL(FACEBOOK_AUTH_URL, {
@@ -128,7 +133,8 @@ export const instagramClient: SocialClient = {
    */
   async exchangeCodeForToken(
     code: string,
-    redirectUri: string
+    redirectUri: string,
+    _codeVerifier?: string
   ): Promise<OAuthTokenResponse> {
     const { appId, appSecret } = getMetaCredentials();
 

@@ -509,10 +509,19 @@ export interface OAuthTokenResponse {
  */
 export interface SocialClient {
   platform: SocialPlatform;
+  requiresPKCE: boolean;
 
   // Authentication
-  getAuthorizationUrl(state: string, redirectUri: string): string;
-  exchangeCodeForToken(code: string, redirectUri: string, state?: string): Promise<OAuthTokenResponse>;
+  getAuthorizationUrl(
+    state: string,
+    redirectUri: string,
+    codeVerifier?: string
+  ): string;
+  exchangeCodeForToken(
+    code: string,
+    redirectUri: string,
+    codeVerifier?: string
+  ): Promise<OAuthTokenResponse>;
   refreshAccessToken(refreshToken: string): Promise<OAuthTokenResponse>;
 
   // Account
