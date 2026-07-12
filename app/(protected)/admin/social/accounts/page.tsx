@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect, useCallback } from 'react'
 import { PlatformBadge } from '@/components/social'
@@ -259,9 +260,12 @@ export default function AdminSocialAccountsPage() {
                       {/* Account Details */}
                       <div className="flex items-center gap-3">
                         {account.profile_image_url ? (
-                          <img
+                          <Image
                             src={account.profile_image_url}
                             alt={account.account_name}
+                            width={40}
+                            height={40}
+                            unoptimized
                             className="w-10 h-10 rounded-full"
                           />
                         ) : (

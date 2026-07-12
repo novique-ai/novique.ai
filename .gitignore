@@ -53,8 +53,9 @@ research/
 /marketing/
 worker/state/
 
-# Company documents (sensitive)
-docs/
+# Company documents (sensitive); keep the social operations runbook tracked.
+docs/*
+!docs/social-system.md
 
 # Local Claude Code settings
 .claude/settings.local.json

@@ -1156,3 +1156,4 @@ export function splitIntoTweets(
 // =====================================================
 
 export default twitterClient;
+export { countCharacters } from './base';
