@@ -1,4 +1,5 @@
 import { adaptContentForPlatforms } from '@/lib/ai/socialAdapter';
+import { renderAndStoreCard } from '@/lib/media/renderCard';
 import { enqueuePost, sendPublishQueueAlert } from '@/lib/social/publishQueue';
 import type { ContentSource, SocialPlatform } from '@/lib/social/types';
 import { createAdminClient } from '@/lib/supabase/server';
@@ -46,6 +47,39 @@ async function alertFanout(postId: string, message: string): Promise<void> {
     postId,
     message,
   });
+}
+
+async function resolveMediaUrls(
+  blogPost: PublishedBlogPost,
+  platform: SocialPlatform,
+  templateKey: string,
+  derivativeContent: string
+): Promise<string[] | null> {
+  const headerMedia = blogPost.header_image ? [blogPost.header_image] : null;
+  const needsInstagramCard =
+    platform === 'instagram' &&
+    (templateKey === 'quote_card' || !blogPost.header_image);
+
+  if (!needsInstagramCard) return headerMedia;
+
+  try {
+    const url = await renderAndStoreCard('quote_card', {
+      title: blogPost.title,
+      quote:
+        blogPost.core_takeaway ||
+        blogPost.summary ||
+        derivativeContent ||
+        blogPost.title,
+      attribution: 'Novique.AI',
+    });
+    return [url];
+  } catch (error) {
+    console.warn(
+      `WARN: Branded card render failed for ${platform}; using existing media fallback.`,
+      error
+    );
+    return headerMedia;
+  }
 }
 
 /**
@@ -150,9 +184,12 @@ export async function fanOutDerivatives(
         const scheduledFor = new Date(
           Date.now() + PLATFORM_DELAYS_MS[derivative.platform]
         );
-        const mediaUrls = blogPost.header_image
-          ? [blogPost.header_image]
-          : null;
+        const mediaUrls = await resolveMediaUrls(
+          blogPost,
+          derivative.platform,
+          templateKey,
+          derivative.content
+        );
 
         const { data: createdPost, error: createError } = await supabase
           .from('social_posts')

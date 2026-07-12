@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import type {
+  BrandedCardTemplate,
   SocialMediaUploadResult,
   SocialPlatform,
   SocialSourceType,
@@ -33,6 +34,10 @@ export default function MediaPicker({
   const [urlInput, setUrlInput] = useState('')
   const [headerImage, setHeaderImage] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [isGeneratingCard, setIsGeneratingCard] = useState(false)
+  const [cardTemplate, setCardTemplate] =
+    useState<BrandedCardTemplate>('quote_card')
+  const [generatedPreview, setGeneratedPreview] = useState<string | null>(null)
   const [localError, setLocalError] = useState<string | null>(null)
   const mediaCountRef = useRef(mediaUrls.length)
   const onChangeRef = useRef(onChange)
@@ -133,6 +138,42 @@ export default function MediaPicker({
     }
   }
 
+  const handleGenerateCard = async () => {
+    if (!postId) {
+      setLocalError('Save the post before generating a branded card')
+      return
+    }
+
+    setIsGeneratingCard(true)
+    setLocalError(null)
+    try {
+      const response = await fetch('/api/social/render-card', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ template: cardTemplate, postId }),
+      })
+      const result = await response.json()
+      if (!response.ok) {
+        throw new Error(result.error || 'Branded card generation failed')
+      }
+
+      const url = result.data?.url
+      if (typeof url !== 'string' || !url) {
+        throw new Error('Branded card generation returned no URL')
+      }
+      setGeneratedPreview(url)
+      appendUrls([url])
+    } catch (generationError) {
+      setLocalError(
+        generationError instanceof Error
+          ? generationError.message
+          : 'Branded card generation failed'
+      )
+    } finally {
+      setIsGeneratingCard(false)
+    }
+  }
+
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap gap-2">
@@ -187,6 +228,47 @@ export default function MediaPicker({
           Add URL
         </button>
       </form>
+
+      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
+        <select
+          aria-label="Branded card template"
+          value={cardTemplate}
+          onChange={(event) =>
+            setCardTemplate(event.target.value as BrandedCardTemplate)
+          }
+          disabled={disabled || isGeneratingCard}
+          className="min-w-[170px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700"
+        >
+          <option value="quote_card">Quote card</option>
+          <option value="insight_card">Insight card</option>
+          <option value="article_og">Article OG</option>
+        </select>
+        <button
+          type="button"
+          onClick={handleGenerateCard}
+          disabled={
+            disabled ||
+            isGeneratingCard ||
+            !postId ||
+            mediaUrls.length >= MAX_MEDIA
+          }
+          className="rounded-md border border-teal-200 bg-teal-50 px-3 py-2 text-sm font-medium text-teal-800 hover:bg-teal-100 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {isGeneratingCard ? 'Generating...' : 'Generate branded card'}
+        </button>
+        {generatedPreview && (
+          <div className="relative h-12 w-12 overflow-hidden rounded border border-gray-200 bg-gray-100">
+            <Image
+              src={generatedPreview}
+              alt="Generated branded card preview"
+              fill
+              unoptimized
+              sizes="48px"
+              className="object-cover"
+            />
+          </div>
+        )}
+      </div>
 
       {mediaUrls.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">

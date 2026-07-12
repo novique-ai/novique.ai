@@ -67,6 +67,24 @@ export interface SocialMediaUploadResult {
   instagram: SocialMediaUploadVariant;
 }
 
+export type BrandedCardTemplate =
+  | 'quote_card'
+  | 'insight_card'
+  | 'article_og';
+
+export interface BrandedCardSize {
+  width: number;
+  height: number;
+}
+
+export interface BrandedCardData {
+  title: string;
+  subtitle?: string;
+  quote?: string;
+  attribution?: string;
+  insights?: string[];
+}
+
 // =====================================================
 // DATABASE ENTITIES
 // =====================================================
