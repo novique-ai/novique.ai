@@ -2,6 +2,7 @@ import { adaptContentForPlatforms } from '@/lib/ai/socialAdapter';
 import { renderAndStoreCard } from '@/lib/media/renderCard';
 import { enqueuePost, sendPublishQueueAlert } from '@/lib/social/publishQueue';
 import type { ContentSource, SocialPlatform } from '@/lib/social/types';
+import { applyUtm } from '@/lib/social/utm';
 import { createAdminClient } from '@/lib/supabase/server';
 
 const FALLBACK_PLATFORMS: SocialPlatform[] = ['twitter', 'linkedin'];
@@ -106,7 +107,7 @@ export async function fanOutDerivatives(
         .eq('source_id', blogPost.id),
       supabase
         .from('content_campaigns')
-        .select('id')
+        .select('id,slug')
         .eq('blog_post_id', blogPost.id)
         .order('created_at', { ascending: false })
         .limit(1)
@@ -171,6 +172,11 @@ export async function fanOutDerivatives(
 
         const templateKey =
           derivative.template.template_name || derivative.template.id;
+        const attributedContent = applyUtm(derivative.content, {
+          source: derivative.platform,
+          campaignSlug: campaignResult.data?.slug || blogPost.slug,
+          content: templateKey,
+        });
         const { data: probation, error: probationError } = await supabase
           .from('template_probation')
           .select('status')
@@ -199,7 +205,7 @@ export async function fanOutDerivatives(
             source_title: blogPost.title,
             source_url: source.url,
             platform: derivative.platform,
-            content: derivative.content,
+            content: attributedContent,
             media_urls: mediaUrls,
             hashtags: derivative.hashtags,
             status: trusted ? 'queued' : 'draft',

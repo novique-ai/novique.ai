@@ -13,6 +13,26 @@
   ],
   "articles_per_week": 1,
   "monthly_token_budget_usd": 20,
+  "metrics": {
+    "max_snapshot_calls_per_run": 20,
+    "candidate_post_limit": 500,
+    "windows": {
+      "24h": 24,
+      "7d": 168,
+      "28d": 672
+    },
+    "core_metrics": [
+      "impressions",
+      "reach",
+      "likes",
+      "comments",
+      "shares",
+      "retweets",
+      "reposts",
+      "clicks",
+      "saves"
+    ]
+  },
   "models": {
     "utility": {
       "id": "claude-haiku-4-5-20251001",

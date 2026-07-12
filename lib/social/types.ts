@@ -334,6 +334,29 @@ export interface SocialPostMetrics {
   saves?: number; // Instagram
 }
 
+export type SocialMetricWindow = '24h' | '7d' | '28d';
+
+export interface SocialMetricSnapshot {
+  id: string;
+  post_id: string;
+  platform: SocialPlatform;
+  window: SocialMetricWindow;
+  captured_at: string;
+  metrics: SocialPostMetrics & { error?: string };
+}
+
+export interface SocialMetricsPlatformSummary {
+  impressions: number | null;
+  likes: number | null;
+  captured_at: string | null;
+}
+
+export interface SocialMetricsDashboardSummary {
+  published_this_month: number;
+  pending_approvals: number;
+  platforms: Record<SocialPlatform, SocialMetricsPlatformSummary>;
+}
+
 /**
  * AI analysis result for comment moderation
  */

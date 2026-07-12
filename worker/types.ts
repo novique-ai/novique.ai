@@ -2,6 +2,12 @@ export interface WorkerConfig {
   feeds: Array<{ name: string; url: string }>;
   articles_per_week: number;
   monthly_token_budget_usd: number;
+  metrics: {
+    max_snapshot_calls_per_run: number;
+    candidate_post_limit: number;
+    windows: Record<'24h' | '7d' | '28d', number>;
+    core_metrics: string[];
+  };
   models: {
     utility: ModelConfig;
     writer: ModelConfig;

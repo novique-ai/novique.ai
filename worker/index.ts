@@ -1,9 +1,10 @@
 import { discover } from './commands/discover';
+import { metrics } from './commands/metrics';
 import { plan } from './commands/plan';
 import { produce } from './commands/produce';
 import { run } from './commands/run';
 
-const commands: Record<string, () => Promise<void>> = { discover, plan, produce, run };
+const commands: Record<string, () => Promise<void>> = { discover, plan, produce, metrics, run };
 const command = process.argv[2];
 
 if (!command || !commands[command]) {

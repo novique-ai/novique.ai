@@ -10,6 +10,7 @@ The full `worker:run` path requires:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=...
 ANTHROPIC_API_KEY=...
+SOCIAL_TOKEN_ENCRYPTION_KEY=... # Same base64 32-byte key used by the website.
 ```
 
 Optional variables:
@@ -31,6 +32,7 @@ npm run worker:discover
 npm run worker:plan
 npm run worker:produce
 npm run worker:run
+npx tsx worker/index.ts metrics
 npm run worker:typecheck
 ```
 
@@ -39,7 +41,8 @@ npm run worker:typecheck
 | `worker:discover` | Fetch feeds, batch-score candidates with Haiku 4.5, and write `worker/state/candidates.json`. |
 | `worker:plan` | Draft three briefs, create proposed campaigns, create one pending weekly-plan approval, and alert Discord. |
 | `worker:produce` | Produce campaigns selected by approved weekly plans and create `pending_review` blog posts. |
-| `worker:run` | Daily idempotent entry point: refresh stale candidates, ensure the current week's plan exists, then produce approved work. |
+| `worker:metrics` (`npx tsx worker/index.ts metrics`) | Capture due 24h/7d/28d engagement snapshots, capped by `worker/config.json`. Add `--digest` to force the prior-month digest. |
+| `worker:run` | Daily idempotent entry point: refresh stale candidates, ensure the current week's plan exists, produce approved work, then capture due metrics. |
 | `worker:typecheck` | Type-check only the worker surface. The application remains covered by `npx tsc --noEmit`. |
 
 An approved plan may select campaigns through `selected_campaign_id`, `selected_campaign_ids`, an ID or one-based item number in approval notes, or equivalent notes in the payload. If the approval has no selection, every proposed campaign in that approval is eligible, matching the approval contract.
@@ -64,6 +67,10 @@ The final blog insert follows the existing generator shape: HTML and Markdown bo
 ## Budget guard
 
 The worker sums the current calendar month's `cost_usd` values from `worker/state/usage.jsonl`. If spend is at or above `monthly_token_budget_usd` in `worker/config.json`, `worker:run` skips all generation and sends/logs an alert. Production re-checks before every Claude stage, so a run that crosses the threshold stops before its next generation call. Research and saved artifacts remain available for a later resume.
+
+Metric collection is independent of the Claude budget and still runs when generation is skipped. Each published, worker-owned post gets at most one immutable snapshot at 24 hours, 7 days, and 28 days. The worker processes the oldest due boundaries first and caps platform reads at `metrics.max_snapshot_calls_per_run` (20 by default). Failed reads are stored as `{ "error": "..." }`; expired-token accounts produce one combined Discord alert per run.
+
+On the first day of each month, the metrics command writes the prior month's digest to `worker/state/digest-YYYY-MM.md` and sends the same Markdown to Discord. An existing digest file prevents duplicate automatic delivery. Run `npx tsx worker/index.ts metrics --digest` to regenerate and resend it explicitly.
 
 Pricing in `worker/config.json` is used only for the local estimate. Review it whenever model pricing changes.
 
