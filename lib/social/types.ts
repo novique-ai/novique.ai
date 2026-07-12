@@ -43,6 +43,19 @@ export type SocialPostType =
   | 'native_insight'
   | 'founder_post';
 
+export interface SocialMediaUploadVariant {
+  url: string;
+  width: number | null;
+  height: number | null;
+}
+
+export interface SocialMediaUploadResult {
+  fileName: string;
+  contentType: 'image/jpeg' | 'image/png' | 'image/webp';
+  full: SocialMediaUploadVariant;
+  instagram: SocialMediaUploadVariant;
+}
+
 // =====================================================
 // DATABASE ENTITIES
 // =====================================================

@@ -30,8 +30,9 @@ import {
 // CONFIGURATION
 // =====================================================
 
-const FACEBOOK_GRAPH_BASE = 'https://graph.facebook.com/v18.0';
-const FACEBOOK_AUTH_URL = 'https://www.facebook.com/v18.0/dialog/oauth';
+const META_GRAPH_VERSION = 'v25.0';
+const FACEBOOK_GRAPH_BASE = `https://graph.facebook.com/${META_GRAPH_VERSION}`;
+const FACEBOOK_AUTH_URL = `https://www.facebook.com/${META_GRAPH_VERSION}/dialog/oauth`;
 
 // Instagram/Facebook OAuth scopes
 const INSTAGRAM_SCOPES = [

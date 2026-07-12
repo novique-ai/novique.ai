@@ -576,20 +576,57 @@ async function refreshAccountToken(
   if (!isTokenExpired(account.token_expires_at)) return accessToken;
 
   if (!refreshToken) {
-    await supabase
-      .from('social_accounts')
-      .update({
-        status: 'expired',
-        error_message: 'Token expired and no refresh token available',
-      })
-      .eq('id', account.id);
-    throw new TokenExpiredError(platform);
+    if (platform !== 'instagram') {
+      await supabase
+        .from('social_accounts')
+        .update({
+          status: 'expired',
+          error_message: 'Token expired and no refresh token available',
+        })
+        .eq('id', account.id);
+      throw new TokenExpiredError(platform);
+    }
+
+    try {
+      const client = getClient(platform);
+      // Meta long-lived tokens do not provide a refresh_token. Extend the
+      // access token at publish time for now; WS4+ should hoist this into a
+      // proactive account-refresh job before posts reach the executor.
+      const newTokens = await client.refreshAccessToken(accessToken);
+      const { error } = await supabase
+        .from('social_accounts')
+        .update({
+          access_token: encryptToken(newTokens.access_token),
+          token_expires_at: new Date(
+            Date.now() + (newTokens.expires_in || 3600) * 1000
+          ).toISOString(),
+          status: 'active',
+          last_verified_at: new Date().toISOString(),
+          error_message: null,
+        })
+        .eq('id', account.id);
+
+      if (error) throw error;
+      return newTokens.access_token;
+    } catch (error) {
+      await supabase
+        .from('social_accounts')
+        .update({
+          status: 'expired',
+          error_message: 'Instagram token extension failed',
+        })
+        .eq('id', account.id);
+
+      if (error instanceof SocialAPIError) throw error;
+      throw new AuthenticationError(
+        platform,
+        'Instagram account token extension failed. Please reconnect the account.'
+      );
+    }
   }
 
   try {
     const client = getClient(platform);
-    // Instagram token extension differs from refresh-token OAuth flows and is
-    // intentionally left for WS3. This preserves the current route behavior.
     const newTokens = await client.refreshAccessToken(refreshToken);
     const { error } = await supabase
       .from('social_accounts')
