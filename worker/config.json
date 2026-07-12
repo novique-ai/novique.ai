@@ -1,0 +1,28 @@
+{
+  "feeds": [
+    { "name": "Anthropic News", "url": "https://www.anthropic.com/news/rss.xml" },
+    { "name": "OpenAI News", "url": "https://openai.com/news/rss.xml" },
+    { "name": "Google AI Blog", "url": "https://blog.google/technology/ai/rss/" },
+    { "name": "Vercel Blog", "url": "https://vercel.com/atom" },
+    { "name": "Supabase Blog", "url": "https://supabase.com/blog/rss.xml" },
+    { "name": "Hacker News", "url": "https://hnrss.org/frontpage" },
+    { "name": "U.S. Small Business Administration", "url": "https://www.sba.gov/blogs/rss.xml" },
+    { "name": "Small Business Trends", "url": "https://smallbiztrends.com/feed/" },
+    { "name": "Duct Tape Marketing", "url": "https://ducttapemarketing.com/feed/" },
+    { "name": "Zapier", "url": "https://zapier.com/blog/feeds/latest/" }
+  ],
+  "articles_per_week": 1,
+  "monthly_token_budget_usd": 20,
+  "models": {
+    "utility": {
+      "id": "claude-haiku-4-5-20251001",
+      "input_cost_per_million_usd": 1,
+      "output_cost_per_million_usd": 5
+    },
+    "writer": {
+      "id": "claude-sonnet-5",
+      "input_cost_per_million_usd": 3,
+      "output_cost_per_million_usd": 15
+    }
+  }
+}

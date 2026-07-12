@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
 import type { UserProfile } from '@/lib/auth/session'
 
 interface AdminNavProps {
@@ -45,10 +46,45 @@ const navIcons: Record<string, React.ReactNode> = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
     </svg>
   ),
+  '/admin/social/approvals': (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+    </svg>
+  ),
 }
 
 export function AdminNav({ user }: AdminNavProps) {
   const pathname = usePathname()
+  const [pendingApprovals, setPendingApprovals] = useState(0)
+
+  const loadPendingApprovals = useCallback(async () => {
+    if (user.role !== 'admin') return
+
+    try {
+      const response = await fetch('/api/social/approvals')
+      if (!response.ok) return
+      const result = await response.json()
+      setPendingApprovals(typeof result.total === 'number' ? result.total : 0)
+    } catch {
+      // Navigation remains usable if the count cannot be refreshed.
+    }
+  }, [user.role])
+
+  useEffect(() => {
+    loadPendingApprovals()
+
+    const handleUpdate = (event: Event) => {
+      const total = (event as CustomEvent<number>).detail
+      if (typeof total === 'number') {
+        setPendingApprovals(total)
+      } else {
+        loadPendingApprovals()
+      }
+    }
+
+    window.addEventListener('social-approvals-updated', handleUpdate)
+    return () => window.removeEventListener('social-approvals-updated', handleUpdate)
+  }, [loadPendingApprovals])
 
   // Define all possible nav links with role requirements
   const allNavLinks = [
@@ -59,6 +95,7 @@ export function AdminNav({ user }: AdminNavProps) {
     { href: '/admin/users', label: 'Users', roles: ['admin'] },
     { href: '/admin/blog', label: 'Blog', roles: ['admin', 'editor'] },
     { href: '/admin/social', label: 'Social', roles: ['admin', 'editor'] },
+    { href: '/admin/social/approvals', label: 'Approvals', roles: ['admin'] },
   ]
 
   // Filter nav links based on user role
@@ -68,6 +105,12 @@ export function AdminNav({ user }: AdminNavProps) {
   const isActive = (href: string) => {
     if (href === '/admin/dashboard') {
       return pathname === href || pathname === '/admin'
+    }
+    if (href === '/admin/social') {
+      return (
+        pathname.startsWith(href) &&
+        !pathname.startsWith('/admin/social/approvals')
+      )
     }
     return pathname.startsWith(href)
   }
@@ -111,6 +154,11 @@ export function AdminNav({ user }: AdminNavProps) {
                       {navIcons[link.href]}
                     </span>
                     {link.label}
+                    {link.href === '/admin/social/approvals' && pendingApprovals > 0 && (
+                      <span className="ml-2 inline-flex min-w-5 h-5 items-center justify-center rounded-full bg-amber-400 px-1.5 text-xs font-semibold text-slate-900">
+                        {pendingApprovals > 99 ? '99+' : pendingApprovals}
+                      </span>
+                    )}
                   </Link>
                 )
               })}
@@ -170,6 +218,11 @@ export function AdminNav({ user }: AdminNavProps) {
                   {navIcons[link.href]}
                 </span>
                 {link.label}
+                {link.href === '/admin/social/approvals' && pendingApprovals > 0 && (
+                  <span className="ml-2 inline-flex min-w-5 h-5 items-center justify-center rounded-full bg-amber-400 px-1.5 text-xs font-semibold text-slate-900">
+                    {pendingApprovals > 99 ? '99+' : pendingApprovals}
+                  </span>
+                )}
               </Link>
             )
           })}

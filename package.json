@@ -8,7 +8,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate:mdx": "npx tsx scripts/migrate-all-mdx.ts"
+    "migrate:mdx": "npx tsx scripts/migrate-all-mdx.ts",
+    "worker:discover": "tsx worker/index.ts discover",
+    "worker:plan": "tsx worker/index.ts plan",
+    "worker:produce": "tsx worker/index.ts produce",
+    "worker:run": "tsx worker/index.ts run",
+    "worker:typecheck": "tsc -p worker/tsconfig.json"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
@@ -60,6 +65,7 @@
     "postcss": "^8.4.49",
     "qrcode": "^1.5.4",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.20.3",
     "typescript": "^5.7.2"
   }
 }
