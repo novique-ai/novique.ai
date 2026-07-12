@@ -19,6 +19,7 @@ export type SocialPostStatus =
   | 'queued'
   | 'scheduled'
   | 'publishing'
+  | 'needs_review'
   | 'published'
   | 'failed';
 

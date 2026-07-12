@@ -22,6 +22,7 @@ export default function AdminSocialPage() {
       publishing: 0,
       published: 0,
       failed: 0,
+      needs_review: 0,
     },
     byPlatform: {
       twitter: 0,
