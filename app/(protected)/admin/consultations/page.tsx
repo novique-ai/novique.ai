@@ -259,12 +259,12 @@ export default function ConsultationsPage() {
 
   const getStatusBadge = (status: string) => {
     const badges: Record<string, { bg: string; text: string; dot: string }> = {
-      pending: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500' },
-      contacted: { bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500' },
-      converted: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500' },
-      cancelled: { bg: 'bg-gray-50', text: 'text-gray-600', dot: 'bg-gray-400' },
+      pending: { bg: 'bg-amber-500/10 ring-1 ring-inset ring-amber-500/25', text: 'text-amber-300', dot: 'bg-amber-400' },
+      contacted: { bg: 'bg-aqua/10 ring-1 ring-inset ring-aqua/25', text: 'text-aqua', dot: 'bg-aqua' },
+      converted: { bg: 'bg-emerald-500/10 ring-1 ring-inset ring-emerald-500/25', text: 'text-emerald-300', dot: 'bg-emerald-400' },
+      cancelled: { bg: 'bg-surface-3 ring-1 ring-inset ring-stroke-1', text: 'text-ink-1', dot: 'bg-ink-3' },
     }
-    return badges[status] || { bg: 'bg-gray-50', text: 'text-gray-600', dot: 'bg-gray-400' }
+    return badges[status] || { bg: 'bg-surface-3 ring-1 ring-inset ring-stroke-1', text: 'text-ink-1', dot: 'bg-ink-3' }
   }
 
   const consultationStatusOptions = [
@@ -326,27 +326,27 @@ export default function ConsultationsPage() {
 
       {/* Delete Confirmation Modal */}
       {deleteTarget && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-surface-2 border border-stroke-0 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
-                <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-12 h-12 rounded-full bg-red-500/10 ring-1 ring-inset ring-red-500/25 flex items-center justify-center">
+                <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Delete {deleteTarget.type === 'consultation' ? 'Consultation Request' : 'ROI Assessment'}</h3>
-                <p className="text-sm text-gray-500">This action cannot be undone.</p>
+                <h3 className="text-lg font-semibold text-ink-0">Delete {deleteTarget.type === 'consultation' ? 'Consultation Request' : 'ROI Assessment'}</h3>
+                <p className="text-sm text-ink-2">This action cannot be undone.</p>
               </div>
             </div>
-            <p className="text-sm text-gray-700 mb-6">
+            <p className="text-sm text-ink-1 mb-6">
               Are you sure you want to delete the {deleteTarget.type === 'consultation' ? 'consultation request' : 'ROI assessment'} for <span className="font-medium">{deleteTarget.label}</span>?
             </p>
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setDeleteTarget(null)}
                 disabled={isDeleting}
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                className="px-4 py-2 border border-stroke-1 rounded-md text-sm font-medium text-ink-1 bg-surface-1 hover:bg-surface-3/60 disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -438,31 +438,31 @@ export default function ConsultationsPage() {
                             {consultation.name[0].toUpperCase()}
                           </div>
                           <div>
-                            <div className="text-sm font-semibold text-gray-900">{consultation.name}</div>
-                            <div className="text-sm text-gray-500">{consultation.email}</div>
+                            <div className="text-sm font-semibold text-ink-0">{consultation.name}</div>
+                            <div className="text-sm text-ink-2">{consultation.email}</div>
                             {consultation.phone && (
-                              <div className="text-xs text-gray-400">{consultation.phone}</div>
+                              <div className="text-xs text-ink-3">{consultation.phone}</div>
                             )}
                           </div>
                         </div>
                       </AdminTableCell>
                       <AdminTableCell>
-                        <div className="text-sm text-gray-900">{consultation.business_type || '-'}</div>
+                        <div className="text-sm text-ink-0">{consultation.business_type || '-'}</div>
                         {consultation.business_size && (
-                          <div className="text-xs text-gray-500">{consultation.business_size}</div>
+                          <div className="text-xs text-ink-2">{consultation.business_size}</div>
                         )}
                       </AdminTableCell>
                       <AdminTableCell className="whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
+                        <div className="text-sm text-ink-0">
                           {consultation.preferred_date
                             ? new Date(consultation.preferred_date).toLocaleDateString()
                             : '-'}
                         </div>
                         {consultation.preferred_time && (
-                          <div className="text-xs text-gray-500">{consultation.preferred_time}</div>
+                          <div className="text-xs text-ink-2">{consultation.preferred_time}</div>
                         )}
                         {consultation.meeting_type && (
-                          <div className="text-xs text-gray-400 capitalize">
+                          <div className="text-xs text-ink-3 capitalize">
                             {consultation.meeting_type}
                           </div>
                         )}
@@ -475,13 +475,13 @@ export default function ConsultationsPage() {
                           {consultation.status.charAt(0).toUpperCase() + consultation.status.slice(1)}
                         </span>
                       </AdminTableCell>
-                      <AdminTableCell className="whitespace-nowrap text-sm text-gray-500">
+                      <AdminTableCell className="whitespace-nowrap text-sm text-ink-2">
                         {new Date(consultation.created_at).toLocaleDateString()}
                       </AdminTableCell>
                       <AdminTableCell className="whitespace-nowrap text-right">
                         <div className="flex items-center justify-end gap-2">
                           {consultation.status === 'converted' ? (
-                            <span className="inline-flex items-center gap-1 text-emerald-600 text-sm font-medium">
+                            <span className="inline-flex items-center gap-1 text-emerald-400 text-sm font-medium">
                               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
@@ -498,7 +498,7 @@ export default function ConsultationsPage() {
                           )}
                           <button
                             onClick={() => setDeleteTarget({ type: 'consultation', id: consultation.id, label: consultation.email })}
-                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                            className="p-2 text-ink-3 hover:text-red-400 hover:bg-red-500/10 rounded-md transition-colors"
                             title="Delete consultation"
                           >
                             <TrashIcon />
@@ -591,49 +591,49 @@ export default function ConsultationsPage() {
                             {assessment.email[0].toUpperCase()}
                           </div>
                           <div>
-                            <div className="text-sm font-semibold text-gray-900">{assessment.email}</div>
+                            <div className="text-sm font-semibold text-ink-0">{assessment.email}</div>
                             {assessment.notes && (
-                              <div className="text-xs text-gray-400 truncate max-w-[200px]">{assessment.notes}</div>
+                              <div className="text-xs text-ink-3 truncate max-w-[200px]">{assessment.notes}</div>
                             )}
                           </div>
                         </div>
                       </AdminTableCell>
                       <AdminTableCell>
-                        <span className="text-sm font-semibold text-emerald-600">
+                        <span className="text-sm font-semibold text-emerald-400">
                           ${results.netBenefitPerMonth?.toLocaleString() || 'N/A'}
                         </span>
                       </AdminTableCell>
                       <AdminTableCell>
-                        <span className="text-sm font-semibold text-indigo-600">
+                        <span className="text-sm font-semibold text-indigo-400">
                           {results.roiPercent?.toLocaleString() || 'N/A'}%
                         </span>
                       </AdminTableCell>
                       <AdminTableCell>
-                        <span className="text-sm text-gray-900">
+                        <span className="text-sm text-ink-0">
                           {results.paybackMonths?.toFixed(1) || 'N/A'} mo
                         </span>
                       </AdminTableCell>
                       <AdminTableCell className="whitespace-nowrap">
                         <div className="flex flex-col gap-1">
                           {assessment.converted ? (
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-blue-50 text-blue-700">
-                              <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25">
+                              <span className="w-1.5 h-1.5 rounded-full bg-aqua"></span>
                               Converted
                             </span>
                           ) : assessment.contacted ? (
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-50 text-emerald-700">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-500/10 text-emerald-300 ring-1 ring-inset ring-emerald-500/25">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                               Contacted
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-50 text-amber-700">
-                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/25">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
                               Not Contacted
                             </span>
                           )}
                         </div>
                       </AdminTableCell>
-                      <AdminTableCell className="whitespace-nowrap text-sm text-gray-500">
+                      <AdminTableCell className="whitespace-nowrap text-sm text-ink-2">
                         {new Date(assessment.created_at).toLocaleDateString()}
                       </AdminTableCell>
                       <AdminTableCell className="whitespace-nowrap text-right">
@@ -647,7 +647,7 @@ export default function ConsultationsPage() {
                           </AdminButton>
                           <button
                             onClick={() => setDeleteTarget({ type: 'roi', id: assessment.id, label: assessment.email })}
-                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                            className="p-2 text-ink-3 hover:text-red-400 hover:bg-red-500/10 rounded-md transition-colors"
                             title="Delete ROI assessment"
                           >
                             <TrashIcon />

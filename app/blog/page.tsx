@@ -51,7 +51,7 @@ export default async function BlogPage() {
                       src={post.headerImage}
                       alt={post.title}
                       fill
-                      className="object-contain transition-transform duration-300 group-hover:scale-105"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
                 )}
@@ -86,7 +86,7 @@ export default async function BlogPage() {
                       ))}
                     </div>
                   )}
-                  <span className="mt-5 text-sm text-link group-hover:text-link-hover">Read post →</span>
+                  <span className="mt-auto pt-5 text-sm text-link group-hover:text-link-hover">Read post →</span>
                 </div>
               </Link>
             ))}

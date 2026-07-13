@@ -80,39 +80,40 @@ function LoginForm() {
   const urlError = searchParams.get('error')
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
+    <div className="theme-dark min-h-screen flex items-center justify-center bg-surface-0 font-sans antialiased py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full">
+        <div className="text-center">
+          <Link href="/" className="inline-flex items-baseline gap-0.5" aria-label="Novique home">
+            <span className="font-display text-xl font-semibold tracking-tight text-ink-0">Novique</span>
+            <span className="text-xl font-semibold leading-none text-aqua">.</span>
+            <span className="font-display text-xl font-semibold tracking-tight text-ink-2">ai</span>
+          </Link>
+          <h2 className="mt-6 text-center font-display text-2xl font-semibold tracking-tight text-ink-0">
             Sign in to your account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-ink-2">
             Access the Novique.ai dashboard
           </p>
         </div>
 
-        {(error || urlError) && (
-          <div className="rounded-md bg-red-50 p-4">
-            <div className="flex">
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">
-                  {error || (urlError === 'account_disabled' && 'Account Disabled') || 'Error'}
-                </h3>
-                <div className="mt-2 text-sm text-red-700">
-                  {error ||
-                    (urlError === 'account_disabled' &&
-                      'Your account has been disabled. Please contact support.') ||
-                    'An error occurred during login.'}
-                </div>
+        <div className="mt-8 rounded-2xl border border-stroke-0 bg-surface-2 p-6 sm:p-8">
+          {(error || urlError) && (
+            <div className="mb-6 rounded-lg bg-red-500/10 ring-1 ring-inset ring-red-500/25 p-4">
+              <h3 className="text-sm font-medium text-red-300">
+                {error || (urlError === 'account_disabled' && 'Account Disabled') || 'Error'}
+              </h3>
+              <div className="mt-1 text-sm text-red-300/80">
+                {error ||
+                  (urlError === 'account_disabled' &&
+                    'Your account has been disabled. Please contact support.') ||
+                  'An error occurred during login.'}
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <label htmlFor="email" className="sr-only">
+              <label htmlFor="email" className="block text-sm font-medium text-ink-1 mb-1.5">
                 Email address
               </label>
               <input
@@ -126,15 +127,15 @@ function LoginForm() {
                 id="email"
                 type="email"
                 autoComplete="email"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                className="block w-full px-3 py-2.5 rounded-lg bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-aqua/60 focus:border-transparent sm:text-sm"
+                placeholder="you@company.com"
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                <p className="mt-1 text-sm text-red-300">{errors.email.message}</p>
               )}
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
+              <label htmlFor="password" className="block text-sm font-medium text-ink-1 mb-1.5">
                 Password
               </label>
               <input
@@ -148,36 +149,36 @@ function LoginForm() {
                 id="password"
                 type="password"
                 autoComplete="current-password"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
+                className="block w-full px-3 py-2.5 rounded-lg bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-aqua/60 focus:border-transparent sm:text-sm"
+                placeholder="••••••••"
               />
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+                <p className="mt-1 text-sm text-red-300">{errors.password.message}</p>
               )}
             </div>
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="text-sm">
-              <Link
-                href="/forgot-password"
-                className="font-medium text-blue-600 hover:text-blue-500"
-              >
-                Forgot your password?
-              </Link>
+            <div className="flex items-center justify-between">
+              <div className="text-sm">
+                <Link
+                  href="/forgot-password"
+                  className="font-medium text-aqua hover:text-aqua-bright transition-colors"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Signing in...' : 'Sign in'}
-            </button>
-          </div>
-        </form>
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="group relative w-full flex justify-center py-2.5 px-4 text-sm font-semibold rounded-full text-[#04110d] bg-aqua hover:bg-aqua-bright shadow-glow hover:shadow-glow-strong transition-all focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Signing in...' : 'Sign in'}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   )

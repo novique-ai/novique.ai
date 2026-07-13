@@ -321,20 +321,20 @@ export default function CustomerDetailPage() {
       <nav className="flex" aria-label="Breadcrumb">
         <ol className="flex items-center space-x-4">
           <li>
-            <Link href="/admin/customers" className="text-gray-400 hover:text-gray-500">
+            <Link href="/admin/customers" className="text-ink-3 hover:text-ink-2">
               Customers
             </Link>
           </li>
           <li>
             <div className="flex items-center">
               <svg
-                className="flex-shrink-0 h-5 w-5 text-gray-300"
+                className="flex-shrink-0 h-5 w-5 text-ink-3"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
                 <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
               </svg>
-              <span className="ml-4 text-sm font-medium text-gray-500">
+              <span className="ml-4 text-sm font-medium text-ink-2">
                 {formData.customer_number ? `#${formData.customer_number} — ` : ''}{formData.name || 'New Customer'}
               </span>
             </div>
@@ -344,7 +344,7 @@ export default function CustomerDetailPage() {
 
       {/* Error Message */}
       {saveError && (
-        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-start gap-3">
+        <div className="bg-red-500/10 border border-red-500/25 text-red-300 px-4 py-3 rounded-lg flex items-start gap-3">
           <svg className="w-5 h-5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
           </svg>
@@ -352,7 +352,7 @@ export default function CustomerDetailPage() {
             <h3 className="font-semibold mb-1">Save Failed</h3>
             <p className="text-sm">{saveError}</p>
           </div>
-          <button onClick={() => setSaveError(null)} className="text-red-600 hover:text-red-800">
+          <button onClick={() => setSaveError(null)} className="text-red-400 hover:text-red-300">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
@@ -361,7 +361,7 @@ export default function CustomerDetailPage() {
       )}
 
       {/* Header */}
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-surface-2 shadow rounded-lg p-6">
         <div className="flex justify-between items-start">
           <div className="flex items-start gap-4">
             {formData.avatar_url ? (
@@ -371,21 +371,21 @@ export default function CustomerDetailPage() {
                 className="h-16 w-16 rounded-full"
               />
             ) : (
-              <div className="h-16 w-16 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold text-xl">
+              <div className="h-16 w-16 rounded-full bg-surface-3 border border-stroke-1 flex items-center justify-center text-aqua font-bold text-xl">
                 {formData.name?.[0]?.toUpperCase() || '?'}
               </div>
             )}
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-ink-0">
                 {formData.name || 'New Customer'}
                 {formData.customer_number && (
-                  <span className="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-gray-100 text-gray-700">
+                  <span className="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-surface-3 text-ink-1">
                     #{formData.customer_number}
                   </span>
                 )}
               </h1>
-              <p className="mt-1 text-sm text-gray-500">{formData.email || 'Enter customer details below'}</p>
-              {formData.phone && <p className="text-sm text-gray-500">{formData.phone}</p>}
+              <p className="mt-1 text-sm text-ink-2">{formData.email || 'Enter customer details below'}</p>
+              {formData.phone && <p className="text-sm text-ink-2">{formData.phone}</p>}
             </div>
           </div>
           <div className="flex flex-col items-end gap-2">
@@ -400,12 +400,12 @@ export default function CustomerDetailPage() {
             />
             <ProjectHealthIndicator status={formData.project_status} />
             {totalOpenActions > 0 && (
-              <span className="text-xs text-blue-600 font-medium">
+              <span className="text-xs text-aqua font-medium">
                 {totalOpenActions} open action{totalOpenActions !== 1 ? 's' : ''}
               </span>
             )}
             {lastSaved && (
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-ink-2">
                 Last saved: {new Date(lastSaved).toLocaleTimeString()}
               </p>
             )}
@@ -414,8 +414,8 @@ export default function CustomerDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white shadow rounded-lg">
-        <div className="border-b border-gray-200">
+      <div className="bg-surface-2 shadow rounded-lg">
+        <div className="border-b border-stroke-0">
           <nav className="-mb-px flex space-x-8 px-6 overflow-x-auto" aria-label="Tabs">
             {tabs.map((tab) => (
               <button
@@ -423,13 +423,13 @@ export default function CustomerDetailPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`${
                   activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-aqua text-aqua'
+                    : 'border-transparent text-ink-2 hover:text-ink-1 hover:border-stroke-1'
                 } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-1.5`}
               >
                 {tab.name}
                 {tab.badge ? (
-                  <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                  <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25">
                     {tab.badge}
                   </span>
                 ) : null}
@@ -445,21 +445,21 @@ export default function CustomerDetailPage() {
             <div className="space-y-6">
               {/* ROI Assessment Selector - Only for new customers */}
               {customerId === 'new' && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h4 className="text-sm font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                <div className="bg-aqua/10 border border-aqua/30 rounded-lg p-4">
+                  <h4 className="text-sm font-semibold text-aqua mb-2 flex items-center gap-2">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                     Import from ROI Assessment (Optional)
                   </h4>
-                  <p className="text-xs text-blue-700 mb-3">
+                  <p className="text-xs text-aqua mb-3">
                     Select an ROI assessment to auto-populate customer details
                   </p>
                   <select
                     value={selectedRoiId}
                     onChange={(e) => handleRoiSelect(e.target.value)}
                     disabled={loadingRoi}
-                    className="block w-full rounded-md border-blue-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                    className="block w-full rounded-md bg-surface-1 border-aqua/30 text-ink-0 shadow-sm focus:border-aqua/50 focus:ring-aqua/60 text-sm"
                   >
                     <option value="">-- Manual Entry (no assessment) --</option>
                     {roiAssessments.map((assessment) => {
@@ -475,20 +475,20 @@ export default function CustomerDetailPage() {
                       )
                     })}
                   </select>
-                  {loadingRoi && <p className="text-xs text-blue-600 mt-1">Loading assessments...</p>}
+                  {loadingRoi && <p className="text-xs text-aqua mt-1">Loading assessments...</p>}
                   {!loadingRoi && roiAssessments.length === 0 && (
-                    <p className="text-xs text-blue-600 mt-1">No unconverted ROI assessments available</p>
+                    <p className="text-xs text-aqua mt-1">No unconverted ROI assessments available</p>
                   )}
                   <label className="flex items-center gap-2 mt-3">
                     <input
                       type="checkbox"
                       checked={formData.is_test || false}
                       onChange={(e) => updateField('is_test', e.target.checked)}
-                      className="h-4 w-4 rounded border-blue-300 text-blue-600 focus:ring-blue-500"
+                      className="h-4 w-4 rounded border-stroke-1 accent-[#2be8c2] focus:ring-aqua/60"
                     />
-                    <span className="text-sm text-blue-700">Test Customer</span>
+                    <span className="text-sm text-aqua">Test Customer</span>
                   </label>
-                  <p className="text-xs text-blue-600 mt-1">
+                  <p className="text-xs text-aqua mt-1">
                     Test customers get IDs in the 0001-0999 range
                   </p>
                 </div>
@@ -496,43 +496,43 @@ export default function CustomerDetailPage() {
 
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Name *</label>
+                  <label className="block text-sm font-medium text-ink-1">Name *</label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => updateField('name', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                   />
-                  {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                  {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Email *</label>
+                  <label className="block text-sm font-medium text-ink-1">Email *</label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => updateField('email', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                   />
-                  {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                  {errors.email && <p className="mt-1 text-sm text-red-400">{errors.email}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Phone</label>
+                  <label className="block text-sm font-medium text-ink-1">Phone</label>
                   <input
                     type="tel"
                     value={formData.phone || ''}
                     onChange={(e) => updateField('phone', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Business Type</label>
+                  <label className="block text-sm font-medium text-ink-1">Business Type</label>
                   <select
                     value={formData.business_type || ''}
                     onChange={(e) => updateField('business_type', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                   >
                     <option value="">Select industry...</option>
                     <option value="retail">Retail</option>
@@ -546,11 +546,11 @@ export default function CustomerDetailPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Business Size</label>
+                  <label className="block text-sm font-medium text-ink-1">Business Size</label>
                   <select
                     value={formData.business_size || ''}
                     onChange={(e) => updateField('business_size', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                   >
                     <option value="">Select size...</option>
                     <option value="1-5">1-5 employees</option>
@@ -561,11 +561,11 @@ export default function CustomerDetailPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Project Status</label>
+                  <label className="block text-sm font-medium text-ink-1">Project Status</label>
                   <select
                     value={formData.project_status}
                     onChange={(e) => updateField('project_status', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                   >
                     <option value="on_track">On Track</option>
                     <option value="at_risk">At Risk</option>
@@ -576,11 +576,11 @@ export default function CustomerDetailPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Assigned to</label>
+                  <label className="block text-sm font-medium text-ink-1">Assigned to</label>
                   <select
                     value={formData.assigned_admin_id || ''}
                     onChange={(e) => updateField('assigned_admin_id', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                   >
                     <option value="">Unassigned</option>
                     {adminUsers.map((admin) => (
@@ -594,8 +594,8 @@ export default function CustomerDetailPage() {
 
               {/* ROI Estimate Section */}
               {formData.roi_estimate && Object.keys(formData.roi_estimate).length > 0 && (
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
-                  <h4 className="text-sm font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                <div className="bg-aqua/10 rounded-lg p-4 border border-aqua/30">
+                  <h4 className="text-sm font-semibold text-aqua mb-3 flex items-center gap-2">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
@@ -603,33 +603,33 @@ export default function CustomerDetailPage() {
                   </h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {formData.roi_estimate.hoursSavedPerMonth !== undefined && (
-                      <div className="bg-white rounded-md p-2 shadow-sm">
-                        <p className="text-xs text-gray-500">Hours Saved/Mo</p>
-                        <p className="text-lg font-bold text-blue-600">
+                      <div className="bg-surface-2 rounded-md p-2 shadow-sm">
+                        <p className="text-xs text-ink-2">Hours Saved/Mo</p>
+                        <p className="text-lg font-bold text-aqua">
                           {formData.roi_estimate.hoursSavedPerMonth.toFixed(1)} hrs
                         </p>
                       </div>
                     )}
                     {formData.roi_estimate.totalBenefitPerMonth !== undefined && (
-                      <div className="bg-white rounded-md p-2 shadow-sm">
-                        <p className="text-xs text-gray-500">Total Benefit/Mo</p>
-                        <p className="text-lg font-bold text-emerald-600">
+                      <div className="bg-surface-2 rounded-md p-2 shadow-sm">
+                        <p className="text-xs text-ink-2">Total Benefit/Mo</p>
+                        <p className="text-lg font-bold text-emerald-400">
                           ${formData.roi_estimate.totalBenefitPerMonth.toLocaleString()}
                         </p>
                       </div>
                     )}
                     {formData.roi_estimate.roiPercent !== undefined && (
-                      <div className="bg-white rounded-md p-2 shadow-sm">
-                        <p className="text-xs text-gray-500">Est. ROI</p>
-                        <p className="text-lg font-bold text-indigo-600">
+                      <div className="bg-surface-2 rounded-md p-2 shadow-sm">
+                        <p className="text-xs text-ink-2">Est. ROI</p>
+                        <p className="text-lg font-bold text-indigo-400">
                           {formData.roi_estimate.roiPercent.toLocaleString()}%
                         </p>
                       </div>
                     )}
                     {formData.roi_estimate.paybackMonths !== undefined && (
-                      <div className="bg-white rounded-md p-2 shadow-sm">
-                        <p className="text-xs text-gray-500">Payback Period</p>
-                        <p className="text-lg font-bold text-amber-600">
+                      <div className="bg-surface-2 rounded-md p-2 shadow-sm">
+                        <p className="text-xs text-ink-2">Payback Period</p>
+                        <p className="text-lg font-bold text-amber-400">
                           {formData.roi_estimate.paybackMonths.toFixed(1)} mo
                         </p>
                       </div>
@@ -639,43 +639,43 @@ export default function CustomerDetailPage() {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Initial Challenges</label>
+                <label className="block text-sm font-medium text-ink-1">Initial Challenges</label>
                 <textarea
                   rows={4}
                   value={formData.initial_challenges || ''}
                   onChange={(e) => updateField('initial_challenges', e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Current Blockers</label>
+                <label className="block text-sm font-medium text-ink-1">Current Blockers</label>
                 <textarea
                   rows={3}
                   value={formData.current_blockers || ''}
                   onChange={(e) => updateField('current_blockers', e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                 />
               </div>
 
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Next Action Required</label>
+                  <label className="block text-sm font-medium text-ink-1">Next Action Required</label>
                   <input
                     type="text"
                     value={formData.next_action_required || ''}
                     onChange={(e) => updateField('next_action_required', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Next Action Due Date</label>
+                  <label className="block text-sm font-medium text-ink-1">Next Action Due Date</label>
                   <input
                     type="date"
                     value={formData.next_action_due_date || ''}
                     onChange={(e) => updateField('next_action_due_date', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                   />
                 </div>
               </div>
@@ -699,20 +699,20 @@ export default function CustomerDetailPage() {
               />
 
               {showAddInteraction && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 p-6">
-                    <h3 className="text-lg font-medium mb-4">Add Interaction</h3>
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+                  <div className="bg-surface-2 rounded-lg shadow-xl max-w-2xl w-full mx-4 p-6">
+                    <h3 className="text-lg font-medium text-ink-0 mb-4">Add Interaction</h3>
 
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">Type</label>
+                          <label className="block text-sm font-medium text-ink-1">Type</label>
                           <select
                             value={newInteraction.interaction_type}
                             onChange={(e) =>
                               setNewInteraction({ ...newInteraction, interaction_type: e.target.value })
                             }
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                           >
                             <option value="note">Note</option>
                             <option value="meeting">Meeting</option>
@@ -722,13 +722,13 @@ export default function CustomerDetailPage() {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">Phase (optional)</label>
+                          <label className="block text-sm font-medium text-ink-1">Phase (optional)</label>
                           <select
                             value={newInteraction.phase}
                             onChange={(e) =>
                               setNewInteraction({ ...newInteraction, phase: e.target.value })
                             }
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                           >
                             <option value="">No specific phase</option>
                             <option value="consultation">Consultation</option>
@@ -742,39 +742,39 @@ export default function CustomerDetailPage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Date/Time</label>
+                        <label className="block text-sm font-medium text-ink-1">Date/Time</label>
                         <input
                           type="datetime-local"
                           value={newInteraction.interaction_date}
                           onChange={(e) =>
                             setNewInteraction({ ...newInteraction, interaction_date: e.target.value })
                           }
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                         />
-                        <p className="mt-1 text-xs text-gray-500">Leave blank for current time</p>
+                        <p className="mt-1 text-xs text-ink-2">Leave blank for current time</p>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Subject</label>
+                        <label className="block text-sm font-medium text-ink-1">Subject</label>
                         <input
                           type="text"
                           value={newInteraction.subject}
                           onChange={(e) =>
                             setNewInteraction({ ...newInteraction, subject: e.target.value })
                           }
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Notes</label>
+                        <label className="block text-sm font-medium text-ink-1">Notes</label>
                         <textarea
                           rows={4}
                           value={newInteraction.notes}
                           onChange={(e) =>
                             setNewInteraction({ ...newInteraction, notes: e.target.value })
                           }
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                         />
                       </div>
                     </div>
@@ -782,13 +782,13 @@ export default function CustomerDetailPage() {
                     <div className="mt-6 flex justify-end gap-3">
                       <button
                         onClick={() => setShowAddInteraction(false)}
-                        className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        className="px-4 py-2 border border-stroke-1 rounded-md text-sm font-medium text-ink-1 hover:bg-surface-3/60"
                       >
                         Cancel
                       </button>
                       <button
                         onClick={handleAddInteraction}
-                        className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+                        className="px-4 py-2 border border-transparent rounded-md text-sm font-semibold text-[#04110d] bg-aqua hover:bg-aqua-bright"
                       >
                         Add Interaction
                       </button>
@@ -809,7 +809,7 @@ export default function CustomerDetailPage() {
             <>
               {showArchiveConfirm ? (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-amber-600 font-medium">Archive this customer?</span>
+                  <span className="text-sm text-amber-400 font-medium">Archive this customer?</span>
                   <button
                     onClick={handleArchive}
                     disabled={isDeleting}
@@ -820,14 +820,14 @@ export default function CustomerDetailPage() {
                   <button
                     onClick={() => setShowArchiveConfirm(false)}
                     disabled={isDeleting}
-                    className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                    className="px-3 py-1.5 border border-stroke-1 rounded-md text-sm font-medium text-ink-1 bg-surface-2 hover:bg-surface-3/60 disabled:opacity-50"
                   >
                     Cancel
                   </button>
                 </div>
               ) : showDeleteConfirm ? (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-red-600 font-medium">Permanently delete? This cannot be undone.</span>
+                  <span className="text-sm text-red-400 font-medium">Permanently delete? This cannot be undone.</span>
                   <button
                     onClick={handleDelete}
                     disabled={isDeleting}
@@ -838,7 +838,7 @@ export default function CustomerDetailPage() {
                   <button
                     onClick={() => setShowDeleteConfirm(false)}
                     disabled={isDeleting}
-                    className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                    className="px-3 py-1.5 border border-stroke-1 rounded-md text-sm font-medium text-ink-1 bg-surface-2 hover:bg-surface-3/60 disabled:opacity-50"
                   >
                     Cancel
                   </button>
@@ -847,13 +847,13 @@ export default function CustomerDetailPage() {
                 <>
                   <button
                     onClick={() => setShowArchiveConfirm(true)}
-                    className="px-4 py-2 border border-amber-300 rounded-md text-sm font-medium text-amber-700 bg-white hover:bg-amber-50"
+                    className="px-4 py-2 border border-amber-500/30 rounded-md text-sm font-medium text-amber-300 bg-surface-2 hover:bg-amber-500/10"
                   >
                     Archive
                   </button>
                   <button
                     onClick={() => setShowDeleteConfirm(true)}
-                    className="px-4 py-2 border border-red-300 rounded-md text-sm font-medium text-red-700 bg-white hover:bg-red-50"
+                    className="px-4 py-2 border border-red-500/30 rounded-md text-sm font-medium text-red-300 bg-surface-2 hover:bg-red-500/10"
                   >
                     Delete
                   </button>
@@ -867,7 +867,7 @@ export default function CustomerDetailPage() {
         <div className="flex gap-3">
           <button
             onClick={() => router.push('/admin/customers')}
-            className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="px-4 py-2 border border-stroke-1 rounded-md text-sm font-medium text-ink-1 hover:bg-surface-3/60"
           >
             Back to Customers
           </button>
@@ -883,7 +883,7 @@ export default function CustomerDetailPage() {
               }
             }}
             disabled={isSaving}
-            className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 border border-transparent rounded-md text-sm font-semibold text-[#04110d] bg-aqua hover:bg-aqua-bright disabled:opacity-50"
           >
             {isSaving ? 'Saving...' : 'Save & Close'}
           </button>

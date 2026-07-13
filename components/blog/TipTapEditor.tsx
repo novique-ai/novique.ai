@@ -78,22 +78,25 @@ export default function TipTapEditor({
   }
 
   if (!editor) {
-    return <div className="animate-pulse bg-gray-100 h-64 rounded-lg" />
+    return <div className="animate-pulse bg-surface-3 h-64 rounded-lg" />
   }
 
   return (
     <>
-      <div className="border border-gray-300 rounded-lg overflow-hidden bg-white">
+      <div className="border border-stroke-1 rounded-lg overflow-hidden bg-surface-2">
         <EditorToolbar
           editor={editor}
           onImageUpload={handleImageUpload}
           onUnsplashClick={() => setShowUnsplashPicker(true)}
         />
 
-        <EditorContent editor={editor} />
+        {/* editor paper island */}
+        <div className="bg-white text-gray-900">
+          <EditorContent editor={editor} />
+        </div>
 
         {/* Character count */}
-        <div className="border-t border-gray-200 px-4 py-2 bg-gray-50 text-sm text-gray-600 flex justify-between items-center">
+        <div className="border-t border-stroke-0 px-4 py-2 bg-surface-1 text-sm text-ink-1 flex justify-between items-center">
           <div>
             {editor.storage.characterCount.characters()} characters
             {editor.storage.characterCount.words && (
@@ -101,7 +104,7 @@ export default function TipTapEditor({
             )}
           </div>
           {editor.storage.characterCount.characters() > 40000 && (
-            <div className="text-orange-600 font-medium">
+            <div className="text-orange-300 font-medium">
               Warning: Approaching character limit
             </div>
           )}

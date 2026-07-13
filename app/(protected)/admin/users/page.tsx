@@ -30,13 +30,13 @@ export default function UsersPage() {
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'admin':
-        return 'bg-purple-100 text-purple-800'
+        return 'bg-purple-500/10 text-purple-300 ring-1 ring-inset ring-purple-500/25'
       case 'editor':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25'
       case 'viewer':
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-surface-3 text-ink-1 ring-1 ring-inset ring-stroke-1'
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-surface-3 text-ink-1 ring-1 ring-inset ring-stroke-1'
     }
   }
 
@@ -150,7 +150,7 @@ export default function UsersPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-600">Loading users...</div>
+        <div className="text-ink-1">Loading users...</div>
       </div>
     )
   }
@@ -159,14 +159,14 @@ export default function UsersPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="sm:flex sm:items-center sm:justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-ink-0">User Management</h1>
+          <p className="mt-1 text-sm text-ink-2">
             Manage admin users and their access
           </p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+          className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-semibold text-[#04110d] bg-aqua hover:bg-aqua-bright"
         >
           Create New User
         </button>
@@ -176,36 +176,36 @@ export default function UsersPage() {
         <div
           className={`mb-4 p-4 rounded-md ${
             message.type === 'success'
-              ? 'bg-green-50 text-green-800'
-              : 'bg-red-50 text-red-800'
+              ? 'bg-green-500/10 text-green-300 ring-1 ring-inset ring-green-500/25'
+              : 'bg-red-500/10 text-red-300 ring-1 ring-inset ring-red-500/25'
           }`}
         >
           {message.text}
         </div>
       )}
 
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="bg-surface-2 shadow overflow-hidden sm:rounded-lg">
+        <table className="min-w-full divide-y divide-stroke-0">
+          <thead className="bg-surface-1">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider">
                 User
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider">
                 Role
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider">
                 Created
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-right text-xs font-medium text-ink-2 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-transparent divide-y divide-stroke-0">
             {users.map((user) => (
               <tr key={user.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -217,15 +217,15 @@ export default function UsersPage() {
                         className="h-10 w-10 rounded-full"
                       />
                     ) : (
-                      <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-medium">
+                      <div className="h-10 w-10 rounded-full bg-surface-3 flex items-center justify-center text-ink-1 font-medium">
                         {(user.full_name || user.email)[0].toUpperCase()}
                       </div>
                     )}
                     <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-sm font-medium text-ink-0">
                         {user.full_name || 'No name'}
                       </div>
-                      <div className="text-sm text-gray-500">{user.email}</div>
+                      <div className="text-sm text-ink-2">{user.email}</div>
                     </div>
                   </div>
                 </td>
@@ -234,21 +234,21 @@ export default function UsersPage() {
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full w-fit ${getRoleBadgeColor(user.role)}`}>
                       {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                     </span>
-                    <span className="text-xs text-gray-500">{getRoleDescription(user.role)}</span>
+                    <span className="text-xs text-ink-2">{getRoleDescription(user.role)}</span>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       user.is_active
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
+                        ? 'bg-green-500/10 text-green-300 ring-1 ring-inset ring-green-500/25'
+                        : 'bg-red-500/10 text-red-300 ring-1 ring-inset ring-red-500/25'
                     }`}
                   >
                     {user.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-ink-2">
                   {new Date(user.created_at).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -256,7 +256,7 @@ export default function UsersPage() {
                     <select
                       value={user.role}
                       onChange={(e) => updateUserRole(user.id, e.target.value)}
-                      className="text-xs border-gray-300 rounded-md"
+                      className="text-xs px-2 py-1.5 bg-surface-1 border border-stroke-1 text-ink-0 rounded-md"
                       title="Change role"
                     >
                       <option value="admin">Make Admin</option>
@@ -265,7 +265,7 @@ export default function UsersPage() {
                     </select>
                     <button
                       onClick={() => toggleUserStatus(user.id, user.is_active)}
-                      className="text-blue-600 hover:text-blue-900"
+                      className="text-aqua hover:text-aqua-bright"
                     >
                       {user.is_active ? 'Deactivate' : 'Activate'}
                     </button>
@@ -281,17 +281,17 @@ export default function UsersPage() {
       {showCreateModal && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <div className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity" />
 
-            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+            <div className="inline-block align-bottom bg-surface-2 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
               <div>
-                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+                <h3 className="text-lg leading-6 font-medium text-ink-0 mb-4">
                   Create New User
                 </h3>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-ink-1">
                       Full Name
                     </label>
                     <input
@@ -300,13 +300,13 @@ export default function UsersPage() {
                       onChange={(e) =>
                         setNewUser({ ...newUser, full_name: e.target.value })
                       }
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                       placeholder="John Doe"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-ink-1">
                       Email
                     </label>
                     <input
@@ -315,13 +315,13 @@ export default function UsersPage() {
                       onChange={(e) =>
                         setNewUser({ ...newUser, email: e.target.value })
                       }
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                       placeholder="john@example.com"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-ink-1">
                       Password
                     </label>
                     <input
@@ -330,62 +330,62 @@ export default function UsersPage() {
                       onChange={(e) =>
                         setNewUser({ ...newUser, password: e.target.value })
                       }
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
                       placeholder="Min 8 characters"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-ink-1 mb-3">
                       Role & Permissions
                     </label>
                     <div className="space-y-3">
-                      <label className="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none">
+                      <label className="relative flex cursor-pointer rounded-lg border border-stroke-1 bg-surface-1 p-4 shadow-sm focus:outline-none">
                         <input
                           type="radio"
                           name="role"
                           value="admin"
                           checked={newUser.role === 'admin'}
                           onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                          className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 border-gray-300 focus:ring-blue-500"
+                          className="mt-0.5 h-4 w-4 shrink-0 accent-[#2be8c2] border-stroke-1 focus:ring-aqua/60"
                         />
                         <span className="ml-3 flex flex-col">
-                          <span className="block text-sm font-medium text-gray-900">Admin</span>
-                          <span className="block text-sm text-gray-500">
+                          <span className="block text-sm font-medium text-ink-0">Admin</span>
+                          <span className="block text-sm text-ink-2">
                             Full access to all features: customers, consultations, users, blog, and stats
                           </span>
                         </span>
                       </label>
 
-                      <label className="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none">
+                      <label className="relative flex cursor-pointer rounded-lg border border-stroke-1 bg-surface-1 p-4 shadow-sm focus:outline-none">
                         <input
                           type="radio"
                           name="role"
                           value="editor"
                           checked={newUser.role === 'editor'}
                           onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                          className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 border-gray-300 focus:ring-blue-500"
+                          className="mt-0.5 h-4 w-4 shrink-0 accent-[#2be8c2] border-stroke-1 focus:ring-aqua/60"
                         />
                         <span className="ml-3 flex flex-col">
-                          <span className="block text-sm font-medium text-gray-900">Editor</span>
-                          <span className="block text-sm text-gray-500">
+                          <span className="block text-sm font-medium text-ink-0">Editor</span>
+                          <span className="block text-sm text-ink-2">
                             Can view stats/dashboard and manage blog posts. Cannot access customers or consultations.
                           </span>
                         </span>
                       </label>
 
-                      <label className="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none">
+                      <label className="relative flex cursor-pointer rounded-lg border border-stroke-1 bg-surface-1 p-4 shadow-sm focus:outline-none">
                         <input
                           type="radio"
                           name="role"
                           value="viewer"
                           checked={newUser.role === 'viewer'}
                           onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                          className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 border-gray-300 focus:ring-blue-500"
+                          className="mt-0.5 h-4 w-4 shrink-0 accent-[#2be8c2] border-stroke-1 focus:ring-aqua/60"
                         />
                         <span className="ml-3 flex flex-col">
-                          <span className="block text-sm font-medium text-gray-900">Viewer</span>
-                          <span className="block text-sm text-gray-500">
+                          <span className="block text-sm font-medium text-ink-0">Viewer</span>
+                          <span className="block text-sm text-ink-2">
                             Read-only access to blog posts. Cannot access any other features.
                           </span>
                         </span>
@@ -400,7 +400,7 @@ export default function UsersPage() {
                   type="button"
                   disabled={creating}
                   onClick={createUser}
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:col-start-2 sm:text-sm disabled:opacity-50"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-aqua text-base font-semibold text-[#04110d] hover:bg-aqua-bright focus:outline-none sm:col-start-2 sm:text-sm disabled:opacity-50"
                 >
                   {creating ? 'Creating...' : 'Create User'}
                 </button>
@@ -412,7 +412,7 @@ export default function UsersPage() {
                     setNewUser({ email: '', password: '', full_name: '', role: 'editor' })
                     setMessage(null)
                   }}
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:col-start-1 sm:text-sm"
+                  className="mt-3 w-full inline-flex justify-center rounded-md border border-stroke-1 shadow-sm px-4 py-2 bg-surface-2 text-base font-medium text-ink-1 hover:bg-surface-3/60 focus:outline-none sm:mt-0 sm:col-start-1 sm:text-sm"
                 >
                   Cancel
                 </button>

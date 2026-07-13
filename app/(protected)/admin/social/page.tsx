@@ -137,10 +137,10 @@ export default function AdminSocialPage() {
   }
 
   const statsArray = [
-    { name: 'Total Posts', value: stats.total, color: 'bg-gray-50' },
-    { name: 'Drafts', value: stats.byStatus.draft, color: 'bg-gray-50' },
-    { name: 'Scheduled', value: stats.byStatus.scheduled, color: 'bg-blue-50' },
-    { name: 'Published', value: stats.byStatus.published, color: 'bg-green-50' },
+    { name: 'Total Posts', value: stats.total, color: 'bg-surface-2' },
+    { name: 'Drafts', value: stats.byStatus.draft, color: 'bg-surface-2' },
+    { name: 'Scheduled', value: stats.byStatus.scheduled, color: 'bg-aqua/10' },
+    { name: 'Published', value: stats.byStatus.published, color: 'bg-green-500/10' },
   ]
 
   return (
@@ -158,15 +158,15 @@ export default function AdminSocialPage() {
       {/* Page Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Social Media</h1>
-          <p className="mt-2 text-sm text-gray-700">
+          <h1 className="text-3xl font-bold text-ink-0">Social Media</h1>
+          <p className="mt-2 text-sm text-ink-1">
             Manage social media posts across all platforms
           </p>
         </div>
         <div className="flex gap-3">
           <Link
             href="/admin/social/accounts"
-            className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+            className="inline-flex items-center px-4 py-2 border border-stroke-1 text-sm font-medium rounded-md text-ink-1 bg-surface-2 hover:bg-surface-3/60"
           >
             <svg
               className="-ml-1 mr-2 h-5 w-5"
@@ -185,7 +185,7 @@ export default function AdminSocialPage() {
           </Link>
           <button
             onClick={() => setShowGenerateModal(true)}
-            className="inline-flex items-center px-4 py-2 border border-purple-300 text-sm font-medium rounded-md shadow-sm text-purple-700 bg-purple-50 hover:bg-purple-100"
+            className="inline-flex items-center px-4 py-2 border border-purple-500/25 text-sm font-medium rounded-md shadow-sm text-purple-300 bg-purple-500/10 hover:bg-purple-500/20"
           >
             <svg
               className="-ml-1 mr-2 h-5 w-5"
@@ -213,10 +213,10 @@ export default function AdminSocialPage() {
             className={`${stat.color} overflow-hidden shadow rounded-lg`}
           >
             <div className="p-5">
-              <dt className="text-sm font-medium text-gray-500 truncate">
+              <dt className="text-sm font-medium text-ink-2 truncate">
                 {stat.name}
               </dt>
-              <dd className="mt-1 text-3xl font-semibold text-gray-900">
+              <dd className="mt-1 text-3xl font-semibold text-ink-0">
                 {stat.value}
               </dd>
             </div>
@@ -225,13 +225,13 @@ export default function AdminSocialPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white shadow rounded-lg p-4">
+      <div className="bg-surface-2 shadow rounded-lg p-4">
         <div className="flex flex-wrap gap-4">
           {/* Platform Filter */}
           <div className="flex-1 min-w-[150px]">
             <label
               htmlFor="platform"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-ink-1 mb-1"
             >
               Platform
             </label>
@@ -241,7 +241,7 @@ export default function AdminSocialPage() {
               onChange={(e) =>
                 setPlatformFilter(e.target.value as SocialPlatform | 'all')
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-surface-1 border border-stroke-1 text-ink-0 rounded-md focus:ring-2 focus:ring-aqua/60 focus:border-transparent"
             >
               <option value="all">All Platforms</option>
               <option value="twitter">X (Twitter)</option>
@@ -254,7 +254,7 @@ export default function AdminSocialPage() {
           <div className="flex-1 min-w-[150px]">
             <label
               htmlFor="status"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-ink-1 mb-1"
             >
               Status
             </label>
@@ -264,7 +264,7 @@ export default function AdminSocialPage() {
               onChange={(e) =>
                 setStatusFilter(e.target.value as SocialPostStatus | 'all')
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-surface-1 border border-stroke-1 text-ink-0 rounded-md focus:ring-2 focus:ring-aqua/60 focus:border-transparent"
             >
               <option value="all">All Statuses</option>
               <option value="draft">Draft</option>
@@ -279,7 +279,7 @@ export default function AdminSocialPage() {
           <div className="flex-[2] min-w-[200px]">
             <label
               htmlFor="search"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-ink-1 mb-1"
             >
               Search
             </label>
@@ -289,7 +289,7 @@ export default function AdminSocialPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search content..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-md focus:ring-2 focus:ring-aqua/60 focus:border-transparent"
             />
           </div>
         </div>
@@ -297,70 +297,70 @@ export default function AdminSocialPage() {
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+        <div className="bg-red-500/10 border border-red-500/25 text-red-300 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
 
       {/* Posts Table */}
-      <div className="bg-white shadow rounded-lg overflow-hidden">
+      <div className="bg-surface-2 shadow rounded-lg overflow-hidden">
         {loading ? (
-          <div className="text-center py-12 text-gray-500">Loading...</div>
+          <div className="text-center py-12 text-ink-2">Loading...</div>
         ) : (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-stroke-0">
+            <thead className="bg-surface-1">
               <tr>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider"
                 >
                   Platform
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider"
                 >
                   Content
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider"
                 >
                   Source
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider"
                 >
                   Status
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider"
                 >
                   Date
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-right text-xs font-medium text-ink-2 uppercase tracking-wider"
                 >
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-transparent divide-y divide-stroke-0">
               {posts && posts.length > 0 ? (
                 posts.map((post) => (
-                  <tr key={post.id} className="hover:bg-gray-50">
+                  <tr key={post.id} className="hover:bg-surface-3/60">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <PlatformBadge platform={post.platform} size="sm" />
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-gray-900 max-w-md">
+                      <div className="text-sm text-ink-0 max-w-md">
                         {truncateContent(post.content)}
                       </div>
                       {post.hashtags && post.hashtags.length > 0 && (
-                        <div className="text-xs text-blue-600 mt-1">
+                        <div className="text-xs text-aqua mt-1">
                           {post.hashtags.slice(0, 3).map((tag) => `#${tag}`).join(' ')}
                           {post.hashtags.length > 3 && ` +${post.hashtags.length - 3}`}
                         </div>
@@ -369,24 +369,24 @@ export default function AdminSocialPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {post.source_title ? (
                         <div className="text-sm">
-                          <span className="text-gray-900">{truncateContent(post.source_title, 30)}</span>
-                          <div className="text-xs text-gray-500 capitalize">
+                          <span className="text-ink-0">{truncateContent(post.source_title, 30)}</span>
+                          <div className="text-xs text-ink-2 capitalize">
                             {post.source_type}
                           </div>
                         </div>
                       ) : (
-                        <span className="text-sm text-gray-400">Manual</span>
+                        <span className="text-sm text-ink-3">Manual</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <SocialStatusBadge status={post.status} />
                       {post.status === 'scheduled' && post.scheduled_at && (
-                        <div className="text-xs text-gray-500 mt-1">
+                        <div className="text-xs text-ink-2 mt-1">
                           {formatDate(post.scheduled_at)}
                         </div>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-ink-2">
                       {post.status === 'published'
                         ? formatDate(post.published_at)
                         : formatDate(post.created_at)}
@@ -397,21 +397,21 @@ export default function AdminSocialPage() {
                         <button
                           onClick={() => handlePublish(post.id)}
                           disabled={publishingId === post.id}
-                          className="text-green-600 hover:text-green-900 disabled:opacity-50"
+                          className="text-green-400 hover:text-green-300 disabled:opacity-50"
                         >
                           {publishingId === post.id ? 'Publishing...' : 'Publish'}
                         </button>
                       )}
                       <Link
                         href={`/admin/social/${post.id}/edit`}
-                        className="text-blue-600 hover:text-blue-900"
+                        className="text-aqua hover:text-aqua-bright"
                       >
                         Edit
                       </Link>
                       {post.status !== 'published' && post.status !== 'publishing' && (
                         <button
                           onClick={() => handleDelete(post.id)}
-                          className="text-red-600 hover:text-red-900"
+                          className="text-red-400 hover:text-red-300"
                         >
                           Delete
                         </button>
@@ -421,7 +421,7 @@ export default function AdminSocialPage() {
                           href={post.platform_post_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-gray-600 hover:text-gray-900"
+                          className="text-ink-1 hover:text-ink-0"
                         >
                           View
                         </a>
@@ -431,12 +431,12 @@ export default function AdminSocialPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={6} className="px-6 py-12 text-center text-ink-2">
                     <div className="space-y-2">
                       <p>No social posts yet.</p>
                       <button
                         onClick={() => setShowGenerateModal(true)}
-                        className="text-blue-600 hover:text-blue-500"
+                        className="text-aqua hover:text-aqua-bright"
                       >
                         Generate posts from a blog article
                       </button>

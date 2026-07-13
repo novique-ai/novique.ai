@@ -259,31 +259,31 @@ export default function CommunicationsPage() {
 
   function getStatusBadge(status: string): string {
     const badges: Record<string, string> = {
-      unread: "bg-blue-100 text-blue-800",
-      read: "bg-gray-100 text-gray-800",
-      archived: "bg-gray-100 text-gray-500",
-      replied: "bg-green-100 text-green-800",
+      unread: "bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25",
+      read: "bg-surface-3 text-ink-1 ring-1 ring-inset ring-stroke-1",
+      archived: "bg-surface-3 text-ink-2 ring-1 ring-inset ring-stroke-1",
+      replied: "bg-green-500/10 text-green-300 ring-1 ring-inset ring-green-500/25",
     };
-    return badges[status] || "bg-gray-100 text-gray-800";
+    return badges[status] || "bg-surface-3 text-ink-1 ring-1 ring-inset ring-stroke-1";
   }
 
   const statsArray = [
-    { name: "Unread", value: stats.total_unread, color: "text-blue-600" },
+    { name: "Unread", value: stats.total_unread, color: "text-aqua" },
     { name: "Voicemail", value: stats.unread_voicemail },
     { name: "SMS", value: stats.unread_sms },
     { name: "Today", value: stats.today_count },
   ];
 
   if (loading) {
-    return <div className="text-center py-12">Loading...</div>;
+    return <div className="text-center py-12 text-ink-2">Loading...</div>;
   }
 
   return (
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Communications</h1>
-        <p className="mt-2 text-sm text-gray-700">
+        <h1 className="text-3xl font-bold text-ink-0">Communications</h1>
+        <p className="mt-2 text-sm text-ink-1">
           Manage voicemails, SMS messages, and other communications
         </p>
       </div>
@@ -293,14 +293,14 @@ export default function CommunicationsPage() {
         {statsArray.map((stat) => (
           <div
             key={stat.name}
-            className="bg-white overflow-hidden shadow rounded-lg"
+            className="bg-surface-2 border border-stroke-0 overflow-hidden shadow rounded-lg"
           >
             <div className="p-5">
-              <dt className="text-sm font-medium text-gray-500 truncate">
+              <dt className="text-sm font-medium text-ink-2 truncate">
                 {stat.name}
               </dt>
               <dd
-                className={`mt-1 text-3xl font-semibold ${stat.color || "text-gray-900"}`}
+                className={`mt-1 text-3xl font-semibold ${stat.color || "text-ink-0"}`}
               >
                 {stat.value}
               </dd>
@@ -317,14 +317,14 @@ export default function CommunicationsPage() {
             placeholder="Search by phone, name, or message..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="block w-full px-3 py-2 rounded-md bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60 sm:text-sm"
           />
         </div>
         <div>
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="block w-full px-3 py-2 rounded-md bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60 sm:text-sm"
           >
             <option value="all">All Types</option>
             <option value="voicemail">Voicemail</option>
@@ -336,7 +336,7 @@ export default function CommunicationsPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="block w-full px-3 py-2 rounded-md bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60 sm:text-sm"
           >
             <option value="all">All Status</option>
             <option value="unread">Unread</option>
@@ -348,15 +348,15 @@ export default function CommunicationsPage() {
       </div>
 
       {/* Communications List */}
-      <div className="bg-white shadow rounded-lg overflow-hidden">
-        <div className="divide-y divide-gray-200">
+      <div className="bg-surface-2 border border-stroke-0 shadow rounded-lg overflow-hidden">
+        <div className="divide-y divide-stroke-0">
           {communications.length > 0 ? (
             communications.map((comm) => (
               <div
                 key={comm.id}
                 className={`${
-                  comm.status === "unread" ? "bg-blue-50" : ""
-                } hover:bg-gray-50 transition-colors`}
+                  comm.status === "unread" ? "bg-aqua/[0.06]" : ""
+                } hover:bg-surface-3/60 transition-colors`}
               >
                 {/* Main row */}
                 <div
@@ -369,7 +369,7 @@ export default function CommunicationsPage() {
                       <div
                         className={`w-2 h-2 rounded-full ${
                           comm.status === "unread"
-                            ? "bg-blue-500"
+                            ? "bg-aqua"
                             : "bg-transparent"
                         }`}
                       />
@@ -379,11 +379,11 @@ export default function CommunicationsPage() {
 
                       {/* Contact info */}
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">
+                        <p className="text-sm font-medium text-ink-0 truncate">
                           {comm.from_name || comm.from_address}
                         </p>
                         {comm.from_name && (
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-ink-2">
                             {comm.from_address}
                           </p>
                         )}
@@ -393,7 +393,7 @@ export default function CommunicationsPage() {
                     <div className="flex items-center space-x-4 ml-4">
                       {/* Duration for voicemails */}
                       {comm.type === "voicemail" && comm.duration && (
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-ink-2">
                           {formatDuration(comm.duration)}
                         </span>
                       )}
@@ -408,7 +408,7 @@ export default function CommunicationsPage() {
                       </span>
 
                       {/* Time */}
-                      <span className="text-sm text-gray-500 whitespace-nowrap">
+                      <span className="text-sm text-ink-2 whitespace-nowrap">
                         {formatTimeAgo(comm.created_at)}
                       </span>
                     </div>
@@ -416,13 +416,13 @@ export default function CommunicationsPage() {
 
                   {/* Preview text */}
                   {comm.body && (
-                    <p className="mt-2 text-sm text-gray-600 truncate pl-12">
+                    <p className="mt-2 text-sm text-ink-1 truncate pl-12">
                       &ldquo;{comm.body}&rdquo;
                     </p>
                   )}
                   {comm.type === "voicemail" &&
                     comm.transcription_status === "pending" && (
-                      <p className="mt-2 text-sm text-gray-400 italic pl-12">
+                      <p className="mt-2 text-sm text-ink-3 italic pl-12">
                         Transcription pending...
                       </p>
                     )}
@@ -430,7 +430,7 @@ export default function CommunicationsPage() {
 
                 {/* Expanded details */}
                 {expandedId === comm.id && (
-                  <div className="px-6 pb-4 border-t border-gray-100 bg-gray-50">
+                  <div className="px-6 pb-4 border-t border-stroke-0 bg-surface-1">
                     <div className="pt-4 space-y-4">
                       {/* Voicemail player */}
                       {comm.type === "voicemail" && comm.recording_url && (
@@ -440,7 +440,7 @@ export default function CommunicationsPage() {
                               e.stopPropagation();
                               playVoicemail(comm.id);
                             }}
-                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-[#04110d] bg-aqua hover:bg-aqua-bright focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-1 focus:ring-aqua/60"
                           >
                             {playingId === comm.id ? "\u23F8 Pause" : "\u25B6 Play Voicemail"}
                           </button>
@@ -452,7 +452,7 @@ export default function CommunicationsPage() {
                                 transcribeVoicemail(comm.id);
                               }}
                               disabled={transcribingId === comm.id}
-                              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="inline-flex items-center px-4 py-2 border border-stroke-1 text-sm font-medium rounded-md shadow-sm text-ink-1 bg-surface-2 hover:bg-surface-3/60 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-1 focus:ring-aqua/60 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               {transcribingId === comm.id
                                 ? "Transcribing..."
@@ -462,11 +462,11 @@ export default function CommunicationsPage() {
                             </button>
                           )}
                           {comm.transcription_status === "in_progress" && (
-                            <span className="text-sm text-blue-600 italic">
+                            <span className="text-sm text-aqua italic">
                               Transcription in progress...
                             </span>
                           )}
-                          <span className="text-sm text-gray-500">
+                          <span className="text-sm text-ink-2">
                             Duration: {formatDuration(comm.duration || 0)}
                           </span>
                         </div>
@@ -474,8 +474,8 @@ export default function CommunicationsPage() {
 
                       {/* Full message body */}
                       {comm.body && (
-                        <div className="bg-white p-4 rounded-md border border-gray-200">
-                          <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                        <div className="bg-surface-2 p-4 rounded-md border border-stroke-0">
+                          <p className="text-sm text-ink-1 whitespace-pre-wrap">
                             {comm.body}
                           </p>
                         </div>
@@ -484,12 +484,12 @@ export default function CommunicationsPage() {
                       {/* Customer link */}
                       {comm.customer && (
                         <div className="flex items-center space-x-2">
-                          <span className="text-sm text-gray-500">
+                          <span className="text-sm text-ink-2">
                             Linked to:
                           </span>
                           <Link
                             href={`/admin/customers/${comm.customer.id}`}
-                            className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                            className="text-sm font-medium text-aqua hover:text-aqua-bright"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {comm.customer.name}
@@ -508,7 +508,7 @@ export default function CommunicationsPage() {
                                 onClick={(e) => e.stopPropagation()}
                                 placeholder="Type your reply..."
                                 rows={3}
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                className="block w-full px-3 py-2 rounded-md bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60 sm:text-sm"
                               />
                               <div className="flex items-center space-x-2">
                                 <button
@@ -517,7 +517,7 @@ export default function CommunicationsPage() {
                                     sendSmsReply(comm.id);
                                   }}
                                   disabled={sendingReply || !replyText.trim()}
-                                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-[#04110d] bg-aqua hover:bg-aqua-bright focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-1 focus:ring-aqua/60 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                   {sendingReply ? "Sending..." : "Send Reply"}
                                 </button>
@@ -527,7 +527,7 @@ export default function CommunicationsPage() {
                                     setReplyingToId(null);
                                     setReplyText("");
                                   }}
-                                  className="text-sm text-gray-600 hover:text-gray-800"
+                                  className="text-sm text-ink-1 hover:text-ink-0"
                                 >
                                   Cancel
                                 </button>
@@ -539,7 +539,7 @@ export default function CommunicationsPage() {
                                 e.stopPropagation();
                                 setReplyingToId(comm.id);
                               }}
-                              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-1 focus:ring-green-500"
                             >
                               Reply via SMS
                             </button>
@@ -555,7 +555,7 @@ export default function CommunicationsPage() {
                               e.stopPropagation();
                               markAsRead(comm.id);
                             }}
-                            className="text-sm text-gray-600 hover:text-gray-800"
+                            className="text-sm text-ink-1 hover:text-ink-0"
                           >
                             Mark as Read
                           </button>
@@ -566,7 +566,7 @@ export default function CommunicationsPage() {
                               e.stopPropagation();
                               archiveCommunication(comm.id);
                             }}
-                            className="text-sm text-gray-600 hover:text-gray-800"
+                            className="text-sm text-ink-1 hover:text-ink-0"
                           >
                             Archive
                           </button>
@@ -576,7 +576,7 @@ export default function CommunicationsPage() {
                             e.stopPropagation();
                             deleteCommunication(comm.id);
                           }}
-                          className="text-sm text-red-600 hover:text-red-800"
+                          className="text-sm text-red-400 hover:text-red-300"
                         >
                           Delete
                         </button>
@@ -587,7 +587,7 @@ export default function CommunicationsPage() {
               </div>
             ))
           ) : (
-            <div className="px-6 py-12 text-center text-gray-500">
+            <div className="px-6 py-12 text-center text-ink-2">
               No communications found.
             </div>
           )}

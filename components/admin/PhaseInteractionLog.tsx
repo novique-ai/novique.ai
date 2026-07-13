@@ -79,29 +79,29 @@ export function PhaseInteractionLog({
   }
 
   return (
-    <div className="border border-gray-200 rounded-lg">
-      <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200 rounded-t-lg">
-        <h4 className="text-sm font-semibold text-gray-700">
+    <div className="border border-stroke-0 rounded-lg">
+      <div className="flex items-center justify-between px-4 py-3 bg-surface-1 border-b border-stroke-0 rounded-t-lg">
+        <h4 className="text-sm font-semibold text-ink-1">
           Communication Log
-          {customerNumber && <span className="ml-2 text-xs font-mono text-gray-400">#{customerNumber}</span>}
+          {customerNumber && <span className="ml-2 text-xs font-mono text-ink-3">#{customerNumber}</span>}
         </h4>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="text-xs font-medium text-blue-600 hover:text-blue-800"
+          className="text-xs font-medium text-aqua hover:text-aqua-bright"
         >
           {showForm ? 'Cancel' : '+ Add Entry'}
         </button>
       </div>
 
       {showForm && (
-        <div className="p-4 border-b border-gray-200 bg-blue-50 space-y-3">
+        <div className="p-4 border-b border-stroke-0 bg-aqua/10 space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Type</label>
+              <label className="block text-xs font-medium text-ink-1 mb-1">Type</label>
               <select
                 value={form.interaction_type}
                 onChange={(e) => setForm({ ...form, interaction_type: e.target.value })}
-                className="block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="block w-full text-sm rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
               >
                 <option value="meeting">Meeting</option>
                 <option value="call">Call</option>
@@ -110,40 +110,40 @@ export function PhaseInteractionLog({
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Date/Time</label>
+              <label className="block text-xs font-medium text-ink-1 mb-1">Date/Time</label>
               <input
                 type="datetime-local"
                 value={form.interaction_date}
                 onChange={(e) => setForm({ ...form, interaction_date: e.target.value })}
-                className="block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="block w-full text-sm rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
               />
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Topic / Subject</label>
+            <label className="block text-xs font-medium text-ink-1 mb-1">Topic / Subject</label>
             <input
               type="text"
               value={form.subject}
               onChange={(e) => setForm({ ...form, subject: e.target.value })}
               placeholder="e.g. Discovery call with client"
-              className="block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="block w-full text-sm rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Summary / Notes</label>
+            <label className="block text-xs font-medium text-ink-1 mb-1">Summary / Notes</label>
             <textarea
               rows={3}
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               placeholder="Key points discussed..."
-              className="block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="block w-full text-sm rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
             />
           </div>
           <div className="flex justify-end">
             <button
               onClick={handleSubmit}
               disabled={saving || !form.subject.trim()}
-              className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md disabled:opacity-50"
+              className="px-3 py-1.5 text-xs font-semibold text-[#04110d] bg-aqua hover:bg-aqua-bright rounded-md disabled:opacity-50"
             >
               {saving ? 'Saving...' : 'Save Entry'}
             </button>
@@ -151,9 +151,9 @@ export function PhaseInteractionLog({
         </div>
       )}
 
-      <div className="divide-y divide-gray-100 max-h-80 overflow-y-auto">
+      <div className="divide-y divide-stroke-0 max-h-80 overflow-y-auto">
         {interactions.length === 0 ? (
-          <p className="text-sm text-gray-400 text-center py-6">No communication entries yet</p>
+          <p className="text-sm text-ink-3 text-center py-6">No communication entries yet</p>
         ) : (
           <>
             {interactions.map((item) => {
@@ -161,23 +161,23 @@ export function PhaseInteractionLog({
               return (
                 <div
                   key={item.id}
-                  className="px-4 py-3 hover:bg-gray-50 cursor-pointer"
+                  className="px-4 py-3 hover:bg-surface-3/60 cursor-pointer"
                   onClick={() => setExpandedId(isExpanded ? null : item.id)}
                 >
                   <div className="flex items-start gap-2">
                     <span className="text-base mt-0.5">{typeIcons[item.interaction_type] || '•'}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-baseline justify-between gap-2">
-                        <p className="text-sm font-medium text-gray-900 truncate">
-                          {customerNumber && <span className="font-mono text-xs text-gray-400 mr-1.5">#{customerNumber}</span>}
+                        <p className="text-sm font-medium text-ink-0 truncate">
+                          {customerNumber && <span className="font-mono text-xs text-ink-3 mr-1.5">#{customerNumber}</span>}
                           {item.subject || 'No subject'}
                         </p>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs text-gray-400 whitespace-nowrap">
+                          <span className="text-xs text-ink-3 whitespace-nowrap">
                             {formatDate(item.interaction_date)}
                           </span>
                           <svg
-                            className={`w-3.5 h-3.5 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                            className={`w-3.5 h-3.5 text-ink-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -188,14 +188,14 @@ export function PhaseInteractionLog({
                         </div>
                       </div>
                       {!isExpanded && item.notes && (
-                        <p className="text-xs text-gray-600 mt-1 whitespace-pre-wrap line-clamp-2">
+                        <p className="text-xs text-ink-1 mt-1 whitespace-pre-wrap line-clamp-2">
                           {item.notes}
                         </p>
                       )}
                       {isExpanded && (
                         <div className="mt-2 space-y-2">
-                          <div className="flex items-center gap-3 text-xs text-gray-500">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded bg-gray-100 font-medium capitalize">
+                          <div className="flex items-center gap-3 text-xs text-ink-2">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded bg-surface-3 font-medium capitalize">
                               {item.interaction_type}
                             </span>
                             {item.created_by_profile?.full_name && (
@@ -203,14 +203,14 @@ export function PhaseInteractionLog({
                             )}
                           </div>
                           {item.notes && (
-                            <p className="text-sm text-gray-700 whitespace-pre-wrap bg-white border border-gray-100 rounded-md p-3">
+                            <p className="text-sm text-ink-1 whitespace-pre-wrap bg-surface-2 border border-stroke-0 rounded-md p-3">
                               {item.notes}
                             </p>
                           )}
                         </div>
                       )}
                       {!isExpanded && item.created_by_profile?.full_name && (
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="text-xs text-ink-3 mt-1">
                           by {item.created_by_profile.full_name}
                         </p>
                       )}

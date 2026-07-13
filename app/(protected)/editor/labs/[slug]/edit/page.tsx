@@ -62,14 +62,14 @@ export default async function EditLabPage({ params }: EditLabPageProps) {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Edit Lab</h1>
-        <p className="mt-2 text-sm text-gray-700">
+        <h1 className="text-3xl font-bold text-ink-0">Edit Lab</h1>
+        <p className="mt-2 text-sm text-ink-1">
           Update lab content and settings
         </p>
       </div>
 
       {/* Form */}
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-surface-2 shadow rounded-lg p-6">
         <LabForm initialData={initialData} isAdmin={isAdmin} />
       </div>
     </div>

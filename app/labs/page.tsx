@@ -30,7 +30,10 @@ export default async function LabsPage() {
           </>
         }
         subhead="Explore hands-on infrastructure labs with animated workflow diagrams. Each lab walks you through real-world cloud deployments using Terraform, AWS, Docker, and more."
-        ctas={[{ label: 'Book a consultation', href: '/contact', variant: 'primary' }]}
+        ctas={[
+          { label: 'Book a call', href: '/consultation', variant: 'primary' },
+          { label: 'See what we can do', href: '/services', variant: 'ghost' },
+        ]}
       />
 
       {/* Stack pills */}
@@ -49,22 +52,21 @@ export default async function LabsPage() {
 
       {/* Labs Grid */}
       <section className="mx-auto max-w-container px-6 py-16 md:py-24">
-        <p className="max-w-reading text-body-lg text-ink-2">
-          Here are some exploration/testing labs we built in GitHub while designing solutions for our customers.
-          You can learn about these labs below, and there are links to GitHub if you want to try building them yourself.
-        </p>
+        <SectionHeading
+          eyebrow="Built in the open"
+          title={
+            <>
+              Available labs
+              <span className="ml-3 font-mono text-base font-normal tracking-normal text-ink-3">
+                ({labs.length} {labs.length === 1 ? 'lab' : 'labs'})
+              </span>
+            </>
+          }
+          subhead="Exploration and testing labs we built on GitHub while designing solutions for our customers. Read through each one below — and every lab links to its repo if you want to build it yourself."
+        />
 
         {labs.length > 0 ? (
           <div className="mt-12">
-            <div className="mb-8 flex items-center justify-between">
-              <h2 className="font-display text-dh2 text-ink-0">
-                Available Labs
-                <span className="ml-2 font-mono text-base font-normal text-ink-3">
-                  ({labs.length} {labs.length === 1 ? 'lab' : 'labs'})
-                </span>
-              </h2>
-            </div>
-
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {labs.map((lab) => (
                 <LabCard key={lab.slug} lab={lab} />
@@ -107,7 +109,8 @@ export default async function LabsPage() {
             customize solutions for your needs, or train your team on infrastructure as code.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <DarkButton href="/contact" size="lg">Book a Consultation</DarkButton>
+            <DarkButton href="/consultation" size="lg">Book a call</DarkButton>
+            <DarkButton href="/work" size="lg" variant="ghost">See our work</DarkButton>
           </div>
         </div>
       </section>

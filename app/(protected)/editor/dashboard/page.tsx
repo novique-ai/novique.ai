@@ -118,38 +118,38 @@ export default async function EditorDashboard() {
             {myPosts.map((post) => (
               <div
                 key={post.id}
-                className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:border-indigo-200 hover:shadow-sm transition-all duration-200"
+                className="flex items-center justify-between p-4 bg-surface-1 rounded-xl border border-stroke-0 hover:border-stroke-2 transition-all duration-200"
               >
                 <div className="flex items-center gap-3 flex-1">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-indigo-600">
+                  <div className="w-10 h-10 rounded-lg bg-surface-3 border border-stroke-1 flex items-center justify-center text-aqua">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900">
+                    <h3 className="text-sm font-semibold text-ink-0">
                       {post.title}
                     </h3>
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <div className="flex items-center gap-2 text-sm text-ink-2">
                       {post.published ? (
-                        <span className="inline-flex items-center gap-1 text-emerald-600">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span className="inline-flex items-center gap-1 text-emerald-300">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                           Published
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-amber-600">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                        <span className="inline-flex items-center gap-1 text-amber-300">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
                           Draft
                         </span>
                       )}
-                      <span className="text-gray-300">·</span>
+                      <span className="text-ink-3">·</span>
                       <span>{new Date(post.created_at).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>
                 <Link
                   href={`/editor/blog/${post.slug}/edit`}
-                  className="flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                  className="flex items-center gap-1 text-sm font-medium text-aqua hover:text-aqua-bright transition-colors"
                 >
                   Edit
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

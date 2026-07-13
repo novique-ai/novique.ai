@@ -46,82 +46,89 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
+    <div className="theme-dark min-h-screen flex items-center justify-center bg-surface-0 font-sans antialiased py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full">
+        <div className="text-center">
+          <Link href="/" className="inline-flex items-baseline gap-0.5" aria-label="Novique home">
+            <span className="font-display text-xl font-semibold tracking-tight text-ink-0">Novique</span>
+            <span className="text-xl font-semibold leading-none text-aqua">.</span>
+            <span className="font-display text-xl font-semibold tracking-tight text-ink-2">ai</span>
+          </Link>
+          <h2 className="mt-6 text-center font-display text-2xl font-semibold tracking-tight text-ink-0">
             Reset your password
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-ink-2">
             Enter your email address and we&apos;ll send you a reset link
           </p>
         </div>
 
-        {error && (
-          <div className="rounded-md bg-red-50 p-4">
-            <div className="flex">
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">Error</h3>
-                <div className="mt-2 text-sm text-red-700">{error}</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {success && (
-          <div className="rounded-md bg-green-50 p-4">
-            <div className="flex">
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-green-800">Check your email</h3>
-                <div className="mt-2 text-sm text-green-700">
-                  We&apos;ve sent a password reset link to your email address. Please check your
-                  inbox and follow the instructions.
+        <div className="mt-8 rounded-2xl border border-stroke-0 bg-surface-2 p-6 sm:p-8">
+          {error && (
+            <div className="mb-6 rounded-lg bg-red-500/10 ring-1 ring-inset ring-red-500/25 p-4">
+              <div className="flex">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-300">Error</h3>
+                  <div className="mt-2 text-sm text-red-300/80">{error}</div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email address
-            </label>
-            <input
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address',
-                },
-              })}
-              id="email"
-              type="email"
-              autoComplete="email"
-              className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              placeholder="you@example.com"
-            />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-            )}
-          </div>
+          {success && (
+            <div className="mb-6 rounded-lg bg-green-500/10 ring-1 ring-inset ring-green-500/25 p-4">
+              <div className="flex">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-green-300">Check your email</h3>
+                  <div className="mt-2 text-sm text-green-300/80">
+                    We&apos;ve sent a password reset link to your email address. Please check your
+                    inbox and follow the instructions.
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading || success}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Sending...' : success ? 'Email sent' : 'Send reset link'}
-            </button>
-          </div>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-ink-1 mb-1.5">
+                Email address
+              </label>
+              <input
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: 'Invalid email address',
+                  },
+                })}
+                id="email"
+                type="email"
+                autoComplete="email"
+                className="block w-full px-3 py-2.5 rounded-lg bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-aqua/60 focus:border-transparent sm:text-sm"
+                placeholder="you@example.com"
+              />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-300">{errors.email.message}</p>
+              )}
+            </div>
 
-          <div className="text-center text-sm">
-            <Link href="/login" className="font-medium text-blue-600 hover:text-blue-500">
-              Back to sign in
-            </Link>
-          </div>
-        </form>
+            <div>
+              <button
+                type="submit"
+                disabled={loading || success}
+                className="group relative w-full flex justify-center py-2.5 px-4 text-sm font-semibold rounded-full text-[#04110d] bg-aqua hover:bg-aqua-bright shadow-glow hover:shadow-glow-strong transition-all focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Sending...' : success ? 'Email sent' : 'Send reset link'}
+              </button>
+            </div>
+
+            <div className="text-center text-sm">
+              <Link href="/login" className="font-medium text-aqua hover:text-aqua-bright transition-colors">
+                Back to sign in
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   )

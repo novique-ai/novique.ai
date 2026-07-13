@@ -73,22 +73,19 @@ export function AdminNav({ user }: AdminNavProps) {
   }
 
   return (
-    <nav className="bg-gradient-to-r from-slate-900 to-slate-800 shadow-lg">
+    <nav className="sticky top-0 z-40 border-b border-stroke-0 bg-surface-chrome/95 backdrop-blur">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Left side - Logo and Navigation */}
           <div className="flex items-center space-x-8">
             {/* Logo */}
-            <Link href="/admin/dashboard" className="flex items-center space-x-3 group">
-              <div className="relative w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md group-hover:shadow-blue-500/25 transition-shadow">
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div className="hidden sm:block">
-                <span className="text-lg font-bold text-white">Novique</span>
-                <span className="text-xs font-medium text-blue-400 ml-1">Admin</span>
-              </div>
+            <Link href="/admin/dashboard" className="group inline-flex items-baseline gap-0.5" aria-label="Admin dashboard">
+              <span className="font-display text-lg font-semibold tracking-tight text-ink-0">Novique</span>
+              <span className="text-lg font-semibold leading-none text-aqua">.</span>
+              <span className="font-display text-lg font-semibold tracking-tight text-ink-2">ai</span>
+              <span className="ml-2 hidden rounded-full border border-stroke-accent bg-aqua/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-aqua sm:inline-block">
+                Admin
+              </span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -102,12 +99,12 @@ export function AdminNav({ user }: AdminNavProps) {
                     className={`
                       inline-flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-150
                       ${active
-                        ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+                        ? 'bg-aqua/10 text-aqua'
+                        : 'text-ink-2 hover:text-ink-0 hover:bg-white/[0.04]'
                       }
                     `}
                   >
-                    <span className={`mr-2 ${active ? 'text-white' : 'text-slate-400'}`}>
+                    <span className={`mr-2 ${active ? 'text-aqua' : 'text-ink-3'}`}>
                       {navIcons[link.href]}
                     </span>
                     {link.label}
@@ -122,23 +119,23 @@ export function AdminNav({ user }: AdminNavProps) {
             {/* User info */}
             <div className="hidden sm:flex items-center space-x-3">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm shadow-md">
+                <div className="w-8 h-8 rounded-full border border-stroke-accent bg-aqua/10 flex items-center justify-center text-aqua font-semibold text-sm">
                   {(user.full_name || user.email || 'U')[0].toUpperCase()}
                 </div>
-                <div className="text-sm">
-                  <div className="font-medium text-white">{user.full_name || 'User'}</div>
-                  <div className="text-xs text-slate-400 capitalize">{user.role}</div>
+                <div className="text-sm leading-tight">
+                  <div className="font-medium text-ink-0 whitespace-nowrap">{user.full_name || 'User'}</div>
+                  <div className="text-xs text-ink-3 capitalize">{user.role}</div>
                 </div>
               </div>
             </div>
 
             {/* Divider */}
-            <div className="hidden sm:block w-px h-8 bg-slate-700"></div>
+            <div className="hidden sm:block w-px h-8 bg-stroke-1"></div>
 
             {/* Back to site */}
             <Link
               href="/"
-              className="inline-flex items-center px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors"
+              className="inline-flex items-center whitespace-nowrap px-3 py-2 rounded-md text-sm font-medium text-ink-2 hover:text-ink-0 hover:bg-white/[0.04] transition-colors"
             >
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -150,7 +147,7 @@ export function AdminNav({ user }: AdminNavProps) {
       </div>
 
       {/* Mobile navigation */}
-      <div className="lg:hidden border-t border-slate-700">
+      <div className="lg:hidden border-t border-stroke-0">
         <div className="px-2 pt-2 pb-3 space-y-1">
           {navLinks.map((link) => {
             const active = isActive(link.href)
@@ -161,12 +158,12 @@ export function AdminNav({ user }: AdminNavProps) {
                 className={`
                   flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors
                   ${active
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+                    ? 'bg-aqua/10 text-aqua'
+                    : 'text-ink-2 hover:text-ink-0 hover:bg-white/[0.04]'
                   }
                 `}
               >
-                <span className={`mr-3 ${active ? 'text-white' : 'text-slate-400'}`}>
+                <span className={`mr-3 ${active ? 'text-aqua' : 'text-ink-3'}`}>
                   {navIcons[link.href]}
                 </span>
                 {link.label}

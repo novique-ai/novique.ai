@@ -30,11 +30,11 @@ export default function EditorToolbar({ editor, onImageUpload, onUnsplashClick }
       disabled={disabled}
       title={title}
       className={`
-        px-3 py-2 text-sm font-medium rounded transition-colors
+        px-3 py-2 text-sm font-medium rounded transition-colors border
         ${
           active
-            ? 'bg-blue-100 text-blue-700'
-            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+            ? 'bg-aqua/10 text-aqua border-aqua/30'
+            : 'bg-surface-2 border-stroke-1 text-ink-1 hover:bg-surface-3 hover:text-ink-0'
         }
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
       `}
@@ -43,10 +43,10 @@ export default function EditorToolbar({ editor, onImageUpload, onUnsplashClick }
     </button>
   )
 
-  const ToolbarDivider = () => <div className="w-px h-6 bg-gray-300 mx-1" />
+  const ToolbarDivider = () => <div className="w-px h-6 bg-stroke-1 mx-1" />
 
   return (
-    <div className="border-b border-gray-200 bg-gray-50 p-2 flex flex-wrap gap-1 items-center">
+    <div className="border-b border-stroke-0 bg-surface-1 p-2 flex flex-wrap gap-1 items-center">
       {/* Headings */}
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}

@@ -128,10 +128,8 @@ export default function ConsultationPage() {
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {PROCESS.map((p, i) => (
             <div key={p.step} className="nv-card p-6">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs text-aqua">0{i + 1}</span>
-                <h3 className="font-display text-dh3 text-ink-0">{p.step}</h3>
-              </div>
+              <span className="font-mono text-xs text-aqua">0{i + 1}</span>
+              <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink-0">{p.step}</h3>
               <p className="mt-2 text-sm text-ink-2">{p.detail}</p>
             </div>
           ))}

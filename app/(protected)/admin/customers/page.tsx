@@ -265,12 +265,12 @@ export default function CustomersPage() {
           onChange={setStatusFilter}
           options={statusOptions}
         />
-        <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer ml-2">
+        <label className="flex items-center gap-2 text-sm text-ink-1 cursor-pointer ml-2">
           <input
             type="checkbox"
             checked={showArchived}
             onChange={(e) => setShowArchived(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            className="h-4 w-4 rounded border-stroke-1 accent-[#2be8c2] focus:ring-aqua/60"
           />
           Show Archived
         </label>
@@ -297,24 +297,24 @@ export default function CustomersPage() {
                       <img
                         src={customer.avatar_url}
                         alt={customer.name}
-                        className="h-10 w-10 rounded-full mr-3 border-2 border-white shadow-sm"
+                        className="h-10 w-10 rounded-full mr-3 border-2 border-stroke-1 shadow-sm"
                       />
                     ) : (
-                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold mr-3 shadow-sm">
+                      <div className="h-10 w-10 rounded-full bg-surface-3 border border-stroke-1 flex items-center justify-center text-aqua font-semibold mr-3 shadow-sm">
                         {customer.name[0].toUpperCase()}
                       </div>
                     )}
                     <div>
-                      <div className="text-sm font-semibold text-gray-900">{customer.name}</div>
-                      <div className="text-sm text-gray-500">{customer.email}</div>
+                      <div className="text-sm font-semibold text-ink-0">{customer.name}</div>
+                      <div className="text-sm text-ink-2">{customer.email}</div>
                       {customer.business_type && (
-                        <div className="text-xs text-gray-400">{customer.business_type}</div>
+                        <div className="text-xs text-ink-3">{customer.business_type}</div>
                       )}
                     </div>
                   </div>
                 </AdminTableCell>
                 <AdminTableCell className="whitespace-nowrap">
-                  <span className="text-sm font-mono text-gray-600 bg-gray-100 px-2 py-0.5 rounded">
+                  <span className="text-sm font-mono text-ink-1 bg-surface-3 px-2 py-0.5 rounded">
                     {customer.customer_number}
                   </span>
                 </AdminTableCell>
@@ -327,15 +327,15 @@ export default function CustomersPage() {
                 <AdminTableCell>
                   {customer.next_action_required ? (
                     <div>
-                      <div className="text-sm text-gray-900">
+                      <div className="text-sm text-ink-0">
                         {customer.next_action_required}
                       </div>
                       {customer.next_action_due_date && (
                         <div
                           className={`text-sm flex items-center gap-1 ${
                             isOverdue(customer.next_action_due_date)
-                              ? 'text-red-600 font-medium'
-                              : 'text-gray-500'
+                              ? 'text-red-400 font-medium'
+                              : 'text-ink-2'
                           }`}
                         >
                           {isOverdue(customer.next_action_due_date) && (
@@ -348,12 +348,12 @@ export default function CustomersPage() {
                       )}
                     </div>
                   ) : (
-                    <span className="text-sm text-gray-400">None</span>
+                    <span className="text-sm text-ink-3">None</span>
                   )}
                 </AdminTableCell>
-                <AdminTableCell className="whitespace-nowrap text-sm text-gray-500">
+                <AdminTableCell className="whitespace-nowrap text-sm text-ink-2">
                   {customer.assigned_admin?.full_name || customer.assigned_admin?.email || (
-                    <span className="text-gray-400 italic">Unassigned</span>
+                    <span className="text-ink-3 italic">Unassigned</span>
                   )}
                 </AdminTableCell>
                 <AdminTableCell className="whitespace-nowrap text-right">

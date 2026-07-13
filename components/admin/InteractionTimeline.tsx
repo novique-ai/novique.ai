@@ -62,12 +62,12 @@ export function InteractionTimeline({
 
   if (!interactions || interactions.length === 0) {
     return (
-      <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-        <p className="text-gray-500 mb-4">No interactions yet</p>
+      <div className="text-center py-12 bg-surface-1 rounded-lg border-2 border-dashed border-stroke-1">
+        <p className="text-ink-2 mb-4">No interactions yet</p>
         {onAddInteraction && (
           <button
             onClick={onAddInteraction}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md text-[#04110d] bg-aqua hover:bg-aqua-bright"
           >
             Add First Interaction
           </button>
@@ -82,7 +82,7 @@ export function InteractionTimeline({
         <div className="flex justify-end">
           <button
             onClick={onAddInteraction}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+            className="inline-flex items-center px-4 py-2 border border-stroke-1 text-sm font-medium rounded-md text-ink-1 bg-surface-2 hover:bg-surface-3/60"
           >
             <svg
               className="-ml-1 mr-2 h-5 w-5"
@@ -108,31 +108,31 @@ export function InteractionTimeline({
               <div className="relative pb-8">
                 {index !== interactions.length - 1 && (
                   <span
-                    className="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200"
+                    className="absolute top-5 left-5 -ml-px h-full w-0.5 bg-stroke-0"
                     aria-hidden="true"
                   />
                 )}
                 <div className="relative flex items-start space-x-3">
                   <div className="relative">
-                    <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-xl">
+                    <div className="h-10 w-10 rounded-full bg-surface-3 flex items-center justify-center text-xl">
                       {getInteractionIcon(interaction.interaction_type)}
                     </div>
                   </div>
                   <div className="min-w-0 flex-1">
                     <div>
                       <div className="text-sm">
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-ink-0">
                           {formatInteractionType(interaction.interaction_type)}
                         </span>
                       </div>
-                      <p className="mt-0.5 text-sm text-gray-500">
+                      <p className="mt-0.5 text-sm text-ink-2">
                         {formatDate(interaction.interaction_date)}
                         {interaction.created_by_profile?.full_name && (
                           <span> • by {interaction.created_by_profile.full_name}</span>
                         )}
                       </p>
                     </div>
-                    <div className="mt-2 text-sm text-gray-700">
+                    <div className="mt-2 text-sm text-ink-1">
                       {interaction.subject && (
                         <p className="font-medium">{interaction.subject}</p>
                       )}

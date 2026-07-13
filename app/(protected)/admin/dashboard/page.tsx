@@ -94,15 +94,15 @@ export default function AdminDashboard() {
           icon={<DashboardIcon />}
         />
         <AdminCard>
-          <div className="flex items-start gap-4 p-4 bg-red-50 rounded-lg border border-red-200">
-            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-              <svg className="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex items-start gap-4 p-4 bg-red-500/10 rounded-lg border border-red-500/25">
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+              <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-semibold text-red-800">Error Loading Dashboard</h3>
-              <p className="mt-1 text-sm text-red-700">{error}</p>
+              <h3 className="text-sm font-semibold text-red-300">Error Loading Dashboard</h3>
+              <p className="mt-1 text-sm text-red-300">{error}</p>
               <AdminButton
                 variant="ghost"
                 size="sm"
@@ -111,7 +111,7 @@ export default function AdminDashboard() {
                   setLoading(true)
                   loadStats()
                 }}
-                className="mt-3 text-red-600 hover:text-red-700 hover:bg-red-100"
+                className="mt-3 text-red-300 hover:text-red-200 hover:bg-red-500/10"
               >
                 Try again
               </AdminButton>
@@ -197,7 +197,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Monthly Value Multiplier */}
           <div>
-            <label htmlFor="monthlyMultiplier" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="monthlyMultiplier" className="block text-sm font-medium text-ink-1 mb-2">
               Monthly Value Multiplier
             </label>
             <div className="relative">
@@ -216,18 +216,18 @@ export default function AdminDashboard() {
                 min={1}
                 max={100}
                 step={1}
-                className="w-full px-3 py-2 pr-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 pr-8 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-lg focus:ring-2 focus:ring-aqua/60 focus:border-aqua/50"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-2">%</span>
             </div>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-ink-2">
               Percentage of monthly business value used to calculate monthly fee (default: 15%)
             </p>
           </div>
 
           {/* One-Time Charge Multiplier */}
           <div>
-            <label htmlFor="oneTimeMultiplier" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="oneTimeMultiplier" className="block text-sm font-medium text-ink-1 mb-2">
               One-Time Charge Multiplier
             </label>
             <div className="relative">
@@ -246,22 +246,22 @@ export default function AdminDashboard() {
                 min={1}
                 max={10}
                 step={0.5}
-                className="w-full px-3 py-2 pr-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 pr-8 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-lg focus:ring-2 focus:ring-aqua/60 focus:border-aqua/50"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">×</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-2">×</span>
             </div>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-ink-2">
               Multiplier applied to monthly fee for one-time setup cost (default: 3×)
             </p>
           </div>
         </div>
 
         {/* Formula Preview */}
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <h4 className="text-sm font-semibold text-gray-700 mb-2">Current Formula</h4>
-          <div className="text-sm text-gray-600 space-y-1">
-            <p><span className="font-mono bg-gray-200 px-1 rounded">Monthly Fee</span> = Monthly Business Value × {Math.round(roiSettings.monthlyValueMultiplier * 100)}% (rounded to nearest $50, then clamped by tier)</p>
-            <p><span className="font-mono bg-gray-200 px-1 rounded">One-Time Fee</span> = Monthly Fee × {roiSettings.oneTimeChargeMultiplier}</p>
+        <div className="mt-6 p-4 bg-surface-1 rounded-lg border border-stroke-0">
+          <h4 className="text-sm font-semibold text-ink-1 mb-2">Current Formula</h4>
+          <div className="text-sm text-ink-1 space-y-1">
+            <p><span className="font-mono bg-surface-3 px-1 rounded">Monthly Fee</span> = Monthly Business Value × {Math.round(roiSettings.monthlyValueMultiplier * 100)}% (rounded to nearest $50, then clamped by tier)</p>
+            <p><span className="font-mono bg-surface-3 px-1 rounded">One-Time Fee</span> = Monthly Fee × {roiSettings.oneTimeChargeMultiplier}</p>
           </div>
         </div>
 
@@ -288,7 +288,7 @@ export default function AdminDashboard() {
             Reset to Defaults
           </AdminButton>
           {roiSettingsSaved && (
-            <span className="text-sm text-green-600 flex items-center gap-1">
+            <span className="text-sm text-green-400 flex items-center gap-1">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
@@ -301,14 +301,14 @@ export default function AdminDashboard() {
       {/* Section 2: Activity Tracking */}
       <AdminCard title="Upcoming Activities">
         {stats?.activity?.overdue_count > 0 && (
-          <div className="mb-6 flex items-start gap-4 p-4 bg-red-50 rounded-xl border border-red-200">
-            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-              <svg className="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="mb-6 flex items-start gap-4 p-4 bg-red-500/10 rounded-xl border border-red-500/25">
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+              <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-semibold text-red-800">
+              <h3 className="text-sm font-semibold text-red-300">
                 {stats.activity.overdue_count} Overdue Actions
               </h3>
               <ul className="mt-2 space-y-1">
@@ -316,7 +316,7 @@ export default function AdminDashboard() {
                   <li key={task.id}>
                     <Link
                       href={`/admin/customers/${task.id}`}
-                      className="text-sm text-red-700 hover:text-red-800 hover:underline"
+                      className="text-sm text-red-300 hover:text-red-200 hover:underline"
                     >
                       {task.customer_number && <span className="font-mono">#{task.customer_number}</span>} {task.name}: {task.next_action_required}
                     </Link>
@@ -329,7 +329,7 @@ export default function AdminDashboard() {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-4">
+            <h3 className="text-sm font-semibold text-ink-1 mb-4">
               Upcoming Activities (Next 7 Days)
             </h3>
             {stats?.activity?.upcoming_activities?.length > 0 ? (
@@ -338,25 +338,25 @@ export default function AdminDashboard() {
                   <Link
                     key={`${activity.id}-${activity.type}`}
                     href={`/admin/customers/${activity.id}`}
-                    className="block p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all"
+                    className="block p-4 bg-surface-1 rounded-xl border border-stroke-0 hover:border-aqua/30 hover:shadow-sm transition-all"
                   >
                     <div className="flex justify-between items-start gap-3">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <p className="text-sm font-semibold text-gray-900">
-                            {activity.customer_number && <span className="font-mono text-xs text-gray-400 mr-1.5">#{activity.customer_number}</span>}
+                          <p className="text-sm font-semibold text-ink-0">
+                            {activity.customer_number && <span className="font-mono text-xs text-ink-3 mr-1.5">#{activity.customer_number}</span>}
                             {activity.name}
                           </p>
                           <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
                             activity.type === 'presentation'
-                              ? 'bg-purple-100 text-purple-700'
-                              : 'bg-blue-100 text-blue-700'
+                              ? 'bg-purple-500/10 text-purple-300 ring-1 ring-inset ring-purple-500/25'
+                              : 'bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25'
                           }`}>
                             {activity.type === 'presentation' ? 'Presentation' : 'Action'}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-600">{activity.description}</p>
-                        <p className="text-xs text-gray-500 mt-2">
+                        <p className="text-sm text-ink-1">{activity.description}</p>
+                        <p className="text-xs text-ink-2 mt-2">
                           {formatDateTime(activity.datetime)}
                         </p>
                       </div>
@@ -366,8 +366,8 @@ export default function AdminDashboard() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500">
-                <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="text-center py-8 text-ink-2">
+                <svg className="w-12 h-12 mx-auto mb-3 text-ink-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 <p className="text-sm">No upcoming activities</p>
@@ -376,17 +376,17 @@ export default function AdminDashboard() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-4">Recent Activity</h3>
-            <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+            <h3 className="text-sm font-semibold text-ink-1 mb-4">Recent Activity</h3>
+            <div className="p-4 bg-aqua/10 rounded-xl border border-aqua/30">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-sm text-gray-600">New consultations (24h)</p>
-                  <p className="text-2xl font-bold text-blue-700 mt-1">
+                  <p className="text-sm text-ink-1">New consultations (24h)</p>
+                  <p className="text-2xl font-bold text-aqua mt-1">
                     {stats?.activity?.recent_consultations || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-                  <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-12 h-12 rounded-xl bg-surface-3 border border-stroke-1 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-aqua" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -400,27 +400,27 @@ export default function AdminDashboard() {
       <AdminCard title="Active Projects">
         <div className="mb-6">
           <AdminStatsGrid columns={4}>
-            <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
-              <dt className="text-sm font-medium text-gray-500">Total Active</dt>
-              <dd className="mt-1 text-2xl font-bold text-gray-900">
+            <div className="bg-surface-1 rounded-xl border border-stroke-0 p-4">
+              <dt className="text-sm font-medium text-ink-2">Total Active</dt>
+              <dd className="mt-1 text-2xl font-bold text-ink-0">
                 {stats?.projects?.active?.length || 0}
               </dd>
             </div>
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl border border-emerald-200 p-4">
-              <dt className="text-sm font-medium text-emerald-700">On Track</dt>
-              <dd className="mt-1 text-2xl font-bold text-emerald-700">
+            <div className="bg-emerald-500/10 rounded-xl border border-emerald-500/25 p-4">
+              <dt className="text-sm font-medium text-emerald-300">On Track</dt>
+              <dd className="mt-1 text-2xl font-bold text-emerald-300">
                 {stats?.projects?.on_track_count || 0}
               </dd>
             </div>
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl border border-amber-200 p-4">
-              <dt className="text-sm font-medium text-amber-700">At Risk</dt>
-              <dd className="mt-1 text-2xl font-bold text-amber-700">
+            <div className="bg-amber-500/10 rounded-xl border border-amber-500/25 p-4">
+              <dt className="text-sm font-medium text-amber-300">At Risk</dt>
+              <dd className="mt-1 text-2xl font-bold text-amber-300">
                 {stats?.projects?.at_risk_count || 0}
               </dd>
             </div>
-            <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-xl border border-red-200 p-4">
-              <dt className="text-sm font-medium text-red-700">Delayed/Blocked</dt>
-              <dd className="mt-1 text-2xl font-bold text-red-700">
+            <div className="bg-red-500/10 rounded-xl border border-red-500/25 p-4">
+              <dt className="text-sm font-medium text-red-300">Delayed/Blocked</dt>
+              <dd className="mt-1 text-2xl font-bold text-red-300">
                 {(stats?.projects?.delayed_count || 0) + (stats?.projects?.blocked_count || 0)}
               </dd>
             </div>
@@ -433,24 +433,24 @@ export default function AdminDashboard() {
               <Link
                 key={project.id}
                 href={`/admin/customers/${project.id}`}
-                className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all"
+                className="flex justify-between items-center p-4 bg-surface-1 rounded-xl border border-stroke-0 hover:border-aqua/30 hover:shadow-sm transition-all"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <p className="text-sm font-semibold text-gray-900">
-                      {project.customer_number && <span className="font-mono text-xs text-gray-400 mr-1.5">#{project.customer_number}</span>}
+                    <p className="text-sm font-semibold text-ink-0">
+                      {project.customer_number && <span className="font-mono text-xs text-ink-3 mr-1.5">#{project.customer_number}</span>}
                       {project.name}
                     </p>
                     <CustomerStageBadge stage={project.stage} />
                     <ProjectHealthIndicator status={project.project_status} />
                   </div>
                   {project.solution_due_date && (
-                    <p className="mt-2 text-xs text-gray-500">
+                    <p className="mt-2 text-xs text-ink-2">
                       Due: {formatDate(project.solution_due_date)}
                     </p>
                   )}
                   {project.current_blockers && (
-                    <p className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                    <p className="mt-1 text-xs text-red-400 flex items-center gap-1">
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                       </svg>
@@ -458,15 +458,15 @@ export default function AdminDashboard() {
                     </p>
                   )}
                 </div>
-                <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-ink-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 text-gray-500">
-            <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="text-center py-8 text-ink-2">
+            <svg className="w-12 h-12 mx-auto mb-3 text-ink-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
             <p className="text-sm">No active projects</p>
@@ -481,38 +481,38 @@ export default function AdminDashboard() {
             {stats.interactions.map((interaction: any) => (
               <div
                 key={interaction.id}
-                className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-gray-200 transition-colors"
+                className="flex items-start gap-4 p-4 bg-surface-1 rounded-xl border border-stroke-0 hover:border-stroke-2 transition-colors"
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-xl shadow-sm">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-surface-3 border border-stroke-0 flex items-center justify-center text-xl shadow-sm">
                   {getInteractionIcon(interaction.interaction_type)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-sm font-semibold text-ink-0">
                         {interaction.subject || interaction.interaction_type.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
                       </p>
                       {interaction.customer && (
                         <Link
                           href={`/admin/customers/${interaction.customer_id}`}
-                          className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+                          className="text-sm text-aqua hover:text-aqua-bright hover:underline"
                         >
                           {interaction.customer.customer_number && <span className="font-mono text-xs mr-1">#{interaction.customer.customer_number}</span>}
                           {interaction.customer.name}
                         </Link>
                       )}
                       {interaction.notes && (
-                        <p className="mt-1 text-sm text-gray-500 line-clamp-2">
+                        <p className="mt-1 text-sm text-ink-2 line-clamp-2">
                           {interaction.notes}
                         </p>
                       )}
                     </div>
-                    <time className="flex-shrink-0 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+                    <time className="flex-shrink-0 text-xs text-ink-2 bg-surface-3 px-2 py-1 rounded-md">
                       {formatDate(interaction.interaction_date)}
                     </time>
                   </div>
                   {interaction.created_by_profile && (
-                    <p className="mt-2 text-xs text-gray-400">
+                    <p className="mt-2 text-xs text-ink-3">
                       By: {interaction.created_by_profile.full_name}
                     </p>
                   )}
@@ -521,8 +521,8 @@ export default function AdminDashboard() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 text-gray-500">
-            <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="text-center py-8 text-ink-2">
+            <svg className="w-12 h-12 mx-auto mb-3 text-ink-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
             <p className="text-sm">No recent interactions</p>

@@ -30,11 +30,11 @@ export default async function EditBlogPostPage({ params }: PageProps) {
   if (user?.role === 'editor' && post.author_id !== user.id) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h2>
-        <p className="text-gray-600">You can only edit your own posts.</p>
+        <h2 className="text-2xl font-bold text-ink-0 mb-2">Access Denied</h2>
+        <p className="text-ink-1">You can only edit your own posts.</p>
         <Link
           href="/admin/blog"
-          className="mt-4 inline-block text-blue-600 hover:text-blue-700"
+          className="mt-4 inline-block text-aqua hover:text-aqua-bright"
         >
           Back to Blog Posts
         </Link>
@@ -48,31 +48,31 @@ export default async function EditBlogPostPage({ params }: PageProps) {
       <nav className="flex" aria-label="Breadcrumb">
         <ol className="flex items-center space-x-2 text-sm">
           <li>
-            <Link href="/admin/dashboard" className="text-gray-500 hover:text-gray-700">
+            <Link href="/admin/dashboard" className="text-ink-2 hover:text-ink-1">
               Admin
             </Link>
           </li>
           <li>
-            <span className="text-gray-400">/</span>
+            <span className="text-ink-3">/</span>
           </li>
           <li>
-            <Link href="/admin/blog" className="text-gray-500 hover:text-gray-700">
+            <Link href="/admin/blog" className="text-ink-2 hover:text-ink-1">
               Blog
             </Link>
           </li>
           <li>
-            <span className="text-gray-400">/</span>
+            <span className="text-ink-3">/</span>
           </li>
           <li>
-            <span className="text-gray-900">Edit: {post.title}</span>
+            <span className="text-ink-0">Edit: {post.title}</span>
           </li>
         </ol>
       </nav>
 
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Edit Blog Post</h1>
-        <p className="mt-2 text-sm text-gray-700">
+        <h1 className="text-3xl font-bold text-ink-0">Edit Blog Post</h1>
+        <p className="mt-2 text-sm text-ink-1">
           Update and manage your blog post
         </p>
       </div>

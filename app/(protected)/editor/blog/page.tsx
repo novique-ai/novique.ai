@@ -86,12 +86,12 @@ export default async function EditorBlogPage() {
 
   const getStatusBadge = (status: string) => {
     const badges: Record<string, { bg: string; text: string; dot: string }> = {
-      published: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500' },
-      draft: { bg: 'bg-gray-50', text: 'text-gray-600', dot: 'bg-gray-400' },
-      pending_review: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500' },
-      scheduled: { bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500' },
+      published: { bg: 'bg-emerald-500/10 ring-1 ring-inset ring-emerald-500/25', text: 'text-emerald-300', dot: 'bg-emerald-400' },
+      draft: { bg: 'bg-surface-3 ring-1 ring-inset ring-stroke-1', text: 'text-ink-1', dot: 'bg-gray-400' },
+      pending_review: { bg: 'bg-amber-500/10 ring-1 ring-inset ring-amber-500/25', text: 'text-amber-300', dot: 'bg-amber-400' },
+      scheduled: { bg: 'bg-aqua/10 ring-1 ring-inset ring-aqua/25', text: 'text-aqua', dot: 'bg-aqua' },
     }
-    return badges[status] || { bg: 'bg-gray-50', text: 'text-gray-600', dot: 'bg-gray-400' }
+    return badges[status] || { bg: 'bg-surface-3 ring-1 ring-inset ring-stroke-1', text: 'text-ink-1', dot: 'bg-gray-400' }
   }
 
   return (
@@ -152,17 +152,17 @@ export default async function EditorBlogPage() {
                 <AdminTableRow key={post.id}>
                   <AdminTableCell>
                     <div className="flex items-center">
-                      <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-indigo-600 mr-3">
+                      <div className="h-10 w-10 rounded-lg bg-surface-3 border border-stroke-1 flex items-center justify-center text-aqua mr-3">
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                       </div>
                       <div>
-                        <div className="text-sm font-semibold text-gray-900">{post.title}</div>
-                        <div className="text-sm text-gray-500">/blog/{post.slug}</div>
+                        <div className="text-sm font-semibold text-ink-0">{post.title}</div>
+                        <div className="text-sm text-ink-2">/blog/{post.slug}</div>
                       </div>
                       {post.featured && (
-                        <span className="ml-2 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-amber-50 text-amber-700 rounded-full">
+                        <span className="ml-2 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-amber-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/25 rounded-full">
                           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                           </svg>
@@ -177,7 +177,7 @@ export default async function EditorBlogPage() {
                       {post.status.replace('_', ' ')}
                     </span>
                   </AdminTableCell>
-                  <AdminTableCell className="whitespace-nowrap text-sm text-gray-500">
+                  <AdminTableCell className="whitespace-nowrap text-sm text-ink-2">
                     {new Date(post.created_at).toLocaleDateString()}
                   </AdminTableCell>
                   <AdminTableCell className="whitespace-nowrap text-right">
@@ -192,7 +192,7 @@ export default async function EditorBlogPage() {
                       <Link
                         href={`/blog/${post.slug}`}
                         target="_blank"
-                        className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                        className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-ink-1 hover:text-ink-0 transition-colors"
                       >
                         View
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

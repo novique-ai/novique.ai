@@ -182,11 +182,11 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
       <form className="space-y-6 max-w-5xl mx-auto" onSubmit={(e) => e.preventDefault()}>
         {/* Generate from GitHub button */}
         {!initialData?.id && (
-          <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
+          <div className="bg-purple-500/10 border border-purple-500/25 rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-medium text-gray-900">Generate from GitHub Repository</h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <h3 className="font-medium text-ink-0">Generate from GitHub Repository</h3>
+                <p className="text-sm text-ink-1 mt-1">
                   AI will read your repository and generate content automatically
                 </p>
               </div>
@@ -203,7 +203,7 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
 
         {/* Title */}
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="title" className="block text-sm font-medium text-ink-1 mb-2">
             Title *
           </label>
           <input
@@ -211,15 +211,15 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
             type="text"
             value={formData.title}
             onChange={(e) => updateField('title', e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-lg focus:ring-2 focus:ring-aqua/60 focus:border-transparent"
             placeholder="Enter lab title..."
           />
-          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
+          {errors.title && <p className="mt-1 text-sm text-red-400">{errors.title}</p>}
         </div>
 
         {/* Slug */}
         <div>
-          <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="slug" className="block text-sm font-medium text-ink-1 mb-2">
             Slug *
           </label>
           <input
@@ -227,16 +227,16 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
             type="text"
             value={formData.slug}
             onChange={(e) => updateField('slug', e.target.value.toLowerCase())}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+            className="w-full px-4 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-lg focus:ring-2 focus:ring-aqua/60 focus:border-transparent font-mono text-sm"
             placeholder="url-friendly-slug"
           />
-          {errors.slug && <p className="mt-1 text-sm text-red-600">{errors.slug}</p>}
-          <p className="mt-1 text-sm text-gray-500">URL: /labs/{formData.slug || 'your-slug-here'}</p>
+          {errors.slug && <p className="mt-1 text-sm text-red-400">{errors.slug}</p>}
+          <p className="mt-1 text-sm text-ink-2">URL: /labs/{formData.slug || 'your-slug-here'}</p>
         </div>
 
         {/* GitHub URL */}
         <div>
-          <label htmlFor="githubUrl" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="githubUrl" className="block text-sm font-medium text-ink-1 mb-2">
             GitHub Repository URL
           </label>
           <input
@@ -244,21 +244,21 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
             type="url"
             value={formData.githubUrl}
             onChange={(e) => updateField('githubUrl', e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-lg focus:ring-2 focus:ring-aqua/60 focus:border-transparent"
             placeholder="https://github.com/owner/repo"
           />
         </div>
 
         {/* Workflow SVG Preview */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-ink-1 mb-2">
             Workflow Diagram
           </label>
           <AnimatedWorkflow
             svg={formData.workflowSvg}
             height="250px"
             showControls={!isWorkflowImageUrl}
-            className="border border-gray-200 rounded-lg"
+            className="border border-stroke-0 rounded-lg"
           />
           <div className="mt-2 flex flex-wrap gap-2">
             {formData.githubUrl && (
@@ -282,7 +282,7 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
                     alert('Failed to regenerate SVG')
                   }
                 }}
-                className="text-sm text-purple-600 hover:text-purple-700"
+                className="text-sm text-purple-300 hover:text-purple-200"
               >
                 Regenerate from repo
               </button>
@@ -290,7 +290,7 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
             <button
               type="button"
               onClick={() => setShowWorkflowEditor(true)}
-              className="text-sm text-blue-600 hover:text-blue-700"
+              className="text-sm text-aqua hover:text-aqua-bright"
             >
               Edit workflow nodes
             </button>
@@ -298,7 +298,7 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploadingImage}
-              className="text-sm text-green-600 hover:text-green-700 disabled:opacity-50"
+              className="text-sm text-green-300 hover:text-green-200 disabled:opacity-50"
             >
               {isUploadingImage ? 'Uploading...' : 'Upload image'}
             </button>
@@ -306,7 +306,7 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
               <button
                 type="button"
                 onClick={() => updateField('workflowSvg', '')}
-                className="text-sm text-gray-500 hover:text-gray-700"
+                className="text-sm text-ink-2 hover:text-ink-1"
               >
                 Clear
               </button>
@@ -324,10 +324,10 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
 
         {/* Section Tabs */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Content Sections</label>
-          <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <label className="block text-sm font-medium text-ink-1 mb-2">Content Sections</label>
+          <div className="border border-stroke-0 rounded-lg overflow-hidden">
             {/* Tab buttons */}
-            <div className="flex border-b border-gray-200 bg-gray-50 overflow-x-auto">
+            <div className="flex border-b border-stroke-0 bg-surface-1 overflow-x-auto">
               {sections.map((section) => (
                 <button
                   key={section.key}
@@ -335,8 +335,8 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
                   onClick={() => setActiveSection(section.key)}
                   className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors ${
                     activeSection === section.key
-                      ? 'bg-white text-blue-600 border-b-2 border-blue-600 -mb-px'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                      ? 'bg-surface-2 text-aqua border-b-2 border-aqua -mb-px'
+                      : 'text-ink-1 hover:text-ink-0 hover:bg-surface-3/60'
                   }`}
                 >
                   {section.label}
@@ -358,7 +358,7 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
                     onImageUpload={handleContentImageUpload}
                   />
                   {errors[section.key] && (
-                    <p className="mt-1 text-sm text-red-600">{errors[section.key]}</p>
+                    <p className="mt-1 text-sm text-red-400">{errors[section.key]}</p>
                   )}
                 </div>
               ))}
@@ -368,9 +368,9 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
 
         {/* Meta Description */}
         <div>
-          <label htmlFor="metaDescription" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="metaDescription" className="block text-sm font-medium text-ink-1 mb-2">
             Meta Description (SEO){' '}
-            <span className="text-gray-500 font-normal">
+            <span className="text-ink-2 font-normal">
               ({formData.metaDescription?.length || 0}/160)
             </span>
           </label>
@@ -380,27 +380,27 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
             onChange={(e) => updateField('metaDescription', e.target.value)}
             rows={2}
             maxLength={160}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-lg focus:ring-2 focus:ring-aqua/60 focus:border-transparent"
             placeholder="SEO meta description (optional)..."
           />
         </div>
 
         {/* Tags */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+          <label className="block text-sm font-medium text-ink-1 mb-2">Tags</label>
           <div className="flex gap-2 mb-2">
             <input
               type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-lg focus:ring-2 focus:ring-aqua/60 focus:border-transparent"
               placeholder="Add tag and press Enter..."
             />
             <button
               type="button"
               onClick={handleAddTag}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+              className="px-4 py-2 bg-surface-2 border border-stroke-1 text-ink-1 rounded-lg hover:bg-surface-3"
             >
               Add
             </button>
@@ -409,13 +409,13 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
             {formData.tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                className="inline-flex items-center gap-1 px-3 py-1 bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25 rounded-full text-sm"
               >
                 {tag}
                 <button
                   type="button"
                   onClick={() => handleRemoveTag(tag)}
-                  className="hover:text-blue-900"
+                  className="hover:text-aqua-bright"
                 >
                   ×
                 </button>
@@ -432,22 +432,22 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
                 type="checkbox"
                 checked={formData.featured}
                 onChange={(e) => updateField('featured', e.target.checked)}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 accent-[#2be8c2] border-stroke-1 rounded focus:ring-aqua/60"
               />
-              <span className="text-sm font-medium text-gray-700">Featured Lab</span>
+              <span className="text-sm font-medium text-ink-1">Featured Lab</span>
             </label>
           </div>
 
           {isAdmin && (
             <div>
-              <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="status" className="block text-sm font-medium text-ink-1 mb-2">
                 Status
               </label>
               <select
                 id="status"
                 value={formData.status}
                 onChange={(e) => updateField('status', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-lg focus:ring-2 focus:ring-aqua/60 focus:border-transparent"
               >
                 <option value="draft">Draft</option>
                 <option value="pending_review">Pending Review</option>
@@ -458,13 +458,13 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+        <div className="flex justify-between items-center pt-6 border-t border-stroke-0">
           <div className="flex gap-3">
             <button
               type="button"
               onClick={handleSaveDraft}
               disabled={isSaving}
-              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+              className="px-6 py-2 border border-stroke-1 text-ink-1 rounded-lg hover:bg-surface-3/60 disabled:opacity-50"
             >
               Save Draft
             </button>
@@ -472,7 +472,7 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
               type="button"
               onClick={handlePublish}
               disabled={isSaving}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="px-6 py-2 bg-aqua text-[#04110d] font-semibold rounded-lg hover:bg-aqua-bright disabled:opacity-50"
             >
               {formData.status === 'published' ? 'Update' : 'Publish'}
             </button>
@@ -499,25 +499,25 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
 
       {/* Workflow Editor Modal */}
       {showWorkflowEditor && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Edit Workflow Nodes</h3>
-              <p className="text-sm text-gray-600 mt-1">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-surface-2 rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-stroke-0">
+              <h3 className="text-lg font-semibold text-ink-0">Edit Workflow Nodes</h3>
+              <p className="text-sm text-ink-1 mt-1">
                 Define the components in your infrastructure diagram
               </p>
             </div>
 
             <div className="p-6 space-y-4">
               {workflowNodes.map((node, index) => (
-                <div key={node.id} className="border border-gray-200 rounded-lg p-4 space-y-3">
+                <div key={node.id} className="border border-stroke-0 rounded-lg p-4 space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Node {index + 1}</span>
+                    <span className="text-sm font-medium text-ink-1">Node {index + 1}</span>
                     {workflowNodes.length > 1 && (
                       <button
                         type="button"
                         onClick={() => setWorkflowNodes(nodes => nodes.filter(n => n.id !== node.id))}
-                        className="text-red-500 hover:text-red-700 text-sm"
+                        className="text-red-400 hover:text-red-300 text-sm"
                       >
                         Remove
                       </button>
@@ -526,37 +526,37 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs text-gray-500 mb-1">Label</label>
+                      <label className="block text-xs text-ink-2 mb-1">Label</label>
                       <input
                         type="text"
                         value={node.label}
                         onChange={(e) => setWorkflowNodes(nodes =>
                           nodes.map(n => n.id === node.id ? { ...n, label: e.target.value } : n)
                         )}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                        className="w-full px-3 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-md text-sm"
                         placeholder="My Laptop"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-500 mb-1">Sublabel</label>
+                      <label className="block text-xs text-ink-2 mb-1">Sublabel</label>
                       <input
                         type="text"
                         value={node.sublabel}
                         onChange={(e) => setWorkflowNodes(nodes =>
                           nodes.map(n => n.id === node.id ? { ...n, sublabel: e.target.value } : n)
                         )}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                        className="w-full px-3 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-md text-sm"
                         placeholder="Terraform + AWS CLI"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-500 mb-1">Type</label>
+                      <label className="block text-xs text-ink-2 mb-1">Type</label>
                       <select
                         value={node.type}
                         onChange={(e) => setWorkflowNodes(nodes =>
                           nodes.map(n => n.id === node.id ? { ...n, type: e.target.value as typeof node.type } : n)
                         )}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                        className="w-full px-3 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-md text-sm"
                       >
                         <option value="laptop">Laptop</option>
                         <option value="server">Server</option>
@@ -568,14 +568,14 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-500 mb-1">Provider (optional)</label>
+                      <label className="block text-xs text-ink-2 mb-1">Provider (optional)</label>
                       <input
                         type="text"
                         value={node.provider || ''}
                         onChange={(e) => setWorkflowNodes(nodes =>
                           nodes.map(n => n.id === node.id ? { ...n, provider: e.target.value } : n)
                         )}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                        className="w-full px-3 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-md text-sm"
                         placeholder="AWS, Docker, Local"
                       />
                     </div>
@@ -589,17 +589,17 @@ export default function LabForm({ initialData, isAdmin = false }: LabFormProps) 
                   ...nodes,
                   { id: Date.now().toString(), label: '', sublabel: '', type: 'server', provider: '' }
                 ])}
-                className="w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-700 transition-colors"
+                className="w-full py-2 border-2 border-dashed border-stroke-1 rounded-lg text-ink-1 hover:border-stroke-2 hover:text-ink-0 transition-colors"
               >
                 + Add Node
               </button>
             </div>
 
-            <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
+            <div className="p-6 border-t border-stroke-0 flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setShowWorkflowEditor(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                className="px-4 py-2 text-ink-1 hover:text-ink-0"
               >
                 Cancel
               </button>

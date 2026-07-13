@@ -21,12 +21,12 @@ export default async function AdminLayout({
   const user = await requireAdminOrEditor()
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="theme-dark min-h-screen bg-surface-0 font-sans text-ink-1 antialiased">
       {/* Admin Navigation */}
       <AdminNav user={user} />
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {children}
       </main>
     </div>

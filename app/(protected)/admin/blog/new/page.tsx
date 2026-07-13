@@ -11,31 +11,31 @@ export default async function NewBlogPostPage() {
       <nav className="flex" aria-label="Breadcrumb">
         <ol className="flex items-center space-x-2 text-sm">
           <li>
-            <Link href="/admin/dashboard" className="text-gray-500 hover:text-gray-700">
+            <Link href="/admin/dashboard" className="text-ink-2 hover:text-ink-1">
               Admin
             </Link>
           </li>
           <li>
-            <span className="text-gray-400">/</span>
+            <span className="text-ink-3">/</span>
           </li>
           <li>
-            <Link href="/admin/blog" className="text-gray-500 hover:text-gray-700">
+            <Link href="/admin/blog" className="text-ink-2 hover:text-ink-1">
               Blog
             </Link>
           </li>
           <li>
-            <span className="text-gray-400">/</span>
+            <span className="text-ink-3">/</span>
           </li>
           <li>
-            <span className="text-gray-900">New Post</span>
+            <span className="text-ink-0">New Post</span>
           </li>
         </ol>
       </nav>
 
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Create New Blog Post</h1>
-        <p className="mt-2 text-sm text-gray-700">
+        <h1 className="text-3xl font-bold text-ink-0">Create New Blog Post</h1>
+        <p className="mt-2 text-sm text-ink-1">
           Write and publish a new blog post
         </p>
       </div>

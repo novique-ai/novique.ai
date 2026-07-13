@@ -74,13 +74,13 @@ export default function UnsplashImagePicker({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 p-6 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-surface-2 rounded-lg shadow-xl max-w-4xl w-full mx-4 p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">Search Unsplash Images</h2>
+          <h2 className="text-2xl font-bold text-ink-0">Search Unsplash Images</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-ink-3 hover:text-ink-1"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -101,12 +101,12 @@ export default function UnsplashImagePicker({
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
             placeholder="Search for images... (e.g., technology, business, office)"
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 px-4 py-2 bg-surface-1 border border-stroke-1 text-ink-0 placeholder-ink-3 rounded-lg focus:ring-2 focus:ring-aqua/60 focus:border-transparent"
           />
           <button
             onClick={handleSearch}
             disabled={isSearching}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="px-6 py-2 bg-aqua text-[#04110d] font-semibold rounded-lg hover:bg-aqua-bright disabled:opacity-50"
           >
             {isSearching ? 'Searching...' : 'Search'}
           </button>
@@ -114,7 +114,7 @@ export default function UnsplashImagePicker({
 
         {/* Error Message */}
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800">
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/25 rounded-lg text-red-300">
             {error}
           </div>
         )}
@@ -125,7 +125,7 @@ export default function UnsplashImagePicker({
             {images.map((image) => (
               <div
                 key={image.id}
-                className="relative group cursor-pointer rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 transition-all"
+                className="relative group cursor-pointer rounded-lg overflow-hidden border-2 border-transparent hover:border-aqua transition-all"
                 onClick={() => handleImageSelect(image)}
               >
                 <img
@@ -134,7 +134,7 @@ export default function UnsplashImagePicker({
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity flex items-center justify-center">
-                  <button className="opacity-0 group-hover:opacity-100 px-4 py-2 bg-white text-gray-900 rounded-lg font-medium">
+                  <button className="opacity-0 group-hover:opacity-100 px-4 py-2 bg-aqua text-[#04110d] rounded-lg font-semibold">
                     Insert Image
                   </button>
                 </div>
@@ -159,9 +159,9 @@ export default function UnsplashImagePicker({
 
         {/* Empty State */}
         {!isSearching && images.length === 0 && !error && (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-ink-2">
             <svg
-              className="w-16 h-16 mx-auto mb-4 text-gray-400"
+              className="w-16 h-16 mx-auto mb-4 text-ink-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -178,14 +178,14 @@ export default function UnsplashImagePicker({
           </div>
         )}
 
-        <div className="mt-6 pt-4 border-t border-gray-200">
-          <p className="text-sm text-gray-600">
+        <div className="mt-6 pt-4 border-t border-stroke-0">
+          <p className="text-sm text-ink-1">
             Images provided by{' '}
             <a
               href="https://unsplash.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
+              className="text-aqua hover:underline"
             >
               Unsplash
             </a>

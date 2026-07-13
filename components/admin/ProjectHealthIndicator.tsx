@@ -13,27 +13,27 @@ export function ProjectHealthIndicator({
     on_track: {
       label: 'On Track',
       icon: '🟢',
-      className: 'text-green-700 bg-green-50 border-green-200',
+      className: 'text-green-300 bg-green-500/10 border-green-500/25',
     },
     at_risk: {
       label: 'At Risk',
       icon: '🟡',
-      className: 'text-yellow-700 bg-yellow-50 border-yellow-200',
+      className: 'text-yellow-300 bg-yellow-500/10 border-yellow-500/25',
     },
     delayed: {
       label: 'Delayed',
       icon: '🔴',
-      className: 'text-red-700 bg-red-50 border-red-200',
+      className: 'text-red-300 bg-red-500/10 border-red-500/25',
     },
     blocked: {
       label: 'Blocked',
       icon: '🛑',
-      className: 'text-red-800 bg-red-100 border-red-300',
+      className: 'text-red-300 bg-red-500/20 border-red-500/40',
     },
     completed: {
       label: 'Completed',
       icon: '✅',
-      className: 'text-green-800 bg-green-100 border-green-300',
+      className: 'text-green-300 bg-green-500/20 border-green-500/40',
     },
   }
 
@@ -56,7 +56,7 @@ export function ProjectHealthIndicator({
       )}
 
       {isDueSoon && dueDate && (
-        <div className="text-xs mt-1 font-medium text-red-600">
+        <div className="text-xs mt-1 font-medium text-red-400">
           ⚠️ Due: {new Date(dueDate).toLocaleDateString()}
         </div>
       )}

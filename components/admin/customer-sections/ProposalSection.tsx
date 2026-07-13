@@ -30,46 +30,46 @@ export function ProposalSection({
   return (
     <div className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Investigation Notes</label>
+        <label className="block text-sm font-medium text-ink-1">Investigation Notes</label>
         <textarea
           rows={6}
           value={formData.investigation_notes || ''}
           onChange={(e) => updateField('investigation_notes', e.target.value)}
           placeholder="Notes from investigating possible improvements..."
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Proposed Solutions</label>
+        <label className="block text-sm font-medium text-ink-1">Proposed Solutions</label>
         <textarea
           rows={6}
           value={formData.proposed_solutions?.join('\n') || ''}
           onChange={(e) => updateField('proposed_solutions', e.target.value.split('\n').filter((s: string) => s.trim()))}
           placeholder="Enter each solution on a new line..."
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
         />
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Proposal Presentation Date/Time</label>
+          <label className="block text-sm font-medium text-ink-1">Proposal Presentation Date/Time</label>
           <input
             type="datetime-local"
             value={formData.proposal_presentation_datetime || ''}
             onChange={(e) => updateField('proposal_presentation_datetime', e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Proposal Location</label>
+          <label className="block text-sm font-medium text-ink-1">Proposal Location</label>
           <input
             type="text"
             value={formData.proposal_location || ''}
             onChange={(e) => updateField('proposal_location', e.target.value)}
             placeholder="Virtual, Office, Customer site..."
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="mt-1 block w-full rounded-md bg-surface-1 border-stroke-1 text-ink-0 placeholder-ink-3 shadow-sm focus:border-aqua/50 focus:ring-aqua/60"
           />
         </div>
       </div>

@@ -67,19 +67,19 @@ export function EditorNav({ user }: EditorNavProps) {
   }
 
   return (
-    <nav className="bg-gradient-to-r from-indigo-900 to-purple-800 shadow-lg">
+    <nav className="sticky top-0 z-40 border-b border-stroke-0 bg-surface-chrome/95 backdrop-blur">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Left side - Logo and Navigation */}
           <div className="flex items-center space-x-8">
             {/* Logo/Brand */}
-            <Link href="/editor/dashboard" className="flex items-center space-x-2 group">
-              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-              </div>
-              <span className="text-white font-semibold text-lg hidden sm:block">Editor Panel</span>
+            <Link href="/editor/dashboard" className="group inline-flex items-baseline gap-0.5" aria-label="Editor dashboard">
+              <span className="font-display text-lg font-semibold tracking-tight text-ink-0">Novique</span>
+              <span className="text-lg font-semibold leading-none text-aqua">.</span>
+              <span className="font-display text-lg font-semibold tracking-tight text-ink-2">ai</span>
+              <span className="ml-2 hidden rounded-full border border-stroke-accent bg-aqua/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-aqua sm:inline-block">
+                Editor
+              </span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -92,8 +92,8 @@ export function EditorNav({ user }: EditorNavProps) {
                     href={link.href}
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                       active
-                        ? 'bg-white/20 text-white shadow-sm'
-                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                        ? 'bg-aqua/10 text-aqua'
+                        : 'text-ink-2 hover:text-ink-0 hover:bg-white/[0.04]'
                     }`}
                   >
                     {navIcons[link.href]}
@@ -108,26 +108,26 @@ export function EditorNav({ user }: EditorNavProps) {
           <div className="flex items-center space-x-4">
             {/* User Info */}
             <div className="hidden sm:flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+              <div className="w-8 h-8 rounded-full border border-stroke-accent bg-aqua/10 flex items-center justify-center text-aqua font-semibold text-sm">
                 {(user.full_name || user.email || 'U')[0].toUpperCase()}
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-white">
+              <div className="flex flex-col leading-tight">
+                <span className="text-sm font-medium text-ink-0 whitespace-nowrap">
                   {user.full_name || user.email}
                 </span>
-                <span className="text-xs text-white/60 capitalize">{user.role}</span>
+                <span className="text-xs text-ink-3 capitalize">{user.role}</span>
               </div>
             </div>
 
             {/* Divider */}
-            <div className="hidden sm:block h-6 w-px bg-white/20"></div>
+            <div className="hidden sm:block h-6 w-px bg-stroke-1"></div>
 
             {/* Quick Links */}
             <div className="flex items-center space-x-2">
               {isAdmin && (
                 <Link
                   href="/admin/dashboard"
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                  className="flex items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-sm font-medium text-ink-2 hover:text-ink-0 hover:bg-white/[0.04] rounded-lg transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -138,7 +138,7 @@ export function EditorNav({ user }: EditorNavProps) {
               )}
               <Link
                 href="/"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-sm font-medium text-ink-2 hover:text-ink-0 hover:bg-white/[0.04] rounded-lg transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -151,7 +151,7 @@ export function EditorNav({ user }: EditorNavProps) {
       </div>
 
       {/* Mobile navigation */}
-      <div className="md:hidden border-t border-white/10">
+      <div className="md:hidden border-t border-stroke-0">
         <div className="px-2 pt-2 pb-3 space-y-1">
           {navLinks.map((link) => {
             const active = isActive(link.href)
@@ -161,8 +161,8 @@ export function EditorNav({ user }: EditorNavProps) {
                 href={link.href}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-base font-medium transition-colors ${
                   active
-                    ? 'bg-white/20 text-white'
-                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                    ? 'bg-aqua/10 text-aqua'
+                    : 'text-ink-2 hover:text-ink-0 hover:bg-white/[0.04]'
                 }`}
               >
                 {navIcons[link.href]}
@@ -170,11 +170,11 @@ export function EditorNav({ user }: EditorNavProps) {
               </Link>
             )
           })}
-          <div className="border-t border-white/10 my-2"></div>
+          <div className="border-t border-stroke-0 my-2"></div>
           {isAdmin && (
             <Link
               href="/admin/dashboard"
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-base font-medium text-amber-300 hover:bg-white/10"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-base font-medium text-aqua hover:bg-white/[0.04]"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -185,7 +185,7 @@ export function EditorNav({ user }: EditorNavProps) {
           )}
           <Link
             href="/"
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-base font-medium text-white/70 hover:text-white hover:bg-white/10"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-base font-medium text-ink-2 hover:text-ink-0 hover:bg-white/[0.04]"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />

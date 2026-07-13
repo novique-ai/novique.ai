@@ -47,7 +47,7 @@ export default function EditSocialPostPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <div className="text-gray-500">Loading...</div>
+        <div className="text-ink-2">Loading...</div>
       </div>
     )
   }
@@ -55,12 +55,12 @@ export default function EditSocialPostPage() {
   if (error || !post) {
     return (
       <div className="space-y-4">
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+        <div className="bg-red-500/10 border border-red-500/25 text-red-300 px-4 py-3 rounded-lg">
           {error || 'Post not found'}
         </div>
         <Link
           href="/admin/social"
-          className="inline-flex items-center text-blue-600 hover:text-blue-800"
+          className="inline-flex items-center text-aqua hover:text-aqua-bright"
         >
           &larr; Back to Social Posts
         </Link>
@@ -90,19 +90,19 @@ export default function EditSocialPostPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <nav className="text-sm text-gray-500 mb-2">
-            <Link href="/admin/social" className="hover:text-blue-600">
+          <nav className="text-sm text-ink-2 mb-2">
+            <Link href="/admin/social" className="hover:text-aqua">
               Social Posts
             </Link>
             <span className="mx-2">/</span>
             <span>Edit</span>
           </nav>
-          <h1 className="text-3xl font-bold text-gray-900">Edit Social Post</h1>
+          <h1 className="text-3xl font-bold text-ink-0">Edit Social Post</h1>
         </div>
       </div>
 
       {/* Editor */}
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-surface-2 shadow rounded-lg p-6">
         <SocialPostEditor
           initialData={initialData}
           platform={post.platform}

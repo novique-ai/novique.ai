@@ -59,20 +59,20 @@ export function ConvertConsultationModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-surface-2 border border-stroke-0 rounded-lg shadow-xl max-w-2xl w-full mx-4">
+        <div className="px-6 py-4 border-b border-stroke-0">
+          <h2 className="text-xl font-semibold text-ink-0">
             Convert to Customer
           </h2>
         </div>
 
         <div className="px-6 py-4">
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-ink-1 mb-4">
             Convert this consultation request into a customer record. This will:
           </p>
 
-          <ul className="list-disc list-inside space-y-2 mb-6 text-sm text-gray-700">
+          <ul className="list-disc list-inside space-y-2 mb-6 text-sm text-ink-1">
             <li>Create a new customer record in the CRM</li>
             <li>Transfer all consultation details</li>
             <li>Set initial stage to &quot;Proposal Development&quot;</li>
@@ -80,31 +80,31 @@ export function ConvertConsultationModal({
             <li>Mark this consultation as &quot;converted&quot;</li>
           </ul>
 
-          <div className="bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
+          <div className="bg-surface-1 rounded-lg p-4 space-y-2 text-sm">
             <div>
-              <span className="font-medium text-gray-700">Name:</span>{' '}
-              <span className="text-gray-900">{consultation.name}</span>
+              <span className="font-medium text-ink-1">Name:</span>{' '}
+              <span className="text-ink-0">{consultation.name}</span>
             </div>
             <div>
-              <span className="font-medium text-gray-700">Email:</span>{' '}
-              <span className="text-gray-900">{consultation.email}</span>
+              <span className="font-medium text-ink-1">Email:</span>{' '}
+              <span className="text-ink-0">{consultation.email}</span>
             </div>
             {consultation.phone && (
               <div>
-                <span className="font-medium text-gray-700">Phone:</span>{' '}
-                <span className="text-gray-900">{consultation.phone}</span>
+                <span className="font-medium text-ink-1">Phone:</span>{' '}
+                <span className="text-ink-0">{consultation.phone}</span>
               </div>
             )}
             {consultation.business_type && (
               <div>
-                <span className="font-medium text-gray-700">Business Type:</span>{' '}
-                <span className="text-gray-900">{consultation.business_type}</span>
+                <span className="font-medium text-ink-1">Business Type:</span>{' '}
+                <span className="text-ink-0">{consultation.business_type}</span>
               </div>
             )}
             {consultation.business_size && (
               <div>
-                <span className="font-medium text-gray-700">Business Size:</span>{' '}
-                <span className="text-gray-900">{consultation.business_size}</span>
+                <span className="font-medium text-ink-1">Business Size:</span>{' '}
+                <span className="text-ink-0">{consultation.business_size}</span>
               </div>
             )}
           </div>
@@ -114,30 +114,30 @@ export function ConvertConsultationModal({
               type="checkbox"
               checked={isTest}
               onChange={(e) => setIsTest(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              className="h-4 w-4 rounded border-stroke-1 text-aqua accent-[#2be8c2] focus:ring-aqua/60"
             />
-            <span className="text-sm text-gray-700">Test Customer</span>
+            <span className="text-sm text-ink-1">Test Customer</span>
           </label>
 
           {error && (
-            <div className="mt-4 bg-red-50 border border-red-200 rounded-md p-4">
-              <p className="text-sm text-red-800">{error}</p>
+            <div className="mt-4 bg-red-500/10 border border-red-500/25 rounded-md p-4">
+              <p className="text-sm text-red-300">{error}</p>
             </div>
           )}
         </div>
 
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
+        <div className="px-6 py-4 bg-surface-1 border-t border-stroke-0 flex justify-end gap-3">
           <button
             onClick={onClose}
             disabled={isConverting}
-            className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 border border-stroke-1 rounded-md text-sm font-medium text-ink-1 bg-surface-2 hover:bg-surface-3/60 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Cancel
           </button>
           <button
             onClick={handleConvert}
             disabled={isConverting}
-            className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 border border-transparent rounded-md text-sm font-semibold text-[#04110d] bg-aqua hover:bg-aqua-bright disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isConverting ? 'Converting...' : 'Convert to Customer'}
           </button>

@@ -5,63 +5,63 @@ import { useState, useRef, useEffect } from 'react'
 const STAGE_CONFIG: Record<string, { label: string; className: string; dotColor: string }> = {
   consultation_requested: {
     label: 'Consultation Requested',
-    className: 'bg-blue-100 text-blue-800',
-    dotColor: 'bg-blue-500',
+    className: 'bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25',
+    dotColor: 'bg-blue-400',
   },
   consultation_in_progress: {
     label: 'Consultation In Progress',
-    className: 'bg-blue-200 text-blue-900',
-    dotColor: 'bg-blue-600',
+    className: 'bg-aqua/20 text-aqua ring-1 ring-inset ring-aqua/25',
+    dotColor: 'bg-blue-400',
   },
   consultation_completed: {
     label: 'Consultation Done',
-    className: 'bg-indigo-100 text-indigo-800',
-    dotColor: 'bg-indigo-500',
+    className: 'bg-indigo-500/10 text-indigo-300 ring-1 ring-inset ring-indigo-500/25',
+    dotColor: 'bg-indigo-400',
   },
   proposal_development: {
     label: 'Developing Proposal',
-    className: 'bg-purple-100 text-purple-800',
-    dotColor: 'bg-purple-500',
+    className: 'bg-purple-500/10 text-purple-300 ring-1 ring-inset ring-purple-500/25',
+    dotColor: 'bg-purple-400',
   },
   proposal_sent: {
     label: 'Proposal Sent',
-    className: 'bg-cyan-100 text-cyan-800',
-    dotColor: 'bg-cyan-500',
+    className: 'bg-cyan-500/10 text-cyan-300 ring-1 ring-inset ring-cyan-500/25',
+    dotColor: 'bg-cyan-400',
   },
   negotiation: {
     label: 'Negotiating',
-    className: 'bg-yellow-100 text-yellow-800',
-    dotColor: 'bg-yellow-500',
+    className: 'bg-yellow-500/10 text-yellow-300 ring-1 ring-inset ring-yellow-500/25',
+    dotColor: 'bg-yellow-400',
   },
   project_active: {
     label: 'Project Active',
-    className: 'bg-green-100 text-green-800',
-    dotColor: 'bg-green-500',
+    className: 'bg-green-500/10 text-green-300 ring-1 ring-inset ring-green-500/25',
+    dotColor: 'bg-green-400',
   },
   implementation: {
     label: 'Implementing',
-    className: 'bg-teal-100 text-teal-800',
-    dotColor: 'bg-teal-500',
+    className: 'bg-teal-500/10 text-teal-300 ring-1 ring-inset ring-teal-500/25',
+    dotColor: 'bg-teal-400',
   },
   delivered: {
     label: 'Delivered',
-    className: 'bg-emerald-100 text-emerald-800',
-    dotColor: 'bg-emerald-500',
+    className: 'bg-emerald-500/10 text-emerald-300 ring-1 ring-inset ring-emerald-500/25',
+    dotColor: 'bg-emerald-400',
   },
   signed_off: {
     label: 'Signed Off',
-    className: 'bg-lime-100 text-lime-800',
-    dotColor: 'bg-lime-500',
+    className: 'bg-lime-500/10 text-lime-300 ring-1 ring-inset ring-lime-500/25',
+    dotColor: 'bg-lime-400',
   },
   closed_won: {
     label: 'Closed Won',
-    className: 'bg-green-200 text-green-900 font-semibold',
-    dotColor: 'bg-green-700',
+    className: 'bg-green-500/20 text-green-300 ring-1 ring-inset ring-green-500/25 font-semibold',
+    dotColor: 'bg-green-400',
   },
   closed_lost: {
     label: 'Closed Lost',
-    className: 'bg-gray-200 text-gray-700',
-    dotColor: 'bg-gray-500',
+    className: 'bg-surface-3 text-ink-2 ring-1 ring-inset ring-stroke-1',
+    dotColor: 'bg-gray-400',
   },
 }
 
@@ -100,8 +100,8 @@ export function CustomerStageSelector({
 
   const config = STAGE_CONFIG[currentStage] || {
     label: currentStage,
-    className: 'bg-gray-100 text-gray-800',
-    dotColor: 'bg-gray-500',
+    className: 'bg-surface-3 text-ink-1',
+    dotColor: 'bg-gray-400',
   }
 
   // Close dropdown on outside click
@@ -145,7 +145,7 @@ export function CustomerStageSelector({
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={`px-3 py-1 inline-flex items-center gap-1.5 text-xs leading-5 font-semibold rounded-full ${config.className} ${
-          disabled ? 'opacity-60 cursor-default' : 'cursor-pointer hover:ring-2 hover:ring-offset-1 hover:ring-gray-300'
+          disabled ? 'opacity-60 cursor-default' : 'cursor-pointer hover:ring-2 hover:ring-offset-1 hover:ring-offset-surface-0 hover:ring-stroke-1'
         }`}
         title={disabled ? undefined : 'Click to change stage'}
       >
@@ -159,25 +159,25 @@ export function CustomerStageSelector({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+        <div className="absolute right-0 mt-2 w-64 bg-surface-2 rounded-lg shadow-lg border border-stroke-0 z-50">
           {pendingStage ? (
             // Confirmation view
             <div className="p-3">
-              <p className="text-sm text-gray-700 mb-3">
+              <p className="text-sm text-ink-1 mb-3">
                 Change to <span className="font-semibold">{STAGE_CONFIG[pendingStage]?.label}</span>?
               </p>
               <div className="flex gap-2">
                 <button
                   onClick={handleConfirm}
                   disabled={isUpdating}
-                  className="flex-1 px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
+                  className="flex-1 px-3 py-1.5 text-sm font-semibold text-[#04110d] bg-aqua rounded-md hover:bg-aqua-bright disabled:opacity-50"
                 >
                   {isUpdating ? 'Updating...' : 'Confirm'}
                 </button>
                 <button
                   onClick={() => setPendingStage(null)}
                   disabled={isUpdating}
-                  className="flex-1 px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 disabled:opacity-50"
+                  className="flex-1 px-3 py-1.5 text-sm font-medium text-ink-1 bg-surface-3 rounded-md hover:bg-surface-3/60 disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -195,14 +195,14 @@ export function CustomerStageSelector({
                     onClick={() => !isCurrent && setPendingStage(stage)}
                     className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 ${
                       isCurrent
-                        ? 'bg-gray-50 text-gray-500 cursor-default'
-                        : 'hover:bg-gray-50 text-gray-700'
+                        ? 'bg-surface-1 text-ink-2 cursor-default'
+                        : 'hover:bg-surface-3/60 text-ink-1'
                     }`}
                   >
                     <span className={`w-2 h-2 rounded-full flex-shrink-0 ${sc.dotColor}`} />
                     <span className="flex-1">{sc.label}</span>
                     {isCurrent && (
-                      <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-4 h-4 text-aqua" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     )}

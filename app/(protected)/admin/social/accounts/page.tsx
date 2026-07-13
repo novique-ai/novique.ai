@@ -159,15 +159,15 @@ export default function AdminSocialAccountsPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-500/10 text-green-300 ring-1 ring-inset ring-green-500/25'
       case 'expired':
-        return 'bg-yellow-100 text-yellow-800'
+        return 'bg-yellow-500/10 text-yellow-300 ring-1 ring-inset ring-yellow-500/25'
       case 'revoked':
-        return 'bg-red-100 text-red-800'
+        return 'bg-red-500/10 text-red-300 ring-1 ring-inset ring-red-500/25'
       case 'pending':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25'
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-surface-3 text-ink-1 ring-1 ring-inset ring-stroke-1'
     }
   }
 
@@ -187,14 +187,14 @@ export default function AdminSocialAccountsPage() {
       {/* Page Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Social Accounts</h1>
-          <p className="mt-2 text-sm text-gray-700">
+          <h1 className="text-3xl font-bold text-ink-0">Social Accounts</h1>
+          <p className="mt-2 text-sm text-ink-1">
             Connect your social media accounts to publish posts directly from the dashboard.
           </p>
         </div>
         <Link
           href="/admin/social"
-          className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          className="inline-flex items-center px-4 py-2 border border-stroke-1 text-sm font-medium rounded-md text-ink-1 bg-surface-2 hover:bg-surface-3/60"
         >
           <svg
             className="-ml-1 mr-2 h-5 w-5"
@@ -215,9 +215,9 @@ export default function AdminSocialAccountsPage() {
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center justify-between">
+        <div className="bg-red-500/10 border border-red-500/25 text-red-300 px-4 py-3 rounded-lg flex items-center justify-between">
           <span>{error}</span>
-          <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">
+          <button onClick={() => setError(null)} className="text-red-400 hover:text-red-300">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -227,7 +227,7 @@ export default function AdminSocialAccountsPage() {
 
       {/* Platform Cards */}
       {loading ? (
-        <div className="text-center py-12 text-gray-500">Loading accounts...</div>
+        <div className="text-center py-12 text-ink-2">Loading accounts...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {PLATFORMS.map((platform) => {
@@ -237,17 +237,17 @@ export default function AdminSocialAccountsPage() {
             return (
               <div
                 key={platform.id}
-                className="bg-white shadow rounded-lg overflow-hidden"
+                className="bg-surface-2 shadow rounded-lg overflow-hidden"
               >
                 {/* Platform Header */}
-                <div className="p-6 border-b border-gray-200">
+                <div className="p-6 border-b border-stroke-0">
                   <div className="flex items-center gap-3">
                     <PlatformBadge platform={platform.id} size="lg" />
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-lg font-semibold text-ink-0">
                         {platform.name}
                       </h3>
-                      <p className="text-sm text-gray-500">{platform.description}</p>
+                      <p className="text-sm text-ink-2">{platform.description}</p>
                     </div>
                   </div>
                 </div>
@@ -265,17 +265,17 @@ export default function AdminSocialAccountsPage() {
                             className="w-10 h-10 rounded-full"
                           />
                         ) : (
-                          <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                            <span className="text-gray-500 text-lg font-bold">
+                          <div className="w-10 h-10 rounded-full bg-surface-3 flex items-center justify-center">
+                            <span className="text-ink-2 text-lg font-bold">
                               {account.account_name?.charAt(0) || '?'}
                             </span>
                           </div>
                         )}
                         <div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium text-ink-0">
                             {account.account_name}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-ink-2">
                             {account.account_handle}
                           </p>
                         </div>
@@ -291,7 +291,7 @@ export default function AdminSocialAccountsPage() {
                           {account.status}
                         </span>
                         {account.token_status === 'expired' && (
-                          <span className="text-xs text-yellow-600">
+                          <span className="text-xs text-yellow-300">
                             Token expired
                           </span>
                         )}
@@ -299,13 +299,13 @@ export default function AdminSocialAccountsPage() {
 
                       {/* Error Message */}
                       {account.error_message && (
-                        <p className="text-sm text-red-600">
+                        <p className="text-sm text-red-400">
                           {account.error_message}
                         </p>
                       )}
 
                       {/* Last Verified */}
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-ink-2">
                         Last verified: {formatDate(account.last_verified_at)}
                       </p>
 
@@ -314,13 +314,13 @@ export default function AdminSocialAccountsPage() {
                         <button
                           onClick={() => handleVerify(account.id)}
                           disabled={verifying === account.id}
-                          className="flex-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 disabled:opacity-50"
+                          className="flex-1 px-3 py-2 text-sm font-medium text-ink-1 bg-surface-3 rounded-md hover:bg-surface-3/60 disabled:opacity-50"
                         >
                           {verifying === account.id ? 'Verifying...' : 'Verify'}
                         </button>
                         <button
                           onClick={() => handleDisconnect(account.id, platform.id)}
-                          className="flex-1 px-3 py-2 text-sm font-medium text-red-700 bg-red-50 rounded-md hover:bg-red-100"
+                          className="flex-1 px-3 py-2 text-sm font-medium text-red-300 bg-red-500/10 rounded-md hover:bg-red-500/20"
                         >
                           Disconnect
                         </button>
@@ -328,13 +328,13 @@ export default function AdminSocialAccountsPage() {
                     </div>
                   ) : (
                     <div className="text-center py-4">
-                      <p className="text-sm text-gray-500 mb-4">
+                      <p className="text-sm text-ink-2 mb-4">
                         No account connected
                       </p>
                       <button
                         onClick={() => handleConnect(platform.id)}
                         disabled={isConnecting}
-                        className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-2 text-sm font-semibold text-[#04110d] bg-aqua rounded-md hover:bg-aqua-bright disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isConnecting ? (
                           <span className="flex items-center justify-center gap-2">

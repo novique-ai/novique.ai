@@ -65,12 +65,12 @@ export default function AdminBlogPage() {
 
   const getStatusBadge = (status: string) => {
     const badges: Record<string, string> = {
-      published: 'bg-green-100 text-green-800',
-      draft: 'bg-gray-100 text-gray-800',
-      pending_review: 'bg-yellow-100 text-yellow-800',
-      scheduled: 'bg-blue-100 text-blue-800',
+      published: 'bg-green-500/10 text-green-300 ring-1 ring-inset ring-green-500/25',
+      draft: 'bg-surface-3 text-ink-1 ring-1 ring-inset ring-stroke-1',
+      pending_review: 'bg-yellow-500/10 text-yellow-300 ring-1 ring-inset ring-yellow-500/25',
+      scheduled: 'bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25',
     }
-    return badges[status] || 'bg-gray-100 text-gray-800'
+    return badges[status] || 'bg-surface-3 text-ink-1 ring-1 ring-inset ring-stroke-1'
   }
 
   if (loading) {
@@ -85,13 +85,13 @@ export default function AdminBlogPage() {
       {/* Page Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Blog Posts</h1>
-          <p className="mt-2 text-sm text-gray-700">Manage all blog posts and content</p>
+          <h1 className="text-3xl font-bold text-ink-0">Blog Posts</h1>
+          <p className="mt-2 text-sm text-ink-1">Manage all blog posts and content</p>
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => setShowAIModal(true)}
-            className="inline-flex items-center px-4 py-2 border border-purple-300 text-sm font-medium rounded-md shadow-sm text-purple-700 bg-purple-50 hover:bg-purple-100"
+            className="inline-flex items-center px-4 py-2 border border-purple-500/25 text-sm font-medium rounded-md shadow-sm text-purple-300 bg-purple-500/10 hover:bg-purple-500/20"
           >
             <svg
               className="-ml-1 mr-2 h-5 w-5"
@@ -110,7 +110,7 @@ export default function AdminBlogPage() {
           </button>
           <Link
             href="/admin/blog/new"
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-[#04110d] bg-aqua hover:bg-aqua-bright"
           >
             <svg
               className="-ml-1 mr-2 h-5 w-5"
@@ -132,76 +132,76 @@ export default function AdminBlogPage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-4">
         {statsArray.map((stat) => (
-          <div key={stat.name} className="bg-white overflow-hidden shadow rounded-lg">
+          <div key={stat.name} className="bg-surface-2 overflow-hidden shadow rounded-lg">
             <div className="p-5">
-              <dt className="text-sm font-medium text-gray-500 truncate">{stat.name}</dt>
-              <dd className="mt-1 text-3xl font-semibold text-gray-900">{stat.value}</dd>
+              <dt className="text-sm font-medium text-ink-2 truncate">{stat.name}</dt>
+              <dd className="mt-1 text-3xl font-semibold text-ink-0">{stat.value}</dd>
             </div>
           </div>
         ))}
       </div>
 
       {/* Posts Table */}
-      <div className="bg-white shadow rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="bg-surface-2 shadow rounded-lg overflow-hidden">
+        <table className="min-w-full divide-y divide-stroke-0">
+          <thead className="bg-surface-1">
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider"
               >
                 Title
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider"
               >
                 Author
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider"
               >
                 Status
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-ink-2 uppercase tracking-wider"
               >
                 Created
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-right text-xs font-medium text-ink-2 uppercase tracking-wider"
               >
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-transparent divide-y divide-stroke-0">
             {posts && posts.length > 0 ? (
               posts.map((post) => (
-                <tr key={post.id} className="hover:bg-gray-50">
+                <tr key={post.id} className="hover:bg-surface-3/60">
                   <td className="px-6 py-4">
                     <div className="flex items-center">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{post.title}</div>
-                        <div className="text-sm text-gray-500">/blog/{post.slug}</div>
+                        <div className="text-sm font-medium text-ink-0">{post.title}</div>
+                        <div className="text-sm text-ink-2">/blog/{post.slug}</div>
                       </div>
                       {post.featured && (
-                        <span className="ml-2 px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded">
+                        <span className="ml-2 px-2 py-1 text-xs font-medium bg-yellow-500/10 text-yellow-300 ring-1 ring-inset ring-yellow-500/25 rounded">
                           Featured
                         </span>
                       )}
                       {post.ai_generated && (
-                        <span className="ml-2 px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded">
+                        <span className="ml-2 px-2 py-1 text-xs font-medium bg-purple-500/10 text-purple-300 ring-1 ring-inset ring-purple-500/25 rounded">
                           AI
                         </span>
                       )}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
+                    <div className="text-sm text-ink-0">
                       {post.author?.full_name || post.author?.email}
                     </div>
                   </td>
@@ -214,20 +214,20 @@ export default function AdminBlogPage() {
                       {post.status.replace('_', ' ')}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-ink-2">
                     {new Date(post.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <Link
                       href={`/admin/blog/${post.slug}/edit`}
-                      className="text-blue-600 hover:text-blue-900 mr-4"
+                      className="text-aqua hover:text-aqua-bright mr-4"
                     >
                       Edit
                     </Link>
                     <Link
                       href={`/blog/${post.slug}`}
                       target="_blank"
-                      className="text-gray-600 hover:text-gray-900"
+                      className="text-ink-1 hover:text-ink-0"
                     >
                       View
                     </Link>
@@ -236,10 +236,10 @@ export default function AdminBlogPage() {
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                <td colSpan={5} className="px-6 py-12 text-center text-ink-2">
                   <div className="space-y-2">
                     <p>No blog posts yet.</p>
-                    <Link href="/admin/blog/new" className="text-blue-600 hover:text-blue-500">
+                    <Link href="/admin/blog/new" className="text-aqua hover:text-aqua-bright">
                       Create your first post
                     </Link>
                   </div>
