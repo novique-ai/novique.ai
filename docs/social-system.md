@@ -62,7 +62,7 @@ The full environment contract and stage behavior are in [`worker/README.md`](../
 
 Installation is a ship-ceremony operation, not part of application development:
 
-1. Create `%h/.config/novique-worker/env` with mode `0600`. Set `NOVIQUE_WORKER_DIR` to the checkout and add the required Supabase, Anthropic, token-encryption, research, alert, **and queue** variables (`CRON_SECRET`, `NOVIQUE_SITE_URL=https://www.novique.ai`).
+1. Create `%h/.config/novique-worker/env` with mode `0600`. Set `NOVIQUE_WORKER_DIR` to the checkout and add the required Supabase, **OpenRouter** (`OPENROUTER_API_KEY` from 1P `OPENROUTER_NOVIQUE`), token-encryption, research, alert, **and queue** variables (`CRON_SECRET`, `NOVIQUE_SITE_URL=https://www.novique.ai`). Text generation uses open-weight models via OpenRouter (`qwen/qwen3-32b` utility, `deepseek/deepseek-v3.2` writer) — not Anthropic.
 2. Copy `worker/systemd/novique-content-worker.{service,timer}` and `novique-social-queue.{service,timer}` to `%h/.config/systemd/user/` with mode `0644`.
 3. Use the fleet’s approved service-install wrapper to reload user units and enable **both** timers.
 4. Validate schedules, run each service once, and inspect journals. Detail: [`worker/systemd/README.md`](../worker/systemd/README.md).

@@ -1,42 +1,45 @@
 import { config } from 'dotenv'
 import { resolve } from 'path'
-import Anthropic from '@anthropic-ai/sdk'
 import OpenAI from 'openai'
 
 config({ path: resolve(process.cwd(), '.env.local') })
 
-async function testClaudeAPI() {
-  console.log('\n========== TESTING CLAUDE API ==========')
+async function testOpenRouterAPI() {
+  console.log('\n========== TESTING OPENROUTER API ==========')
 
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const apiKey = process.env.OPENROUTER_API_KEY
   console.log('API Key present:', !!apiKey)
-  console.log('API Key format:', apiKey?.substring(0, 15) + '...')
+  console.log('API Key format:', apiKey?.substring(0, 12) + '...')
 
   if (!apiKey) {
-    console.log('❌ No Claude API key found')
+    console.log('❌ No OPENROUTER_API_KEY found')
     return
   }
 
-  const anthropic = new Anthropic({ apiKey })
+  const client = new OpenAI({
+    apiKey,
+    baseURL: 'https://openrouter.ai/api/v1',
+    defaultHeaders: {
+      'HTTP-Referer': 'https://www.novique.ai',
+      'X-Title': 'Novique test-api-keys',
+    },
+  })
 
-  // Test with different models
   const modelsToTest = [
-    'claude-opus-4-8',
-    'claude-sonnet-4-6',
-    'claude-haiku-4-5',
+    'qwen/qwen3-32b',
+    'deepseek/deepseek-v3.2',
   ]
 
   for (const model of modelsToTest) {
     try {
       console.log(`\nTesting model: ${model}`)
-      const response = await anthropic.messages.create({
+      const response = await client.chat.completions.create({
         model,
         max_tokens: 10,
         messages: [{ role: 'user', content: 'Hi' }],
       })
       console.log(`✅ ${model} - WORKS!`)
-      console.log('Response:', response.content[0])
-      break // Stop on first working model
+      console.log('Response:', response.choices[0]?.message?.content)
     } catch (error: any) {
       console.log(`❌ ${model} - FAILED`)
       console.log('Error:', error.status, error.message || error.error?.message)
@@ -45,11 +48,10 @@ async function testClaudeAPI() {
 }
 
 async function testOpenAIAPI() {
-  console.log('\n\n========== TESTING OPENAI API ==========')
+  console.log('\n\n========== TESTING OPENAI API (images etc.) ==========')
 
   const apiKey = process.env.OPENAI_API_KEY
   console.log('API Key present:', !!apiKey)
-  console.log('API Key format:', apiKey?.substring(0, 20) + '...')
 
   if (!apiKey) {
     console.log('❌ No OpenAI API key found')
@@ -57,40 +59,23 @@ async function testOpenAIAPI() {
   }
 
   const openai = new OpenAI({ apiKey })
-
-  // Test with different models
-  const modelsToTest = [
-    'gpt-4o',
-    'gpt-4o-mini',
-    'gpt-4-turbo',
-    'gpt-4',
-    'gpt-3.5-turbo',
-  ]
-
-  for (const model of modelsToTest) {
-    try {
-      console.log(`\nTesting model: ${model}`)
-      const response = await openai.chat.completions.create({
-        model,
-        max_tokens: 10,
-        messages: [{ role: 'user', content: 'Hi' }],
-      })
-      console.log(`✅ ${model} - WORKS!`)
-      console.log('Response:', response.choices[0]?.message?.content)
-      break // Stop on first working model
-    } catch (error: any) {
-      console.log(`❌ ${model} - FAILED`)
-      console.log('Error:', error.status, error.message)
-    }
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      max_tokens: 10,
+      messages: [{ role: 'user', content: 'Hi' }],
+    })
+    console.log('✅ gpt-4o-mini - WORKS!')
+    console.log('Response:', response.choices[0]?.message?.content)
+  } catch (error: any) {
+    console.log('❌ OpenAI - FAILED', error.status, error.message)
   }
 }
 
 async function main() {
   console.log('Testing API Keys and Models...\n')
-
-  await testClaudeAPI()
+  await testOpenRouterAPI()
   await testOpenAIAPI()
-
   console.log('\n========== TEST COMPLETE ==========\n')
 }
 

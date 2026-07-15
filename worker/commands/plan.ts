@@ -3,7 +3,7 @@ import slugify from 'slugify';
 import { z } from 'zod';
 import { config } from '../config';
 import { candidatesPath } from './discover';
-import { budgetAvailable, generateStructured } from '../lib/anthropic';
+import { budgetAvailable, generateStructured } from '../lib/llm';
 import { alertDiscord } from '../lib/discord';
 import { assertNoError, getSupabase } from '../lib/supabase';
 import { currentMonday } from '../lib/time';

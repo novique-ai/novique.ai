@@ -5,7 +5,7 @@
  * from blog content using templates with platform-native tone and formatting.
  */
 
-import { generateWithClaude } from './claude';
+import { generateWithClaude, LLM_UTILITY_MODEL } from './llm';
 import { createAdminClient } from '@/lib/supabase/server';
 import type {
   SocialPlatform,
@@ -296,13 +296,13 @@ async function generateForPlatform(
   const systemPrompt = buildSystemPrompt(template);
   const userPrompt = buildUserPrompt(source, template);
 
-  // Generate content with Claude
+  // Generate content via OpenRouter
   const generatedContent = await generateWithClaude({
     prompt: userPrompt,
     systemPrompt,
     maxTokens: 1024,
     temperature: 0.7,
-    model: 'claude-haiku-4-5', // Fast and cost-effective for social posts
+    model: LLM_UTILITY_MODEL, // OpenRouter open-weight utility
   });
 
   // Clean up the generated content
@@ -340,7 +340,7 @@ async function generateForPlatform(
     characterCount,
     withinLimit,
     generationMetadata: {
-      model: 'claude-haiku-4-5',
+      model: LLM_UTILITY_MODEL,
       prompt: userPrompt.substring(0, 500), // Store truncated prompt
       tokens_used: undefined, // Could be populated from API response
       source_content_length: source.content?.length || source.summary.length,

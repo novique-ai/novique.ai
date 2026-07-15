@@ -1,4 +1,4 @@
-import { generateWithClaude } from './claude'
+import { generateWithClaude } from './llm'
 import { readGitHubRepo, RepoAnalysis } from '../github/repoReader'
 import { generateLabWorkflowSvg, analyzeWorkflow } from './svgGenerator'
 import { marked } from 'marked'

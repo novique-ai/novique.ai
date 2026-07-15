@@ -17,7 +17,6 @@
     "worker:typecheck": "tsc -p worker/tsconfig.json"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.71.2",
     "@emailjs/browser": "^4.4.1",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.89.0",

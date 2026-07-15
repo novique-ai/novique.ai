@@ -9,7 +9,7 @@ The full `worker:run` path requires:
 ```dotenv
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=...
-ANTHROPIC_API_KEY=...
+OPENROUTER_API_KEY=... # Novique workspace key (OPENROUTER_NOVIQUE); open-weight models only
 SOCIAL_TOKEN_ENCRYPTION_KEY=... # Same base64 32-byte key used by the website.
 ```
 

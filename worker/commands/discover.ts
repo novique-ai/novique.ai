@@ -2,7 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { z } from 'zod';
 import { config } from '../config';
-import { budgetAvailable, generateStructured } from '../lib/anthropic';
+import { budgetAvailable, generateStructured } from '../lib/llm';
 import { fetchFeeds } from '../lib/rss';
 import type { FeedCandidate } from '../types';
 

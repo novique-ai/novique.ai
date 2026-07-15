@@ -2,7 +2,7 @@ import { marked } from 'marked';
 import slugify from 'slugify';
 import { z } from 'zod';
 import { config } from '../config';
-import { budgetAvailable, generateStructured, generateText } from '../lib/anthropic';
+import { budgetAvailable, generateStructured, generateText } from '../lib/llm';
 import { saveArtifact } from '../lib/artifacts';
 import { alertDiscord } from '../lib/discord';
 import { buildSourceBundle } from '../lib/research';

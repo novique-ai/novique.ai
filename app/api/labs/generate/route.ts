@@ -15,8 +15,8 @@ export async function POST(request: NextRequest) {
 
   try {
     // Check required environment variables
-    if (!process.env.ANTHROPIC_API_KEY) {
-      console.error('[Lab Generate] Missing ANTHROPIC_API_KEY')
+    if (!process.env.OPENROUTER_API_KEY) {
+      console.error('[Lab Generate] Missing OPENROUTER_API_KEY')
       return NextResponse.json(
         { error: 'Server configuration error: Missing AI API key' },
         { status: 500 }

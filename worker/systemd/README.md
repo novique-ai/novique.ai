@@ -13,7 +13,7 @@ These user-unit templates are shipped for the clay-blade ship ceremony. They are
 
 1. Create `%h/.config/novique-worker/env` with mode `0600`. Include:
    - `NOVIQUE_WORKER_DIR` — checked-out repository path
-   - API variables from `worker/README.md` (`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`, `SOCIAL_TOKEN_ENCRYPTION_KEY`, optional `BRAVE_API_KEY` / `DISCORD_WEBHOOK_URL`)
+   - API variables from `worker/README.md` (`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `OPENROUTER_API_KEY`, `SOCIAL_TOKEN_ENCRYPTION_KEY`, optional `BRAVE_API_KEY` / `DISCORD_WEBHOOK_URL`)
    - **Queue dispatcher:** `CRON_SECRET` (same as Vercel) and `NOVIQUE_SITE_URL=https://www.novique.ai`
 2. Copy unit templates to `%h/.config/systemd/user/` with mode `0644`.
 3. Use the fleet's approved service-install wrapper to reload user units and enable both timers.

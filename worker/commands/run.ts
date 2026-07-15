@@ -1,5 +1,5 @@
 import { stat } from 'node:fs/promises';
-import { budgetAvailable } from '../lib/anthropic';
+import { budgetAvailable } from '../lib/llm';
 import { alertDiscord } from '../lib/discord';
 import { isMonday, currentMonday } from '../lib/time';
 import { candidatesPath, discover } from './discover';

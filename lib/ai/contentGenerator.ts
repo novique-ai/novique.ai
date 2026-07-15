@@ -1,4 +1,4 @@
-import { generateBlogOutline, generateBlogContent, generateSEOMetadata, generateSummary } from './claude'
+import { generateBlogOutline, generateBlogContent, generateSEOMetadata, generateSummary } from './llm'
 import { generateBlogOutline as generateOutlineOpenAI, generateBlogContent as generateContentOpenAI } from './openai'
 import { researchTopic, ResearchData } from './research'
 import { getBlogHeaderImage, generateImageAltText } from './imageGeneration'
@@ -116,7 +116,7 @@ export async function generateBlogPost(
       tags: seoMetadata.tags,
       status: 'pending_review',
       ai_generated: true,
-      ai_source: input.useOpenAI ? 'openai' : 'claude',
+      ai_source: input.useOpenAI ? 'openai' : 'openrouter',
       ai_prompt: topic,
       generation_metadata: {
         topic,

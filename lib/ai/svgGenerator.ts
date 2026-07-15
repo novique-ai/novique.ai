@@ -1,4 +1,4 @@
-import { generateWithClaude } from './claude'
+import { generateWithClaude } from './llm'
 import { RepoAnalysis, extractTerraformResources, extractTerraformProviders } from '../github/repoReader'
 
 export interface WorkflowNode {
