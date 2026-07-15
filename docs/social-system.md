@@ -71,14 +71,14 @@ Installation is a ship-ceremony operation, not part of application development:
 
 ## Ship checklist
 
-- [ ] Apply social migrations in order: `007_oauth_transactions.sql`, `008_publish_engine.sql`, `009_content_campaigns.sql`, `010_metric_snapshots.sql`, then `011_hashtag_normalization.sql`. Do not infer order from other same-numbered CRM migrations.
-- [ ] Create a **public** Supabase Storage bucket named `social-media`; Instagram must be able to fetch the published media URLs.
-- [ ] Set project-level Vercel Preview and Production variables: `SOCIAL_TOKEN_ENCRYPTION_KEY`, `CRON_SECRET`, `DISCORD_WEBHOOK_URL`, all required `TWITTER_*`, `LINKEDIN_*`, and `META_*` values, and `NEXT_PUBLIC_SITE_URL`.
-- [ ] Run `npx tsx scripts/encrypt-social-tokens.ts` with the production encryption key available; verify no plaintext social tokens remain.
-- [ ] Reconnect X and confirm the granted scope contains `offline.access`.
-- [ ] Reconnect LinkedIn and confirm the granted scopes contain `openid` and `profile` plus the posting scopes required for the selected member/organization mode.
-- [ ] Install and validate the worker systemd units on clay-blade with its `%h/.config/novique-worker/env` file.
-- [ ] Verify one **manual** publish on each **allowed** connected platform (see Meta gate below). Confirm the platform URL, local `published` state, durable attempt, and media where applicable.
+- [x] Apply social migrations in order: `007_oauth_transactions.sql`, `008_publish_engine.sql`, `009_content_campaigns.sql`, `010_metric_snapshots.sql`, then `011_hashtag_normalization.sql`. Do not infer order from other same-numbered CRM migrations. *(prod applied 2026-07-15; 010 uses quoted `"window"`)*
+- [x] Create a **public** Supabase Storage bucket named `social-media`; Instagram must be able to fetch the published media URLs. *(created 2026-07-15)*
+- [x] Set project-level Vercel Preview and Production variables: `SOCIAL_TOKEN_ENCRYPTION_KEY`, `CRON_SECRET`, `DISCORD_WEBHOOK_URL`, all required `TWITTER_*`, `LINKEDIN_*`, and `META_*` values, and `NEXT_PUBLIC_SITE_URL`. *(`SOCIAL_TOKEN_ENCRYPTION_KEY` added 2026-07-15; META_* still missing — FB/IG gate; TWITTER/LINKEDIN/CRON/DISCORD/SITE_URL present)*
+- [x] Run `npx tsx scripts/encrypt-social-tokens.ts` with the production encryption key available; verify no plaintext social tokens remain. *(scanned 1 / updated 1 / plaintext 0)*
+- [ ] Reconnect X and confirm the granted scope contains `offline.access`. *(no X account row; operator browser OAuth required)*
+- [ ] Reconnect LinkedIn and confirm the granted scopes contain `openid` and `profile` plus the posting scopes required for the selected member/organization mode. *(existing row expired 2026-05-11, scope only `w_member_social`)*
+- [x] Install and validate the worker systemd units on clay-blade with its `%h/.config/novique-worker/env` file. *(content-worker.timer + social-queue.timer; metrics OK; full `worker:run` blocked on Anthropic credits)*
+- [ ] Verify one **manual** publish on each **allowed** connected platform (see Meta gate below). Confirm the platform URL, local `published` state, durable attempt, and media where applicable. *(blocked on OAuth reconnect; FB/IG gated)*
 
 ### Meta / Instagram / Facebook publish gate (STRICT)
 
