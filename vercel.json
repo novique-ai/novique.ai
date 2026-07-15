@@ -3,10 +3,6 @@
     {
       "path": "/api/cron/generate-weekly-post",
       "schedule": "0 9 * * 0"
-    },
-    {
-      "path": "/api/cron/process-social-queue",
-      "schedule": "*/5 * * * *"
     }
   ]
 }

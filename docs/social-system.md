@@ -40,7 +40,7 @@ An approved post review moves its post to `queued` and enqueues it immediately. 
 
 ### Queue failures and dead-letter alerts
 
-The Vercel cron dispatcher claims due rows in bounded leases and retries retryable failures with 1-, 5-, and 25-minute backoff. At the configured maximum (three attempts by default), it removes the item from active processing, marks the post failed, and sends a Discord dead-letter alert. Treat the alert as requiring operator action: inspect `error_details`, account token status, and the matching publish-attempt ledger before requeueing. Ambiguous or stale `publishing` work is routed to `needs_review`, not automatically retried.
+The publish-queue dispatcher (clay-blade timer → `/api/cron/process-social-queue`) claims due rows in bounded leases and retries retryable failures with 1-, 5-, and 25-minute backoff. At the configured maximum (three attempts by default), it removes the item from active processing, marks the post failed, and sends a Discord dead-letter alert. Treat the alert as requiring operator action: inspect `error_details`, account token status, and the matching publish-attempt ledger before requeueing. Ambiguous or stale `publishing` work is routed to `needs_review`, not automatically retried.
 
 ### Worker commands
 
@@ -62,10 +62,12 @@ The full environment contract and stage behavior are in [`worker/README.md`](../
 
 Installation is a ship-ceremony operation, not part of application development:
 
-1. Create `%h/.config/novique-worker/env` with mode `0600`. Set `NOVIQUE_WORKER_DIR` to the checkout and add the required Supabase, Anthropic, token-encryption, research, and alert variables.
-2. Copy `worker/systemd/novique-content-worker.service` and `.timer` to `%h/.config/systemd/user/` with mode `0644`.
-3. Use the fleet’s approved service-install wrapper to reload user units and enable `novique-content-worker.timer`.
-4. Validate the timer schedule, run the service once, and inspect its journal. The detailed install and break-glass rollback procedure is in [`worker/systemd/README.md`](../worker/systemd/README.md).
+1. Create `%h/.config/novique-worker/env` with mode `0600`. Set `NOVIQUE_WORKER_DIR` to the checkout and add the required Supabase, Anthropic, token-encryption, research, alert, **and queue** variables (`CRON_SECRET`, `NOVIQUE_SITE_URL=https://www.novique.ai`).
+2. Copy `worker/systemd/novique-content-worker.{service,timer}` and `novique-social-queue.{service,timer}` to `%h/.config/systemd/user/` with mode `0644`.
+3. Use the fleet’s approved service-install wrapper to reload user units and enable **both** timers.
+4. Validate schedules, run each service once, and inspect journals. Detail: [`worker/systemd/README.md`](../worker/systemd/README.md).
+
+**Why clay-blade owns the 5-minute queue:** Vercel Hobby only allows daily cron jobs. The social queue dispatcher therefore runs on clay-blade (`novique-social-queue.timer`) and calls `GET /api/cron/process-social-queue` with `Authorization: Bearer $CRON_SECRET`. Do not reintroduce a `*/5` schedule in `vercel.json` without upgrading the Vercel plan.
 
 ## Ship checklist
 
@@ -76,6 +78,18 @@ Installation is a ship-ceremony operation, not part of application development:
 - [ ] Reconnect X and confirm the granted scope contains `offline.access`.
 - [ ] Reconnect LinkedIn and confirm the granted scopes contain `openid` and `profile` plus the posting scopes required for the selected member/organization mode.
 - [ ] Install and validate the worker systemd units on clay-blade with its `%h/.config/novique-worker/env` file.
-- [ ] Verify one manual publish on each connected platform: X, LinkedIn, and Instagram. Confirm the platform URL, local `published` state, durable attempt, and media where applicable.
+- [ ] Verify one **manual** publish on each **allowed** connected platform (see Meta gate below). Confirm the platform URL, local `published` state, durable attempt, and media where applicable.
+
+### Meta / Instagram / Facebook publish gate (STRICT)
+
+Previous Instagram account restriction for “automated posting” — treat Facebook and Instagram as **operator-gated** until explicit re-approval:
+
+1. **Do not** enable unattended/cron auto-publish to Facebook or Instagram.
+2. **Do not** run cutover smoke publishes to Facebook or Instagram without an explicit human go-ahead in the cutover session.
+3. Prefer proving the stack on **X and LinkedIn first** (manual publish + readback).
+4. When Meta smoke is approved later: one human-initiated manual publish only, no burst, no queue fan-out, no retry storm; stop immediately on any restriction/warning.
+5. Keep Meta app tokens/env staged if needed for OAuth reconnection, but leave FB/IG accounts disconnected or non-queued until the gate is lifted.
+
+Cutover default: **X + LinkedIn only**. Facebook and Instagram remain blocked for publish smoke until the operator lifts this gate.
 
 Migration 005 contains a historical `claude-3-haiku` comment. Migrations are immutable history, so the comment remains unchanged; active Claude defaults use the current `claude-haiku-4-5` alias.

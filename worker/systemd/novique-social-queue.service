@@ -1,0 +1,18 @@
+[Unit]
+Description=Novique.ai social publish queue dispatcher (Hobby-safe; replaces Vercel */5 cron)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/novique-worker/env
+# Requires CRON_SECRET and NOVIQUE_SITE_URL in the env file.
+# Hits the production site cron route; only processes already-queued rows.
+# Facebook/Instagram remain operator-gated (do not queue those platforms until gate lifts).
+ExecStart=/bin/bash -c 'test -n "$CRON_SECRET" && test -n "$NOVIQUE_SITE_URL" && exec /usr/bin/curl -fsS -X GET -H "Authorization: Bearer ${CRON_SECRET}" "${NOVIQUE_SITE_URL}/api/cron/process-social-queue"'
+TimeoutStartSec=2min
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target

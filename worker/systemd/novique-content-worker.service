@@ -6,8 +6,10 @@ After=network-online.target
 [Service]
 Type=oneshot
 Environment=NODE_ENV=production
+# User-manager PATH has no mise shims; pin Node 22 from mise for §12 self-sufficiency.
+Environment=PATH=%h/.local/share/mise/installs/node/22/bin:/usr/local/bin:/usr/bin:/bin
 EnvironmentFile=%h/.config/novique-worker/env
-ExecStart=/usr/bin/env npm --prefix ${NOVIQUE_WORKER_DIR} run worker:run
+ExecStart=%h/.local/share/mise/installs/node/22/bin/npm --prefix ${NOVIQUE_WORKER_DIR} run worker:run
 TimeoutStartSec=45min
 NoNewPrivileges=true
 PrivateTmp=true

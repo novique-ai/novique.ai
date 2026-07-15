@@ -10,12 +10,13 @@ CREATE TABLE IF NOT EXISTS social_metric_snapshots (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   post_id UUID NOT NULL REFERENCES social_posts(id) ON DELETE CASCADE,
   platform social_platform NOT NULL,
-  window TEXT NOT NULL CHECK (window IN ('24h', '7d', '28d')),
+  -- "window" is a PostgreSQL reserved word; quote the identifier.
+  "window" TEXT NOT NULL CHECK ("window" IN ('24h', '7d', '28d')),
   captured_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   metrics JSONB NOT NULL DEFAULT '{}'::JSONB CHECK (
     jsonb_typeof(metrics) = 'object'
   ),
-  UNIQUE(post_id, window)
+  UNIQUE(post_id, "window")
 );
 
 CREATE INDEX IF NOT EXISTS idx_social_metric_snapshots_platform_captured

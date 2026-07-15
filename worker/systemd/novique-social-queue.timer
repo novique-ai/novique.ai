@@ -1,0 +1,12 @@
+[Unit]
+Description=Dispatch Novique social publish queue every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=30s
+Persistent=true
+Unit=novique-social-queue.service
+
+[Install]
+WantedBy=timers.target
