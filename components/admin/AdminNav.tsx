@@ -152,7 +152,7 @@ export function AdminNav({ user }: AdminNavProps) {
                     </span>
                     {link.label}
                     {link.href === '/admin/social/approvals' && pendingApprovals > 0 && (
-                      <span className="ml-2 inline-flex min-w-5 h-5 items-center justify-center rounded-full bg-amber-400 px-1.5 text-xs font-semibold text-slate-900">
+                      <span className="ml-2 inline-flex min-w-5 h-5 items-center justify-center rounded-full bg-amber-500/10 px-1.5 text-xs font-semibold text-amber-300 ring-1 ring-inset ring-amber-500/25">
                         {pendingApprovals > 99 ? '99+' : pendingApprovals}
                       </span>
                     )}
@@ -216,7 +216,7 @@ export function AdminNav({ user }: AdminNavProps) {
                 </span>
                 {link.label}
                 {link.href === '/admin/social/approvals' && pendingApprovals > 0 && (
-                  <span className="ml-2 inline-flex min-w-5 h-5 items-center justify-center rounded-full bg-amber-400 px-1.5 text-xs font-semibold text-slate-900">
+                  <span className="ml-2 inline-flex min-w-5 h-5 items-center justify-center rounded-full bg-amber-500/10 px-1.5 text-xs font-semibold text-amber-300 ring-1 ring-inset ring-amber-500/25">
                     {pendingApprovals > 99 ? '99+' : pendingApprovals}
                   </span>
                 )}

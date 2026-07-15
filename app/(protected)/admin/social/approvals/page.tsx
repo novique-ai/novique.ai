@@ -148,11 +148,11 @@ function PayloadDetails({ payload }: { payload: Record<string, unknown> }) {
   return (
     <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {entries.map(([key, value]) => (
-        <div key={key} className="rounded-lg bg-gray-50 px-4 py-3">
-          <dt className="text-xs font-medium uppercase tracking-wider text-gray-500">
+        <div key={key} className="rounded-lg bg-surface-1 border border-stroke-0 px-4 py-3">
+          <dt className="text-xs font-medium uppercase tracking-wider text-ink-3">
             {formatLabel(key)}
           </dt>
-          <dd className="mt-1 text-sm text-gray-900 break-words">{formatValue(value)}</dd>
+          <dd className="mt-1 text-sm text-ink-0 break-words">{formatValue(value)}</dd>
         </div>
       ))}
     </dl>
@@ -165,15 +165,18 @@ function WeeklyPlanDetails({ payload }: { payload: Record<string, unknown> }) {
   return (
     <div className="space-y-4">
       {briefs.map((campaign, index) => (
-        <div key={`${campaign.title}-${index}`} className="rounded-lg border border-gray-200 p-4">
+        <div
+          key={`${campaign.title}-${index}`}
+          className="rounded-lg border border-stroke-0 bg-surface-1 p-4"
+        >
           <div className="flex flex-wrap items-start justify-between gap-3">
-            <h4 className="font-semibold text-gray-900">{campaign.title}</h4>
+            <h4 className="font-semibold text-ink-0">{campaign.title}</h4>
             {campaign.scores.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {campaign.scores.map((score) => (
                   <span
                     key={score.label}
-                    className="inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700"
+                    className="inline-flex rounded-full bg-aqua/10 px-2.5 py-1 text-xs font-medium text-aqua ring-1 ring-inset ring-aqua/25"
                   >
                     {score.label}: {score.value}
                   </span>
@@ -181,7 +184,7 @@ function WeeklyPlanDetails({ payload }: { payload: Record<string, unknown> }) {
               </div>
             )}
           </div>
-          <p className="mt-2 text-sm leading-6 text-gray-700">
+          <p className="mt-2 text-sm leading-6 text-ink-1">
             {campaign.brief || 'No campaign brief was supplied.'}
           </p>
         </div>
@@ -199,11 +202,11 @@ function PostReviewDetails({
 }) {
   if (!post) {
     return (
-      <div className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
+      <div className="rounded-lg bg-amber-500/10 border border-amber-500/25 px-4 py-3 text-sm text-amber-300">
         The referenced post preview could not be loaded.{' '}
         <Link
           href={`/admin/social/${approval.subject_id}/edit`}
-          className="font-medium underline hover:text-amber-900"
+          className="font-medium underline hover:text-amber-200"
         >
           Open the post editor
         </Link>{' '}
@@ -218,7 +221,7 @@ function PostReviewDetails({
         <PlatformBadge platform={post.platform} size="sm" />
         <Link
           href={`/admin/social/${post.id}/edit`}
-          className="text-sm font-medium text-blue-600 hover:text-blue-900"
+          className="text-sm font-medium text-aqua hover:text-aqua-bright"
         >
           Edit post
         </Link>
@@ -229,7 +232,7 @@ function PostReviewDetails({
         hashtags={post.hashtags || []}
       />
       {post.hashtags && post.hashtags.length > 0 && (
-        <p className="text-sm text-blue-600">
+        <p className="text-sm text-aqua">
           {post.hashtags.map((tag) => `#${tag}`).join(' ')}
         </p>
       )}
@@ -238,7 +241,7 @@ function PostReviewDetails({
           {post.media_urls.map((url, index) => (
             <div
               key={`${url}-${index}`}
-              className="relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-gray-100"
+              className="relative aspect-square overflow-hidden rounded-lg border border-stroke-0 bg-surface-1"
             >
               <Image
                 src={url}
@@ -253,8 +256,8 @@ function PostReviewDetails({
         </div>
       )}
       {Object.keys(approval.payload).length > 0 && (
-        <details className="text-sm text-gray-600">
-          <summary className="cursor-pointer font-medium text-gray-700">Review metadata</summary>
+        <details className="text-sm text-ink-2">
+          <summary className="cursor-pointer font-medium text-ink-1">Review metadata</summary>
           <div className="mt-3">
             <PayloadDetails payload={approval.payload} />
           </div>
@@ -386,32 +389,32 @@ export default function SocialApprovalsPage() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold text-gray-900">Approval inbox</h1>
+            <h1 className="text-3xl font-bold text-ink-0">Approval inbox</h1>
             {!loading && pendingTotal > 0 && (
-              <span className="inline-flex rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-800">
+              <span className="inline-flex rounded-full bg-amber-500/10 px-3 py-1 text-sm font-semibold text-amber-300 ring-1 ring-inset ring-amber-500/25">
                 {pendingTotal} pending
               </span>
             )}
           </div>
-          <p className="mt-2 text-sm text-gray-700">
+          <p className="mt-2 text-sm text-ink-1">
             Review content gates and posts parked for operator attention.
           </p>
         </div>
         <Link
           href="/admin/social"
-          className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          className="inline-flex items-center px-4 py-2 border border-stroke-1 text-sm font-medium rounded-md text-ink-1 bg-surface-2 hover:bg-surface-3/60"
         >
           Back to posts
         </Link>
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex flex-wrap items-center justify-between gap-3">
+        <div className="bg-red-500/10 border border-red-500/25 text-red-300 px-4 py-3 rounded-lg flex flex-wrap items-center justify-between gap-3">
           <span>{error}</span>
           <button
             type="button"
             onClick={loadInbox}
-            className="font-medium text-red-700 hover:text-red-900"
+            className="font-medium text-red-300 hover:text-red-200"
           >
             Try again
           </button>
@@ -419,20 +422,20 @@ export default function SocialApprovalsPage() {
       )}
 
       {loading ? (
-        <div className="bg-white shadow rounded-lg py-16 text-center text-gray-500">
+        <div className="bg-surface-2 border border-stroke-0 shadow rounded-lg py-16 text-center text-ink-2">
           Loading approval inbox...
         </div>
       ) : (
         <>
           {pendingTotal === 0 && needsReview.length === 0 && (
-            <div className="bg-white shadow rounded-lg px-6 py-16 text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-700">
+            <div className="bg-surface-2 border border-stroke-0 shadow rounded-lg px-6 py-16 text-center">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-500/10 text-green-300 ring-1 ring-inset ring-green-500/25">
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="mt-4 text-lg font-semibold text-gray-900">Inbox clear</h2>
-              <p className="mt-1 text-sm text-gray-500">
+              <h2 className="mt-4 text-lg font-semibold text-ink-0">Inbox clear</h2>
+              <p className="mt-1 text-sm text-ink-2">
                 There are no pending approvals or needs-review posts.
               </p>
             </div>
@@ -446,12 +449,12 @@ export default function SocialApprovalsPage() {
               <section key={section.type} className="space-y-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-semibold text-gray-900">{section.title}</h2>
-                    <span className="inline-flex rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-medium text-gray-700">
+                    <h2 className="text-xl font-semibold text-ink-0">{section.title}</h2>
+                    <span className="inline-flex rounded-full bg-surface-3 px-2.5 py-0.5 text-xs font-medium text-ink-1 ring-1 ring-inset ring-stroke-1">
                       {sectionApprovals.length}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-gray-600">{section.description}</p>
+                  <p className="mt-1 text-sm text-ink-2">{section.description}</p>
                 </div>
                 <div className="space-y-4">
                   {sectionApprovals.map((approval) => (
@@ -475,38 +478,38 @@ export default function SocialApprovalsPage() {
             <section className="space-y-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-semibold text-gray-900">Needs-review posts</h2>
-                  <span className="inline-flex rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">
+                  <h2 className="text-xl font-semibold text-ink-0">Needs-review posts</h2>
+                  <span className="inline-flex rounded-full bg-red-500/10 px-2.5 py-0.5 text-xs font-medium text-red-300 ring-1 ring-inset ring-red-500/25">
                     {needsReview.length}
                   </span>
                 </div>
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-ink-2">
                   Posts parked after ambiguous publishing outcomes or stale sweeps.
                 </p>
               </div>
-              <div className="bg-white shadow rounded-lg overflow-hidden">
-                <ul className="divide-y divide-gray-200">
+              <div className="bg-surface-2 border border-stroke-0 shadow rounded-lg overflow-hidden">
+                <ul className="divide-y divide-stroke-0">
                   {needsReview.map((post) => (
-                    <li key={post.id} className="p-5 hover:bg-gray-50">
+                    <li key={post.id} className="p-5 hover:bg-surface-3/60">
                       <div className="flex flex-wrap items-start justify-between gap-4">
                         <div className="min-w-0 flex-1 space-y-2">
                           <div className="flex flex-wrap items-center gap-2">
                             <PlatformBadge platform={post.platform as SocialPlatform} size="sm" />
                             <SocialStatusBadge status={post.status} />
                             {post.source_title && (
-                              <span className="text-sm text-gray-500">{post.source_title}</span>
+                              <span className="text-sm text-ink-3">{post.source_title}</span>
                             )}
                           </div>
-                          <p className="text-sm text-gray-900 whitespace-pre-wrap line-clamp-3">
+                          <p className="text-sm text-ink-0 whitespace-pre-wrap line-clamp-3">
                             {post.content}
                           </p>
                           {post.error_details?.message && (
-                            <p className="text-xs text-red-600">{post.error_details.message}</p>
+                            <p className="text-xs text-red-300">{post.error_details.message}</p>
                           )}
                         </div>
                         <Link
                           href={`/admin/social/${post.id}/edit`}
-                          className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                          className="inline-flex items-center px-4 py-2 border border-stroke-1 text-sm font-medium rounded-md text-ink-1 bg-surface-1 hover:bg-surface-3/60"
                         >
                           Review post
                         </Link>

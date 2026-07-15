@@ -14,37 +14,37 @@ const statusConfig: Record<
 > = {
   draft: {
     label: 'Draft',
-    className: 'bg-gray-100 text-gray-800',
+    className: 'bg-surface-3 text-ink-1 ring-1 ring-inset ring-stroke-1',
     icon: undefined,
   },
   queued: {
     label: 'Queued',
-    className: 'bg-yellow-100 text-yellow-800',
+    className: 'bg-amber-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/25',
     icon: undefined,
   },
   scheduled: {
     label: 'Scheduled',
-    className: 'bg-blue-100 text-blue-800',
+    className: 'bg-aqua/10 text-aqua ring-1 ring-inset ring-aqua/25',
     icon: undefined,
   },
   publishing: {
     label: 'Publishing',
-    className: 'bg-purple-100 text-purple-800 animate-pulse',
+    className: 'bg-purple-500/10 text-purple-300 ring-1 ring-inset ring-purple-500/25 animate-pulse',
     icon: undefined,
   },
   needs_review: {
     label: 'Needs review',
-    className: 'bg-slate-100 text-slate-700',
+    className: 'bg-amber-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/25',
     icon: undefined,
   },
   published: {
     label: 'Published',
-    className: 'bg-green-100 text-green-800',
+    className: 'bg-green-500/10 text-green-300 ring-1 ring-inset ring-green-500/25',
     icon: undefined,
   },
   failed: {
     label: 'Failed',
-    className: 'bg-red-100 text-red-800',
+    className: 'bg-red-500/10 text-red-300 ring-1 ring-inset ring-red-500/25',
     icon: undefined,
   },
 }

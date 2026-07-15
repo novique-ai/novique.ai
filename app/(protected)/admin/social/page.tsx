@@ -245,33 +245,36 @@ export default function AdminSocialPage() {
 
       {/* Fixed-window metrics summary */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        <div className="bg-white overflow-hidden shadow rounded-lg p-4">
-          <div className="text-xs font-medium uppercase tracking-wide text-gray-500">
+        <div className="bg-surface-2 border border-stroke-0 overflow-hidden shadow rounded-lg p-4">
+          <div className="text-xs font-medium uppercase tracking-wide text-ink-3">
             Published this month
           </div>
-          <div className="mt-1 text-2xl font-semibold text-gray-900">
+          <div className="mt-1 text-2xl font-semibold text-ink-0">
             {metricsSummary.published_this_month}
           </div>
         </div>
-        <div className="bg-amber-50 overflow-hidden shadow rounded-lg p-4">
-          <div className="text-xs font-medium uppercase tracking-wide text-gray-500">
+        <div className="bg-amber-500/10 border border-amber-500/25 overflow-hidden shadow rounded-lg p-4">
+          <div className="text-xs font-medium uppercase tracking-wide text-amber-300/80">
             Pending approvals
           </div>
-          <div className="mt-1 text-2xl font-semibold text-gray-900">
+          <div className="mt-1 text-2xl font-semibold text-amber-300">
             {metricsSummary.pending_approvals}
           </div>
         </div>
         {metricsPlatforms.map(({ platform, label }) => {
           const metric = metricsSummary.platforms[platform]
           return (
-            <div key={platform} className="bg-gray-50 overflow-hidden shadow rounded-lg p-4">
-              <div className="text-xs font-medium uppercase tracking-wide text-gray-500">
+            <div
+              key={platform}
+              className="bg-surface-2 border border-stroke-0 overflow-hidden shadow rounded-lg p-4"
+            >
+              <div className="text-xs font-medium uppercase tracking-wide text-ink-3">
                 {label} latest totals
               </div>
-              <div className="mt-1 text-sm font-semibold text-gray-900">
+              <div className="mt-1 text-sm font-semibold text-ink-0">
                 {compactNumber(metric.impressions)} impressions
               </div>
-              <div className="text-xs text-gray-600">
+              <div className="text-xs text-ink-2">
                 {compactNumber(metric.likes)} likes
               </div>
             </div>
