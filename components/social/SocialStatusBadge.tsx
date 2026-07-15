@@ -32,6 +32,11 @@ const statusConfig: Record<
     className: 'bg-purple-100 text-purple-800 animate-pulse',
     icon: undefined,
   },
+  needs_review: {
+    label: 'Needs review',
+    className: 'bg-slate-100 text-slate-700',
+    icon: undefined,
+  },
   published: {
     label: 'Published',
     className: 'bg-green-100 text-green-800',

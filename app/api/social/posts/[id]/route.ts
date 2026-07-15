@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createAdminClient } from '@/lib/supabase/server'
+import { createAdminClient, createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/session'
+import {
+  getScheduledFor,
+  isAllowedSocialPostStatusTransition,
+  updateSocialPostSchema,
+} from '@/lib/social/apiValidation'
+import { dequeuePost, enqueuePost } from '@/lib/social/publishQueue'
 import type { SocialPost, SocialPostStatus } from '@/lib/social/types'
 
 interface RouteParams {
@@ -23,13 +29,18 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 
     const { id } = await params
-    const supabase = createAdminClient()
+    const supabase = await createClient()
 
-    const { data: post, error } = await supabase
+    let postQuery = supabase
       .from('social_posts')
       .select('*')
       .eq('id', id)
-      .single()
+
+    if (user.role === 'editor') {
+      postQuery = postQuery.eq('created_by', user.id)
+    }
+
+    const { data: post, error } = await postQuery.single()
 
     if (error) {
       if (error.code === 'PGRST116') {
@@ -98,15 +109,41 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     const { id } = await params
-    const supabase = createAdminClient()
-    const body = await request.json()
+    let requestBody: unknown
+    try {
+      requestBody = await request.json()
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid JSON body', fieldErrors: {} },
+        { status: 400 }
+      )
+    }
+
+    const initialParse = updateSocialPostSchema.safeParse(requestBody)
+    if (!initialParse.success) {
+      return NextResponse.json(
+        {
+          error: 'Invalid request body',
+          fieldErrors: initialParse.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      )
+    }
+
+    const body = initialParse.data
+    const readClient = await createClient()
 
     // First check if post exists and its current status
-    const { data: existing, error: fetchError } = await supabase
+    let existingQuery = readClient
       .from('social_posts')
-      .select('status')
+      .select('status, platform, content, hashtags, scheduled_at')
       .eq('id', id)
-      .single()
+
+    if (user.role === 'editor') {
+      existingQuery = existingQuery.eq('created_by', user.id)
+    }
+
+    const { data: existing, error: fetchError } = await existingQuery.single()
 
     if (fetchError) {
       if (fetchError.code === 'PGRST116') {
@@ -123,6 +160,76 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       )
     }
 
+    const platformParse = updateSocialPostSchema.safeParse({
+      ...body,
+      platform: body.platform ?? existing.platform,
+      ...(body.platform !== undefined
+        ? {
+            content: body.content ?? existing.content,
+            hashtags: body.hashtags ?? existing.hashtags ?? [],
+          }
+        : {}),
+    })
+    if (!platformParse.success) {
+      return NextResponse.json(
+        {
+          error: 'Invalid request body',
+          fieldErrors: platformParse.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      )
+    }
+
+    if (
+      body.status !== undefined &&
+      !isAllowedSocialPostStatusTransition(
+        existing.status as SocialPostStatus,
+        body.status
+      )
+    ) {
+      return NextResponse.json(
+        {
+          error: `Invalid status transition from ${existing.status} to ${body.status}`,
+          fieldErrors: {
+            status: [`Cannot transition from ${existing.status} to ${body.status}`],
+          },
+        },
+        { status: 400 }
+      )
+    }
+
+    const resultingStatus = body.status ?? existing.status
+    const scheduledFor = getScheduledFor(body)
+    const resultingScheduledFor =
+      scheduledFor !== undefined ? scheduledFor : existing.scheduled_at
+    if (resultingStatus === 'scheduled' && !resultingScheduledFor) {
+      return NextResponse.json(
+        {
+          error: 'Invalid request body',
+          fieldErrors: {
+            scheduledFor: ['A scheduled date is required when status is scheduled'],
+          },
+        },
+        { status: 400 }
+      )
+    }
+
+    if (
+      resultingStatus === 'scheduled' &&
+      resultingScheduledFor &&
+      new Date(resultingScheduledFor) <= new Date()
+    ) {
+      return NextResponse.json(
+        {
+          error: 'Invalid request body',
+          fieldErrors: {
+            scheduledFor: ['Scheduled date must be in the future'],
+          },
+        },
+        { status: 400 }
+      )
+    }
+
     // Build update object with only allowed fields
     const updateData: Record<string, unknown> = {}
 
@@ -130,30 +237,56 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       updateData.content = body.content
     }
 
+    if (body.platform !== undefined) {
+      updateData.platform = body.platform
+    }
+
     if (body.hashtags !== undefined) {
       updateData.hashtags = body.hashtags
     }
 
+    if (body.mediaUrls !== undefined) {
+      updateData.media_urls = body.mediaUrls
+    }
+
     if (body.status !== undefined) {
-      const validStatuses: SocialPostStatus[] = ['draft', 'queued', 'scheduled']
-      if (!validStatuses.includes(body.status)) {
-        return NextResponse.json(
-          { error: 'Invalid status. Can only set to draft, queued, or scheduled' },
-          { status: 400 }
-        )
-      }
       updateData.status = body.status
     }
 
-    if (body.scheduledAt !== undefined) {
-      updateData.scheduled_at = body.scheduledAt
-      if (body.scheduledAt) {
-        updateData.status = 'scheduled'
-      }
+    if (scheduledFor !== undefined) {
+      updateData.scheduled_at = scheduledFor
     }
 
     if (body.autoPublish !== undefined) {
       updateData.auto_publish = body.autoPublish
+    }
+
+    if (body.socialAccountId !== undefined) {
+      updateData.social_account_id = body.socialAccountId
+    }
+
+    if (body.sourceType !== undefined) {
+      updateData.source_type = body.sourceType
+    }
+
+    if (body.sourceId !== undefined) {
+      updateData.source_id = body.sourceId
+    }
+
+    if (body.sourceTitle !== undefined) {
+      updateData.source_title = body.sourceTitle
+    }
+
+    if (body.sourceUrl !== undefined) {
+      updateData.source_url = body.sourceUrl
+    }
+
+    if (body.postType !== undefined) {
+      updateData.post_type = body.postType
+    }
+
+    if (body.templateId !== undefined) {
+      updateData.template_id = body.templateId
     }
 
     if (Object.keys(updateData).length === 0) {
@@ -165,15 +298,36 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     updateData.updated_at = new Date().toISOString()
 
-    const { data, error } = await supabase
+    // Editors have no UPDATE RLS policy, so service role is limited to their own unchanged-status row.
+    const writeClient = user.role === 'editor' ? createAdminClient() : readClient
+    let updateQuery = writeClient
       .from('social_posts')
       .update(updateData)
       .eq('id', id)
+
+    if (user.role === 'editor') {
+      updateQuery = updateQuery.eq('created_by', user.id)
+    }
+
+    const { data, error } = await updateQuery
+      .eq('status', existing.status)
+      .neq('status', 'published')
       .select()
       .single()
 
     if (error) {
       throw error
+    }
+
+    if (body.status === 'draft') {
+      await dequeuePost(id)
+    } else if (body.status === 'queued') {
+      await enqueuePost(id, new Date())
+    } else if (
+      resultingStatus === 'scheduled' &&
+      (body.status === 'scheduled' || scheduledFor !== undefined)
+    ) {
+      await enqueuePost(id, resultingScheduledFor!)
     }
 
     return NextResponse.json({
@@ -191,7 +345,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
 /**
  * DELETE /api/social/posts/[id]
- * Delete a social post (only drafts can be deleted)
+ * Delete a non-published social post
  */
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
@@ -200,20 +354,24 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Only admins can delete posts
-    if (user.role !== 'admin') {
-      return NextResponse.json({ error: 'Forbidden - admin only' }, { status: 403 })
+    if (user.role !== 'admin' && user.role !== 'editor') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     const { id } = await params
-    const supabase = createAdminClient()
+    const readClient = await createClient()
 
     // First check if post exists and its status
-    const { data: existing, error: fetchError } = await supabase
+    let existingQuery = readClient
       .from('social_posts')
       .select('status')
       .eq('id', id)
-      .single()
+
+    if (user.role === 'editor') {
+      existingQuery = existingQuery.eq('created_by', user.id)
+    }
+
+    const { data: existing, error: fetchError } = await existingQuery.single()
 
     if (fetchError) {
       if (fetchError.code === 'PGRST116') {
@@ -230,10 +388,20 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const { error } = await supabase
+    // Editors have no DELETE RLS policy, so service role is limited to their own non-published row.
+    const writeClient = user.role === 'editor' ? createAdminClient() : readClient
+    let deleteQuery = writeClient
       .from('social_posts')
       .delete()
       .eq('id', id)
+
+    if (user.role === 'editor') {
+      deleteQuery = deleteQuery.eq('created_by', user.id)
+    }
+
+    const { error } = await deleteQuery
+      .eq('status', existing.status)
+      .neq('status', 'published')
 
     if (error) {
       throw error

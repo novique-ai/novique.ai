@@ -25,7 +25,7 @@ export async function generateWithOpenAI({
   systemPrompt = 'You are a helpful AI assistant that writes professional blog content about technology and business.',
   maxTokens = 4096,
   temperature = 0.7,
-  model = 'gpt-4-turbo-preview',
+  model = 'gpt-5.6-luna',
 }: OpenAIGenerationOptions): Promise<string> {
   try {
     const openai = getOpenAIClient()

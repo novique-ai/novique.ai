@@ -30,8 +30,9 @@ import {
 // CONFIGURATION
 // =====================================================
 
-const FACEBOOK_GRAPH_BASE = 'https://graph.facebook.com/v18.0';
-const FACEBOOK_AUTH_URL = 'https://www.facebook.com/v18.0/dialog/oauth';
+const META_GRAPH_VERSION = 'v25.0';
+const FACEBOOK_GRAPH_BASE = `https://graph.facebook.com/${META_GRAPH_VERSION}`;
+const FACEBOOK_AUTH_URL = `https://www.facebook.com/${META_GRAPH_VERSION}/dialog/oauth`;
 
 // Instagram/Facebook OAuth scopes
 const INSTAGRAM_SCOPES = [
@@ -107,11 +108,16 @@ function getMetaCredentials() {
 
 export const instagramClient: SocialClient = {
   platform: 'instagram',
+  requiresPKCE: false,
 
   /**
    * Get the authorization URL for Facebook OAuth (required for Instagram)
    */
-  getAuthorizationUrl(state: string, redirectUri: string): string {
+  getAuthorizationUrl(
+    state: string,
+    redirectUri: string,
+    _codeVerifier?: string
+  ): string {
     const { appId } = getMetaCredentials();
 
     return buildURL(FACEBOOK_AUTH_URL, {
@@ -128,7 +134,8 @@ export const instagramClient: SocialClient = {
    */
   async exchangeCodeForToken(
     code: string,
-    redirectUri: string
+    redirectUri: string,
+    _codeVerifier?: string
   ): Promise<OAuthTokenResponse> {
     const { appId, appSecret } = getMetaCredentials();
 

@@ -257,26 +257,27 @@ function generateHashtags(
     return [];
   }
 
-  // Start with always_include hashtags (they may or may not have # prefix)
-  const hashtags: string[] = (strategy.always_include || []).map(tag =>
-    tag.startsWith('#') ? tag : `#${tag}`
-  );
+  const hashtags: string[] = [];
+  const existingTags = new Set<string>();
 
-  // Track which tags we already have (normalized to lowercase without #)
-  const existingTags = new Set(
-    hashtags.map(h => h.replace(/^#/, '').toLowerCase())
-  );
+  const addHashtag = (tag: string) => {
+    const bareTag = tag.trim().replace(/^#+/, '').replace(/\s+/g, '');
+    const normalizedTag = bareTag.toLowerCase();
+    if (!bareTag || existingTags.has(normalizedTag)) return;
+
+    hashtags.push(bareTag);
+    existingTags.add(normalizedTag);
+  };
+
+  // Hashtags are stored without a leading # throughout the schema and UI.
+  (strategy.always_include || []).forEach(addHashtag);
 
   // Generate hashtags from tags if we need more, avoiding duplicates
   if (source.tags && hashtags.length < strategy.max_hashtags) {
     for (const tag of source.tags) {
       if (hashtags.length >= strategy.max_hashtags) break;
 
-      const normalizedTag = tag.replace(/\s+/g, '').toLowerCase();
-      if (!existingTags.has(normalizedTag)) {
-        hashtags.push(`#${tag.replace(/\s+/g, '')}`);
-        existingTags.add(normalizedTag);
-      }
+      addHashtag(tag);
     }
   }
 
@@ -315,7 +316,7 @@ async function generateForPlatform(
     template.hashtag_strategy?.position === 'end' &&
     hashtags.length > 0
   ) {
-    content = `${content}\n\n${hashtags.join(' ')}`;
+    content = `${content}\n\n${hashtags.map(tag => `#${tag}`).join(' ')}`;
   }
 
   // Calculate character count (accounting for URL shortening on Twitter)

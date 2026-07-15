@@ -1,0 +1,16 @@
+[Unit]
+Description=Novique.ai content discovery and article worker
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=NODE_ENV=production
+EnvironmentFile=%h/.config/novique-worker/env
+ExecStart=/usr/bin/env npm --prefix ${NOVIQUE_WORKER_DIR} run worker:run
+TimeoutStartSec=45min
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target

@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createAdminClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/session'
+import {
+  createSocialPostSchema,
+  getScheduledFor,
+} from '@/lib/social/apiValidation'
+import { enqueuePost } from '@/lib/social/publishQueue'
 import type { SocialPost, SocialPlatform, SocialPostStatus, SocialSourceType } from '@/lib/social/types'
 
 interface PostStats {
@@ -24,7 +29,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    const supabase = createAdminClient()
+    const supabase = await createClient()
     const { searchParams } = new URL(request.url)
 
     // Parse query parameters
@@ -41,6 +46,10 @@ export async function GET(request: NextRequest) {
       .select('*', { count: 'exact' })
       .order('created_at', { ascending: false })
 
+    if (user.role === 'editor') {
+      query = query.eq('created_by', user.id)
+    }
+
     // Apply filters
     if (platform) {
       query = query.eq('platform', platform)
@@ -55,7 +64,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      query = query.or(`content.ilike.%${search}%,source_title.ilike.%${search}%`)
+      const safeSearch = search.replace(/[(),]/g, ' ').trim()
+      if (safeSearch) {
+        query = query.or(`content.ilike.%${safeSearch}%,source_title.ilike.%${safeSearch}%`)
+      }
     }
 
     // Apply pagination
@@ -68,9 +80,15 @@ export async function GET(request: NextRequest) {
     }
 
     // Get stats (separate query for all posts, not filtered)
-    const { data: allPosts } = await supabase
+    let statsQuery = supabase
       .from('social_posts')
       .select('status, platform')
+
+    if (user.role === 'editor') {
+      statsQuery = statsQuery.eq('created_by', user.id)
+    }
+
+    const { data: allPosts } = await statsQuery
 
     const stats: PostStats = {
       total: allPosts?.length || 0,
@@ -81,6 +99,7 @@ export async function GET(request: NextRequest) {
         publishing: 0,
         published: 0,
         failed: 0,
+        needs_review: 0,
       },
       byPlatform: {
         twitter: 0,
@@ -132,25 +151,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    const supabase = createAdminClient()
-    const body = await request.json()
-
-    // Validate required fields
-    if (!body.platform || !body.content) {
+    let requestBody: unknown
+    try {
+      requestBody = await request.json()
+    } catch {
       return NextResponse.json(
-        { error: 'Missing required fields: platform, content' },
+        { error: 'Invalid JSON body', fieldErrors: {} },
         { status: 400 }
       )
     }
 
-    // Validate platform
-    const validPlatforms: SocialPlatform[] = ['twitter', 'linkedin', 'instagram']
-    if (!validPlatforms.includes(body.platform)) {
+    const parsed = createSocialPostSchema.safeParse(requestBody)
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid platform' },
+        {
+          error: 'Invalid request body',
+          fieldErrors: parsed.error.flatten().fieldErrors,
+        },
         { status: 400 }
       )
     }
+
+    const body = parsed.data
+    const supabase = await createClient()
 
     // Create post
     const { data, error } = await supabase
@@ -158,16 +181,18 @@ export async function POST(request: NextRequest) {
       .insert({
         platform: body.platform,
         content: body.content,
-        hashtags: body.hashtags || [],
-        status: body.status || 'draft',
+        hashtags: body.hashtags,
+        media_urls: body.mediaUrls || [],
+        status: body.status,
+        social_account_id: body.socialAccountId || null,
         source_type: body.sourceType || 'manual',
-        source_id: body.sourceId || null,
-        source_title: body.sourceTitle || null,
-        source_url: body.sourceUrl || null,
-        auto_publish: body.autoPublish || false,
-        scheduled_at: body.scheduledAt || null,
+        source_id: body.sourceId ?? null,
+        source_title: body.sourceTitle ?? null,
+        source_url: body.sourceUrl ?? null,
+        auto_publish: body.autoPublish ?? false,
+        scheduled_at: getScheduledFor(body) ?? null,
         post_type: body.postType || 'auto_distributed',
-        template_id: body.templateId || null,
+        template_id: body.templateId ?? null,
         created_by: user.id,
       })
       .select()
@@ -175,6 +200,12 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       throw error
+    }
+
+    if (body.status === 'queued') {
+      await enqueuePost(data.id, new Date())
+    } else if (body.status === 'scheduled') {
+      await enqueuePost(data.id, getScheduledFor(body)!)
     }
 
     return NextResponse.json({

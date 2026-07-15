@@ -9,6 +9,7 @@ import {
   HashtagEditor,
   SchedulePicker,
   PlatformPreview,
+  MediaPicker,
 } from '@/components/social'
 import { useSocialPostEditor, type SocialPostData } from '@/hooks/useSocialPostEditor'
 import type { SocialPlatform, SocialPostStatus } from '@/lib/social/types'
@@ -129,6 +130,22 @@ export default function SocialPostEditor({
           />
         </div>
 
+        {/* Media */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Media
+          </label>
+          <MediaPicker
+            mediaUrls={formData.mediaUrls}
+            onChange={(mediaUrls) => updateField('mediaUrls', mediaUrls)}
+            platform={formData.platform}
+            postId={formData.id}
+            sourceType={formData.sourceType}
+            disabled={isPublished}
+            error={errors.mediaUrls}
+          />
+        </div>
+
         {/* Status & Scheduling */}
         {!isPublished && (
           <div className="grid grid-cols-2 gap-4">
@@ -231,11 +248,6 @@ export default function SocialPostEditor({
             sourceUrl={formData.sourceUrl || undefined}
           />
         </div>
-        {formData.platform === 'instagram' && (
-          <p className="text-xs text-gray-500 mt-2 text-center">
-            Note: Instagram requires an image. Add media before publishing.
-          </p>
-        )}
       </div>
     </div>
   )

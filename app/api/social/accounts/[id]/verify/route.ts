@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/lib/auth/session';
 import { getClient } from '@/lib/social/clients';
+import { decryptToken } from '@/lib/social/tokenCrypto';
 import type { SocialPlatform, SocialAccountStatus } from '@/lib/social/types';
 
 /**
@@ -31,7 +32,7 @@ export async function POST(
     // Get the account
     const { data: account, error: fetchError } = await supabase
       .from('social_accounts')
-      .select('*')
+      .select('platform, access_token')
       .eq('id', accountId)
       .single();
 
@@ -41,9 +42,10 @@ export async function POST(
 
     const platform = account.platform as SocialPlatform;
     const client = getClient(platform);
+    const accessToken = decryptToken(account.access_token);
 
     // Verify credentials
-    const isValid = await client.verifyCredentials(account.access_token);
+    const isValid = await client.verifyCredentials(accessToken);
 
     // Update account status
     const newStatus: SocialAccountStatus = isValid ? 'active' : 'expired';
@@ -57,7 +59,7 @@ export async function POST(
 
       // Also update account info while we're at it
       try {
-        const accountInfo = await client.getAccountInfo(account.access_token);
+        const accountInfo = await client.getAccountInfo(accessToken);
         updateData.account_name = accountInfo.name;
         updateData.account_handle = accountInfo.handle;
         updateData.profile_image_url = accountInfo.profile_image_url;
@@ -86,7 +88,10 @@ export async function POST(
       },
     });
   } catch (error) {
-    console.error('Account verification error:', error);
+    console.error(
+      'Account verification error:',
+      error instanceof Error ? error.name : 'UnknownError'
+    );
     return NextResponse.json(
       {
         error:

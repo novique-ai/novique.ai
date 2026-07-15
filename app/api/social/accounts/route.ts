@@ -4,8 +4,10 @@ import { getCurrentUser } from '@/lib/auth/session';
 import {
   getClient,
   generateOAuthState,
+  generatePKCE,
   isTokenExpired,
 } from '@/lib/social/clients';
+import { getSocialOAuthCallbackUrl } from '@/lib/social/oauth';
 import type { SocialPlatform } from '@/lib/social/types';
 
 /**
@@ -117,21 +119,44 @@ export async function POST(request: NextRequest) {
 
     // Generate OAuth state for CSRF protection
     const state = generateOAuthState();
+    const codeVerifier = client.requiresPKCE
+      ? (await generatePKCE()).codeVerifier
+      : undefined;
 
-    // Build redirect URI
-    const baseUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      process.env.VERCEL_URL ||
-      'http://localhost:3000';
-    const redirectUri =
-      process.env.NEXT_PUBLIC_SOCIAL_OAUTH_CALLBACK_URL ||
-      `${baseUrl}/api/social/callback/${platform}`;
+    // Build and persist the exact redirect URI used throughout this flow
+    const redirectUri = getSocialOAuthCallbackUrl(platform);
+    const supabase = createAdminClient();
+    const { error: transactionError } = await supabase
+      .from('social_oauth_transactions')
+      .insert({
+        platform,
+        state,
+        code_verifier: codeVerifier || null,
+        redirect_uri: redirectUri,
+        created_by: user.id,
+        expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+      });
+
+    if (transactionError) {
+      throw transactionError;
+    }
 
     // Get authorization URL
-    const authorizationUrl = client.getAuthorizationUrl(state, redirectUri);
+    let authorizationUrl = client.getAuthorizationUrl(
+      state,
+      redirectUri,
+      codeVerifier
+    );
 
-    // Store state in database for verification (optional, can use signed cookies instead)
-    // For simplicity, we're relying on the state parameter being verified by the platform
+    if (platform === 'linkedin') {
+      const linkedinUrl = new URL(authorizationUrl);
+      const scopes = ['openid', 'profile', 'w_member_social'];
+      if (process.env.LINKEDIN_ORG_URN) {
+        scopes.push('w_organization_social');
+      }
+      linkedinUrl.searchParams.set('scope', scopes.join(' '));
+      authorizationUrl = linkedinUrl.toString();
+    }
 
     return NextResponse.json({
       success: true,

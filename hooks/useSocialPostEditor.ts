@@ -14,6 +14,7 @@ export interface SocialPostData {
   platform: SocialPlatform
   content: string
   hashtags: string[]
+  mediaUrls: string[]
   status: SocialPostStatus
   scheduledAt: string | null
   autoPublish: boolean
@@ -68,6 +69,7 @@ export function useSocialPostEditor({
     platform: initialData?.platform || platform,
     content: initialData?.content || '',
     hashtags: initialData?.hashtags || [],
+    mediaUrls: initialData?.mediaUrls || [],
     status: initialData?.status || 'draft',
     scheduledAt: initialData?.scheduledAt || null,
     autoPublish: initialData?.autoPublish || false,
@@ -116,6 +118,10 @@ export function useSocialPostEditor({
       newErrors.content = 'Content is required'
     } else if (!isWithinLimit) {
       newErrors.content = `Content exceeds ${characterLimit} character limit for ${formData.platform}`
+    }
+
+    if (formData.platform === 'instagram' && formData.mediaUrls.length === 0) {
+      newErrors.mediaUrls = 'Instagram requires at least one image'
     }
 
     // Validate scheduled date if status is scheduled

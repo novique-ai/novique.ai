@@ -3,7 +3,12 @@
 import Link from 'next/link'
 import { useState, useEffect, useCallback } from 'react'
 import { PlatformBadge, SocialStatusBadge, SocialGenerateModal } from '@/components/social'
-import type { SocialPost, SocialPlatform, SocialPostStatus } from '@/lib/social/types'
+import type {
+  SocialMetricsDashboardSummary,
+  SocialPost,
+  SocialPlatform,
+  SocialPostStatus,
+} from '@/lib/social/types'
 
 interface PostStats {
   total: number
@@ -11,8 +16,23 @@ interface PostStats {
   byPlatform: Record<SocialPlatform, number>
 }
 
+function emptyMetricsSummary(): SocialMetricsDashboardSummary {
+  return {
+    published_this_month: 0,
+    pending_approvals: 0,
+    platforms: {
+      twitter: { impressions: null, likes: null, captured_at: null },
+      linkedin: { impressions: null, likes: null, captured_at: null },
+      instagram: { impressions: null, likes: null, captured_at: null },
+    },
+  }
+}
+
 export default function AdminSocialPage() {
   const [posts, setPosts] = useState<SocialPost[]>([])
+  const [metricsSummary, setMetricsSummary] = useState<SocialMetricsDashboardSummary>(
+    emptyMetricsSummary
+  )
   const [stats, setStats] = useState<PostStats>({
     total: 0,
     byStatus: {
@@ -22,6 +42,7 @@ export default function AdminSocialPage() {
       publishing: 0,
       published: 0,
       failed: 0,
+      needs_review: 0,
     },
     byPlatform: {
       twitter: 0,
@@ -49,14 +70,24 @@ export default function AdminSocialPage() {
       if (statusFilter !== 'all') params.append('status', statusFilter)
       if (searchQuery) params.append('search', searchQuery)
 
-      const response = await fetch(`/api/social/posts?${params.toString()}`)
-      if (!response.ok) {
+      const [postsResponse, metricsResponse] = await Promise.all([
+        fetch(`/api/social/posts?${params.toString()}`),
+        fetch('/api/social/metrics'),
+      ])
+      if (!postsResponse.ok) {
         throw new Error('Failed to fetch posts')
       }
+      if (!metricsResponse.ok) {
+        throw new Error('Failed to fetch social metrics')
+      }
 
-      const result = await response.json()
-      setPosts(result.data || [])
-      setStats(result.stats || stats)
+      const [postsResult, metricsResult] = await Promise.all([
+        postsResponse.json(),
+        metricsResponse.json(),
+      ])
+      setPosts(postsResult.data || [])
+      setStats((current) => postsResult.stats || current)
+      setMetricsSummary(metricsResult.data || emptyMetricsSummary())
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
@@ -142,6 +173,13 @@ export default function AdminSocialPage() {
     { name: 'Scheduled', value: stats.byStatus.scheduled, color: 'bg-aqua/10' },
     { name: 'Published', value: stats.byStatus.published, color: 'bg-green-500/10' },
   ]
+  const compactNumber = (value: number | null) =>
+    value === null ? '—' : Intl.NumberFormat('en-US', { notation: 'compact' }).format(value)
+  const metricsPlatforms: Array<{ platform: SocialPlatform; label: string }> = [
+    { platform: 'twitter', label: 'X' },
+    { platform: 'linkedin', label: 'LinkedIn' },
+    { platform: 'instagram', label: 'Instagram' },
+  ]
 
   return (
     <div className="space-y-6">
@@ -203,6 +241,42 @@ export default function AdminSocialPage() {
             Generate from Blog
           </button>
         </div>
+      </div>
+
+      {/* Fixed-window metrics summary */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <div className="bg-white overflow-hidden shadow rounded-lg p-4">
+          <div className="text-xs font-medium uppercase tracking-wide text-gray-500">
+            Published this month
+          </div>
+          <div className="mt-1 text-2xl font-semibold text-gray-900">
+            {metricsSummary.published_this_month}
+          </div>
+        </div>
+        <div className="bg-amber-50 overflow-hidden shadow rounded-lg p-4">
+          <div className="text-xs font-medium uppercase tracking-wide text-gray-500">
+            Pending approvals
+          </div>
+          <div className="mt-1 text-2xl font-semibold text-gray-900">
+            {metricsSummary.pending_approvals}
+          </div>
+        </div>
+        {metricsPlatforms.map(({ platform, label }) => {
+          const metric = metricsSummary.platforms[platform]
+          return (
+            <div key={platform} className="bg-gray-50 overflow-hidden shadow rounded-lg p-4">
+              <div className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                {label} latest totals
+              </div>
+              <div className="mt-1 text-sm font-semibold text-gray-900">
+                {compactNumber(metric.impressions)} impressions
+              </div>
+              <div className="text-xs text-gray-600">
+                {compactNumber(metric.likes)} likes
+              </div>
+            </div>
+          )
+        })}
       </div>
 
       {/* Stats Grid */}

@@ -6,6 +6,7 @@ import {
   TokenExpiredError,
   calculateTokenExpiration,
 } from '@/lib/social/clients';
+import { decryptToken, encryptToken } from '@/lib/social/tokenCrypto';
 import type { SocialPlatform } from '@/lib/social/types';
 
 /**
@@ -35,7 +36,7 @@ export async function POST(
     // Get the account
     const { data: account, error: fetchError } = await supabase
       .from('social_accounts')
-      .select('*')
+      .select('platform, access_token, refresh_token, token_scope')
       .eq('id', accountId)
       .single();
 
@@ -45,19 +46,23 @@ export async function POST(
 
     const platform = account.platform as SocialPlatform;
     const client = getClient(platform);
+    const accessToken = decryptToken(account.access_token);
+    const refreshToken = account.refresh_token
+      ? decryptToken(account.refresh_token)
+      : null;
 
     // Check if we have a refresh token
-    if (!account.refresh_token) {
+    if (!refreshToken) {
       // For Instagram/Facebook, we can try to extend the token
       if (platform === 'instagram') {
         try {
-          const newTokens = await client.refreshAccessToken(account.access_token);
+          const newTokens = await client.refreshAccessToken(accessToken);
 
           // Update the account
           const { error: updateError } = await supabase
             .from('social_accounts')
             .update({
-              access_token: newTokens.access_token,
+              access_token: encryptToken(newTokens.access_token),
               token_expires_at: newTokens.expires_in
                 ? calculateTokenExpiration(newTokens.expires_in).toISOString()
                 : null,
@@ -106,14 +111,14 @@ export async function POST(
 
     // Refresh the token
     try {
-      const newTokens = await client.refreshAccessToken(account.refresh_token);
+      const newTokens = await client.refreshAccessToken(refreshToken);
 
       // Update the account
       const { error: updateError } = await supabase
         .from('social_accounts')
         .update({
-          access_token: newTokens.access_token,
-          refresh_token: newTokens.refresh_token || account.refresh_token,
+          access_token: encryptToken(newTokens.access_token),
+          refresh_token: encryptToken(newTokens.refresh_token || refreshToken),
           token_expires_at: newTokens.expires_in
             ? calculateTokenExpiration(newTokens.expires_in).toISOString()
             : null,
@@ -156,7 +161,10 @@ export async function POST(
       throw err;
     }
   } catch (error) {
-    console.error('Token refresh error:', error);
+    console.error(
+      'Token refresh error:',
+      error instanceof Error ? error.name : 'UnknownError'
+    );
     return NextResponse.json(
       {
         error:

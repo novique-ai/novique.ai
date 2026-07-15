@@ -19,10 +19,22 @@ export type SocialPostStatus =
   | 'queued'
   | 'scheduled'
   | 'publishing'
+  | 'needs_review'
   | 'published'
   | 'failed';
 
 export type SocialSourceType = 'blog' | 'lab' | 'manual';
+
+export type ContentApprovalSubjectType =
+  | 'weekly_plan'
+  | 'article'
+  | 'template_probation'
+  | 'image_style'
+  | 'post_review';
+
+export type ContentApprovalStatus = 'pending' | 'approved' | 'rejected';
+
+export type TemplateProbationStatus = 'probation' | 'trusted' | 'suspended';
 
 export type ModerationStatus =
   | 'pending'
@@ -41,6 +53,37 @@ export type SocialPostType =
   | 'auto_distributed'
   | 'native_insight'
   | 'founder_post';
+
+export interface SocialMediaUploadVariant {
+  url: string;
+  width: number | null;
+  height: number | null;
+}
+
+export interface SocialMediaUploadResult {
+  fileName: string;
+  contentType: 'image/jpeg' | 'image/png' | 'image/webp';
+  full: SocialMediaUploadVariant;
+  instagram: SocialMediaUploadVariant;
+}
+
+export type BrandedCardTemplate =
+  | 'quote_card'
+  | 'insight_card'
+  | 'article_og';
+
+export interface BrandedCardSize {
+  width: number;
+  height: number;
+}
+
+export interface BrandedCardData {
+  title: string;
+  subtitle?: string;
+  quote?: string;
+  attribution?: string;
+  insights?: string[];
+}
 
 // =====================================================
 // DATABASE ENTITIES
@@ -99,6 +142,8 @@ export interface SocialPost {
   // New fields from migration 006
   post_type: SocialPostType;
   template_id: string | null;
+  // Content supply chain context from migration 009
+  campaign_id: string | null;
   // Audit
   created_by: string | null;
   approved_by: string | null;
@@ -165,6 +210,29 @@ export interface SocialPostQueue {
   max_attempts: number;
   last_error: string | null;
   created_at: string;
+}
+
+export interface ContentApproval {
+  id: string;
+  subject_type: ContentApprovalSubjectType;
+  subject_id: string;
+  status: ContentApprovalStatus;
+  summary: string;
+  payload: Record<string, unknown>;
+  requested_at: string;
+  decided_at: string | null;
+  decided_by: string | null;
+  notes: string | null;
+}
+
+export interface TemplateProbation {
+  id: string;
+  platform: SocialPlatform;
+  template_key: string;
+  clean_publishes: number;
+  required: number;
+  status: TemplateProbationStatus;
+  updated_at: string;
 }
 
 /**
@@ -264,6 +332,29 @@ export interface SocialPostMetrics {
   clicks?: number;
   shares?: number;
   saves?: number; // Instagram
+}
+
+export type SocialMetricWindow = '24h' | '7d' | '28d';
+
+export interface SocialMetricSnapshot {
+  id: string;
+  post_id: string;
+  platform: SocialPlatform;
+  window: SocialMetricWindow;
+  captured_at: string;
+  metrics: SocialPostMetrics & { error?: string };
+}
+
+export interface SocialMetricsPlatformSummary {
+  impressions: number | null;
+  likes: number | null;
+  captured_at: string | null;
+}
+
+export interface SocialMetricsDashboardSummary {
+  published_this_month: number;
+  pending_approvals: number;
+  platforms: Record<SocialPlatform, SocialMetricsPlatformSummary>;
 }
 
 /**
@@ -500,6 +591,13 @@ export interface OAuthTokenResponse {
   scope?: string;
 }
 
+export interface PublishContext {
+  accountId: string;
+  platformUserId?: string | null;
+  accountName?: string | null;
+  scopes?: string[] | null;
+}
+
 // =====================================================
 // CLIENT INTERFACE
 // =====================================================
@@ -509,10 +607,19 @@ export interface OAuthTokenResponse {
  */
 export interface SocialClient {
   platform: SocialPlatform;
+  requiresPKCE: boolean;
 
   // Authentication
-  getAuthorizationUrl(state: string, redirectUri: string): string;
-  exchangeCodeForToken(code: string, redirectUri: string, state?: string): Promise<OAuthTokenResponse>;
+  getAuthorizationUrl(
+    state: string,
+    redirectUri: string,
+    codeVerifier?: string
+  ): string;
+  exchangeCodeForToken(
+    code: string,
+    redirectUri: string,
+    codeVerifier?: string
+  ): Promise<OAuthTokenResponse>;
   refreshAccessToken(refreshToken: string): Promise<OAuthTokenResponse>;
 
   // Account
@@ -528,7 +635,8 @@ export interface SocialClient {
   createPost(
     accessToken: string,
     content: string,
-    mediaUrls?: string[]
+    mediaUrls?: string[],
+    context?: PublishContext
   ): Promise<{ id: string; url: string }>;
   deletePost(accessToken: string, postId: string): Promise<void>;
 

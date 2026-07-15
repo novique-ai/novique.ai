@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { after, NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/session'
+import { fanOutDerivatives } from '@/lib/social/derivativeFanout'
 
 interface RouteParams {
   params: Promise<{
@@ -134,6 +135,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     if (error) {
       throw error
+    }
+
+    if (existingPost.status !== 'published' && data.status === 'published') {
+      after(async () => {
+        await fanOutDerivatives(data).catch((fanoutError) => {
+          console.error('Blog derivative fan-out invocation failed:', fanoutError)
+        })
+      })
     }
 
     return NextResponse.json({
